@@ -1,0 +1,30 @@
+{
+    "name"        : "jeromeklam/freesso",
+    "type"        : "library",
+    "description" : "Free PHP SSO",
+    "keywords"    : ["FREE", "SSO", "PHP"],
+    "homepage"    : "http://github.com/jeromeklam",
+    "license"     : "gpl",
+    "authors" : [
+        {
+            "name"  : "KLAM Jérôme",
+            "email" : "jeromeklam@free.fr"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require" : {
+        "php"                                  : ">=7.0",
+        "robmorgan/phinx"                      : "*",
+        "phing/phing"                          : "*",
+        "bshaffer/oauth2-server-php"           : "~1.8"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "FreeSso\\" : "src/FreeSso/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4",
+        "guzzlehttp/guzzle": "~6.0"
+    }
+}
