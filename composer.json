@@ -16,7 +16,8 @@
         "php"                                  : ">=7.0",
         "robmorgan/phinx"                      : "*",
         "phing/phing"                          : "*",
-        "bshaffer/oauth2-server-php"           : "~1.8"
+        "bshaffer/oauth2-server-php"           : "~1.8",
+        "jeromeklam/freefw"                    : "*"
     },
     "autoload" : {
         "psr-4" : {
