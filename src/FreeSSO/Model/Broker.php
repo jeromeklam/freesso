@@ -1,16 +1,38 @@
 <?php
-/**
- * ... ...
- * @author jeromeklam
- */
 namespace FreeSSO\Model;
 
 /**
- * Classe : Broker
+ * Broker
+ *
  * @author : jeromeklam
  */
-class Broker extends \FreeSSO\Model\Raw\Broker
+class Broker extends \FreeSSO\Model\Base\Broker implements \FreeFW\Interfaces\ValidatorInterface
 {
+
+    /**
+     * Behaviour
+     */
+    use \FreeFW\Behaviour\ValidatorTrait;
+
+    /**
+     * Validate model
+     *
+     * @return void
+     */
+    protected function validate()
+    {
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     * @see \FreeFW\Core\Model::init()
+     */
+    public function init()
+    {
+        $this->brk_id     = 0;
+        $this->brk_active = true;
+    }
 
     /**
      * Is active ?

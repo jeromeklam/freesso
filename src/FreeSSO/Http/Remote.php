@@ -17,12 +17,6 @@ class Remote
 {
 
     /**
-     * Comportements
-     */
-    use \FreeFW\Behaviour\DI;
-    use \FreeFW\Behaviour\Translation;
-
-    /**
      * Random value for a cookie
      * @return string
      */
@@ -39,30 +33,27 @@ class Remote
      *
      * @return string
      */
-    public static function getSSOCookie($p_domain = null)
-    {
-        $cookies = \FreeFW\Http\Cookie::getInstance();
-        if ($p_domain === null) {
-            // @todo : getdomain from url
-            $p_domain = Constants::COOKIE_DEFAULT_DOMAIN;
-        }
+    public static function getSSOCookie(
+        \Psr\Http\Message\ServerRequestInterface $p_request,
+        string $p_domain
+    ) {
+        $cookies = \FreeFW\Http\ServerRequest::getRequestCookies($p_request);
         if (!$cookies->has(Constants::COOKIE_CDSSO) || $cookies->get(Constants::COOKIE_CDSSO) == '') {
-            $request = self::getDIRequest();
-            if ($request->hasHeader(Constants::HEADER_CDSSO)) {
-                $value = $request->getHeader(Constants::HEADER_CDSSO)[0];
+            if ($p_request->hasHeader(Constants::HEADER_CDSSO)) {
+                $value = $p_request->getHeader(Constants::HEADER_CDSSO)[0];
                 if (trim($value) != '') {
                     return $value;
                 }
             } else {
-                if ($request->hasHeader('Sso-Id')) {
-                    $value = $request->getHeader('Sso-Id')[0];
+                if ($p_request->hasHeader('Sso-Id')) {
+                    $value = $p_request->getHeader('Sso-Id')[0];
                     if (trim($value) != '') {
                         return $value;
                     }
                 }
             }
             $value = self::getRandomCookieValue();
-            $cookies->set(Constants::COOKIE_CDSSO, $value, null, '/', false, $p_domain);
+            //$cookies->set(Constants::COOKIE_CDSSO, $value, null, '/', false, $p_domain);
             return $value;
         } else {
             return $cookies->get(Constants::COOKIE_CDSSO);
@@ -72,31 +63,29 @@ class Remote
     /**
      * Get Main Application cookie value
      *
-     * @param string $p_app_name
-     *
      * @return string
      */
-    public static function getApplicationCookie($p_app_name = 'GATE')
-    {
-        $cookies  = \FreeFW\Http\Cookie::getInstance();
+    public static function getAppCookie(
+        \Psr\Http\Message\ServerRequestInterface $p_request
+    ) {
+        $cookies = \FreeFW\Http\ServerRequest::getRequestCookies($p_request);
         $cookName = strtoupper(Constants::COOKIE_APP);
         if (!$cookies->has($cookName) || $cookies->get($cookName) == '') {
-            $request = self::getDIRequest();
-            if ($request->hasHeader(Constants::HEADER_APP)) {
-                $value = $request->getHeader(Constants::HEADER_APP)[0];
+            if ($p_request->hasHeader(Constants::HEADER_APP)) {
+                $value = $p_request->getHeader(Constants::HEADER_APP)[0];
                 if (trim($value != '')) {
                     return $value;
                 }
             } else {
-                if ($request->hasHeader('App-Id')) {
-                    $value = $request->getHeader('App-Id')[0];
+                if ($p_request->hasHeader('App-Id')) {
+                    $value = $p_request->getHeader('App-Id')[0];
                     if (trim($value != '')) {
                         return $value;
                     }
                 }
             }
             $value = self::getRandomCookieValue();
-            $cookies->set($cookName, $value, time() + (86400 * Constants::COOKIE_APP_DAYS), '/', false);
+            //$cookies->set($cookName, $value, time() + (86400 * Constants::COOKIE_APP_DAYS), '/', false);
             return $value;
         } else {
             return $cookies->get($cookName);

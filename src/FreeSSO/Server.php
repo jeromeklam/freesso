@@ -1,6 +1,7 @@
 <?php
 namespace FreeSSO;
 
+use \Psr\Http\Message\ServerRequestInterface;
 use \FreeFW\Tools\Date;
 use \FreeSSO\Model\Broker;
 use \FreeSSO\Model\BrokerSession;
@@ -18,15 +19,15 @@ use \FreeFW\Client\Http;
  * @author jeromeklam
  * @package SSO\Server
  */
-class Server implements \FreeFW\Interfaces\SSO
+class Server implements
+    \FreeFW\Interfaces\SSOInterface,
+    \Psr\Log\LoggerAwareInterface
 {
 
     /**
-     * Comportements
+     * comportements
      */
-    use \FreeFW\Behaviour\DI;
-    use \FreeFW\Behaviour\EventManager;
-    use \FreeFW\Behaviour\Translation;
+    use \Psr\Log\LoggerAwareTrait;
 
     /**
      * Instance of server
@@ -36,46 +37,52 @@ class Server implements \FreeFW\Interfaces\SSO
 
     /**
      * Domain instance
-     * @var Domain
+     * @var \FreeSSO\Model\Domain
      */
-    protected static $domain = null;
+    protected $domain = null;
 
     /**
      * Broker instance
-     * @var Broker
+     * @var \FreeSSO\Model\Broker
      */
-    protected static $broker = null;
+    protected $broker = null;
 
     /**
      * Session
      * @var Session
      */
-    protected static $session = null;
+    protected $session = null;
 
     /**
      * User
      * @var User
      */
-    protected static $user = null;
+    protected $user = null;
+
+    /**
+     * Request
+     * @var \Psr\Http\Message\ServerRequestInterface;
+     */
+    protected $request = null;
 
     /**
      * Constructor
      *
      * @param array   $p_options
      */
-    protected function __construct(array $p_options = array())
+    protected function __construct(ServerRequestInterface $p_request, array $p_options = array())
     {
         // Peut être un appel rest, ... en-tête API_ID ??
-        $request = self::getDIRequest();
-        if ($request->hasHeader('ApiId')) {
-            $key = $request->getHeader('ApiId');
+        $this->request = $p_request;
+        if ($this->request->hasHeader('ApiId')) {
+            $key = $this->request->getHeader('ApiId');
             if (is_array($key)) {
                 $key = $key[0];
             }
             $this->setBroker($key);
         } else {
-            if ($request->hasHeader('API_ID')) {
-                $key = $request->getHeader('API_ID');
+            if ($this->request->hasHeader('API_ID')) {
+                $key = $this->request->getHeader('API_ID');
                 if (is_array($key)) {
                     $key = $key[0];
                 }
@@ -89,14 +96,6 @@ class Server implements \FreeFW\Interfaces\SSO
                 } else {
                     $this->setBroker($p_options[\FreeSSO\Constants::BROKER_KEY]);
                 }
-            }
-        }
-        // Oauth2...
-        if (array_key_exists(\FreeSSO\Constants::OAUTH_KEY, $p_options)) {
-            $oauth2 = $p_options[\FreeSSO\Constants::OAUTH_KEY];
-            if (array_key_exists('activated', $oauth2) && $oauth2['activated'] === true) {
-                $pdo = $this->getDIConnexion();
-                $oauth2_storage = new \OAuth2\Storage\Pdo($pdo);
             }
         }
     }
@@ -121,11 +120,13 @@ class Server implements \FreeFW\Interfaces\SSO
      *
      * @return \FreeSSO\Server
      */
-    public static function getInstance(array $p_options = array())
-    {
+    public static function getInstance(
+        ServerRequestInterface $p_request = null,
+        array $p_options = array()
+    ) {
         if (self::$instance === null) {
             if (is_array($p_options) && count($p_options) > 0) {
-                self::$instance = new self($p_options);
+                self::$instance = new self($p_request, $p_options);
             } else {
                 throw new \InvalidArgumentException('Erreur de configuration : aucune option !');
             }
@@ -143,41 +144,51 @@ class Server implements \FreeFW\Interfaces\SSO
     public function setBroker($p_brokerKey)
     {
         if (substr_count($p_brokerKey, '@') == 1) {
-            $parts = explode('@', $p_brokerKey);
-            $myBroker = Broker::getFirst(array(
-                "brk_key"         => $parts[1],
-                "brk_certificate" => $parts[0]
-            ));
+            $parts    = explode('@', $p_brokerKey);
+            $myBroker = \FreeFW\DI\DI::get('FreeSSO::Model::Broker');
+            $myBroker->findFirst(
+                [
+                    'brk_key'         => $parts[1],
+                    'brk_certificate' => $parts[0]
+                ]
+            );
         } else {
-            $myBroker = Broker::getFirst(array(
-                "brk_key"         => $p_brokerKey,
-                "brk_certificate" => ''
-            ));
+            $myBroker = \FreeFW\DI\DI::get('FreeSSO::Model::Broker');
+            $myBroker->findFirst(
+                [
+                    'brk_key'         => $p_brokerKey,
+                    'brk_certificate' => ''
+                ]
+            );
         }
-        if ($myBroker instanceof Broker) {
-            self::$broker = $myBroker;
-            self::$domain = Domain::getById(array(
-                'dom_id' => self::$broker->getDomId()
-            ));
-            if (!self::$domain instanceof Domain) {
-                throw new \Exception(sprintf('Le domaine n\'a pas été trouvé !'));
+        if ($myBroker instanceof \FreeSSO\Model\Broker) {
+            $this->broker = $myBroker;
+            $domain       = \FreeFW\DI\DI::get('FreeSSO::Model::Domain');
+            $domain->findFirst(
+                [
+                    'dom_id' => $this->broker->getDomId()
+                ]
+            );
+            $this->domain = $domain;
+            if (!$this->domain instanceof \FreeSSO\Model\Domain) {
+                throw new \Exception(sprintf('Could not find %s domain !', $this->broker->getDomId()));
             }
-            if (!$myBroker->isActive()) {
-                throw new \Exception(sprintf('Le "client" n\'est plus actif !'));
+            if (!$this->broker->isActive()) {
+                throw new \Exception(sprintf('Broker is not activated !'));
             }
+            /**
+             * Init the cookies, ....
+             */
+            $cliIp = \FreeFW\Http\ServerRequest::getClientIp($this->request);
+            $ssoCk = Remote::getSSOCookie($this->request, $this->domain->getDomName());
+            $appCk = Remote::getAppCookie($this->request);
+            /**
+             * Try to get a broker session....
+             */
+            $this->verifyBrokerSession($this->broker->getBrkKey(), $ssoCk, $appCk, $cliIp);
         } else {
-            throw new \Exception(sprintf('le "client" %s n\'a pas été trouvé !', $p_brokerKey));
+            throw new \Exception(sprintf('Broker %s not found !', $p_brokerKey));
         }
-        /**
-         * Init the cookies, ....
-         */
-        $ssoCk = Remote::getSSOCookie(self::$domain->getDomName());
-        $appCk = Remote::getApplicationCookie();
-        $cliIp = \FreeFW\Http\ServerRequest::getClientIp();
-        /**
-         * Try to get a broker session....
-         */
-        $this->verifyBrokerSession(self::$broker->getBrkKey(), $ssoCk, $appCk, $cliIp);
     }
 
     /**
@@ -401,10 +412,13 @@ class Server implements \FreeFW\Interfaces\SSO
     {
         $addNewBrokerSession = true;
         // Read if application session exists
-        $myBrokerSession = BrokerSession::getFirst(array(
-            'brs_token' => $p_appId
-        ));
-        if ($myBrokerSession instanceof BrokerSession) {
+        $myBrokerSession = \FreeFW\DI\DI::get('FreeSSO::Model::BrokerSession');
+        $myBrokerSession->findFirst(
+            [
+                'brs_token' => $p_appId
+            ]
+        );
+        if ($myBrokerSession instanceof \FreeSSO\Model\BrokerSession) {
             $addNewBrokerSession = false;
             // Must be for the same IP
             if ($myBrokerSession->getBrsClientAddress() != $p_ip) {

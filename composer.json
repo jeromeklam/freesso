@@ -21,7 +21,7 @@
     },
     "autoload" : {
         "psr-4" : {
-            "FreeSso\\" : "src/FreeSso/"
+            "FreeSSO\\" : "src/FreeSSO/"
         }
     },
     "require-dev": {

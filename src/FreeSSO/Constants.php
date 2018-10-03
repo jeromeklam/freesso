@@ -23,22 +23,9 @@ class Constants
     const BROKER_SESSION_LIFETIME = 60; // Minutes
 
     /**
-     * oAuth2 stuff
-     * @var string
-     */
-    const OAUTH_KEY              = 'oauth2';
-
-    /**
-     * Connexions
-     * @var unknown
-     */
-    const SSO_CNX       = 'sso-cnx';
-
-    /**
      * Cookies default values
      * @var mixed
      */
-    const COOKIE_DEFAULT_DOMAIN = 'jvsonline.fr';
     const COOKIE_CDSSO          = 'SSO_ID';
     const COOKIE_APP            = 'APP_ID';
     const HEADER_CDSSO          = 'SsoId';
