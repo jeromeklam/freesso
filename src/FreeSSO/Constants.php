@@ -26,8 +26,8 @@ class Constants
      * Cookies default values
      * @var mixed
      */
-    const COOKIE_CDSSO          = 'SSO_ID';
-    const COOKIE_APP            = 'APP_ID';
+    const COOKIE_CDSSO          = 'SsoId';
+    const COOKIE_APP            = 'AppId';
     const HEADER_CDSSO          = 'SsoId';
     const HEADER_APP            = 'AppId';
     const COOKIE_APP_DAYS       = 360; // Days

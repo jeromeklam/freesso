@@ -6,14 +6,8 @@ namespace FreeSSO\Model;
  *
  * @author : jeromeklam
  */
-class BrokerSession extends \FreeSSO\Model\Base\BrokerSession implements
-    \FreeFW\Interfaces\ValidatorInterface
+class BrokerSession extends \FreeSSO\Model\Base\BrokerSession
 {
-
-    /**
-     * Behaviour
-     */
-    use \FreeFW\Behaviour\ValidatorTrait;
 
     /**
      * Validate model
@@ -32,5 +26,6 @@ class BrokerSession extends \FreeSSO\Model\Base\BrokerSession implements
     public function init()
     {
         $this->brs_id = 0;
+        return $this;
     }
 }

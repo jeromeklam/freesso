@@ -33,9 +33,8 @@ class Remote
      *
      * @return string
      */
-    public static function getSSOCookie(
-        \Psr\Http\Message\ServerRequestInterface $p_request,
-        string $p_domain
+    public static function getSsoId(
+        \Psr\Http\Message\ServerRequestInterface $p_request
     ) {
         $cookies = \FreeFW\Http\ServerRequest::getRequestCookies($p_request);
         if (!$cookies->has(Constants::COOKIE_CDSSO) || $cookies->get(Constants::COOKIE_CDSSO) == '') {
@@ -53,7 +52,6 @@ class Remote
                 }
             }
             $value = self::getRandomCookieValue();
-            //$cookies->set(Constants::COOKIE_CDSSO, $value, null, '/', false, $p_domain);
             return $value;
         } else {
             return $cookies->get(Constants::COOKIE_CDSSO);
@@ -65,7 +63,7 @@ class Remote
      *
      * @return string
      */
-    public static function getAppCookie(
+    public static function getAppId(
         \Psr\Http\Message\ServerRequestInterface $p_request
     ) {
         $cookies = \FreeFW\Http\ServerRequest::getRequestCookies($p_request);

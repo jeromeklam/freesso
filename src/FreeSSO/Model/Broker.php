@@ -6,13 +6,8 @@ namespace FreeSSO\Model;
  *
  * @author : jeromeklam
  */
-class Broker extends \FreeSSO\Model\Base\Broker implements \FreeFW\Interfaces\ValidatorInterface
+class Broker extends \FreeSSO\Model\Base\Broker
 {
-
-    /**
-     * Behaviour
-     */
-    use \FreeFW\Behaviour\ValidatorTrait;
 
     /**
      * Validate model
@@ -32,6 +27,7 @@ class Broker extends \FreeSSO\Model\Base\Broker implements \FreeFW\Interfaces\Va
     {
         $this->brk_id     = 0;
         $this->brk_active = true;
+        return $this;
     }
 
     /**

@@ -2,16 +2,12 @@
 namespace FreeSSO;
 
 use \Psr\Http\Message\ServerRequestInterface;
-use \FreeFW\Tools\Date;
 use \FreeSSO\Model\Broker;
 use \FreeSSO\Model\BrokerSession;
-use \FreeSSO\Model\Domain;
 use \FreeSSO\Model\User as User;
 use \FreeSSO\Model\PasswordToken;
 use \FreeSSO\Model\Session as SSOSession;
 use \FreeSSO\Http\Remote;
-use \FreeSSO\SsoException;
-use \FreeFW\Client\Http;
 
 /**
  * Serveur de gestion des accès SSO
@@ -28,6 +24,7 @@ class Server implements
      * comportements
      */
     use \Psr\Log\LoggerAwareTrait;
+    use \FreeFW\Behaviour\EventManagerAwareTrait;
 
     /**
      * Instance of server
@@ -49,7 +46,7 @@ class Server implements
 
     /**
      * Session
-     * @var Session
+     * @var \FreeSSO\Model\Session
      */
     protected $session = null;
 
@@ -64,6 +61,18 @@ class Server implements
      * @var \Psr\Http\Message\ServerRequestInterface;
      */
     protected $request = null;
+
+    /**
+     * SsoId
+     * @var string
+     */
+    protected $sso_id = null;
+
+    /**
+     * AppId
+     * @var string
+     */
+    protected $app_id = null;
 
     /**
      * Constructor
@@ -101,15 +110,15 @@ class Server implements
     }
 
     /**
-     * Retourne les valeurs des cookies
+     * Get cookies
      *
      * @return string[]
      */
     public function getCookies()
     {
         return array(
-            'ssoId' => \FreeSSO\Http\Remote::getSSOCookie(),
-            'appId' => \FreeSSO\Http\Remote::getApplicationCookie()
+            'ssoId' => $this->sso_cookie,
+            'appId' => $this->app_cookie
         );
     }
 
@@ -143,18 +152,18 @@ class Server implements
      */
     public function setBroker($p_brokerKey)
     {
+        $myBroker = false;
+        $exists   = false;
         if (substr_count($p_brokerKey, '@') == 1) {
             $parts    = explode('@', $p_brokerKey);
-            $myBroker = \FreeFW\DI\DI::get('FreeSSO::Model::Broker');
-            $myBroker->findFirst(
+            $myBroker = \FreeSSO\Model\Broker::findFirst(
                 [
                     'brk_key'         => $parts[1],
                     'brk_certificate' => $parts[0]
                 ]
             );
         } else {
-            $myBroker = \FreeFW\DI\DI::get('FreeSSO::Model::Broker');
-            $myBroker->findFirst(
+            $myBroker = \FreeSSO\Model\Broker::findFirst(
                 [
                     'brk_key'         => $p_brokerKey,
                     'brk_certificate' => ''
@@ -163,31 +172,40 @@ class Server implements
         }
         if ($myBroker instanceof \FreeSSO\Model\Broker) {
             $this->broker = $myBroker;
-            $domain       = \FreeFW\DI\DI::get('FreeSSO::Model::Domain');
-            $domain->findFirst(
+            $domain = \FreeSSO\Model\Domain::findFirst(
                 [
                     'dom_id' => $this->broker->getDomId()
                 ]
             );
             $this->domain = $domain;
             if (!$this->domain instanceof \FreeSSO\Model\Domain) {
-                throw new \Exception(sprintf('Could not find %s domain !', $this->broker->getDomId()));
+                throw new \FreeSSO\SsoException(
+                    sprintf(
+                        'Could not find %s domain !',
+                        $this->broker->getDomId()
+                    )
+                );
             }
             if (!$this->broker->isActive()) {
-                throw new \Exception(sprintf('Broker is not activated !'));
+                throw new \FreeSSO\SsoException(sprintf('Broker is not activated !'));
             }
             /**
              * Init the cookies, ....
              */
-            $cliIp = \FreeFW\Http\ServerRequest::getClientIp($this->request);
-            $ssoCk = Remote::getSSOCookie($this->request, $this->domain->getDomName());
-            $appCk = Remote::getAppCookie($this->request);
+            $cliIp        = \FreeFW\Http\ServerRequest::getClientIp($this->request);
+            $this->sso_id = Remote::getSsoId($this->request);
+            $this->app_id = Remote::getAppId($this->request);
             /**
              * Try to get a broker session....
              */
-            $this->verifyBrokerSession($this->broker->getBrkKey(), $ssoCk, $appCk, $cliIp);
+            $this->verifyBrokerSession(
+                $this->broker->getBrkKey(),
+                $this->sso_id,
+                $this->app_id,
+                $cliIp
+            );
         } else {
-            throw new \Exception(sprintf('Broker %s not found !', $p_brokerKey));
+            throw new \FreeSSO\SsoException(sprintf('Broker %s not found !', $p_brokerKey));
         }
     }
 
@@ -218,7 +236,10 @@ class Server implements
         ));
         if ($user instanceof User) {
             if (!$user->isActive()) {
-                throw new SsoException(sprintf('L\'utilisateur n\'est plus actif !'), ErrorCodes::ERROR_USER_DEACTIVATED);
+                throw new SsoException(
+                    sprintf('L\'utilisateur n\'est plus actif !'),
+                    ErrorCodes::ERROR_USER_DEACTIVATED
+                );
             }
             // Ok, save to session...
             if (self::$session instanceof SSOSession) {
@@ -395,7 +416,7 @@ class Server implements
         SSOSession::delete(
             array(
                 'sess_end' => array(
-                    \FreeFW\Model\AbstractStorage::FIND_LOWER => \FreeFW\Tools\Date::getCurrentTimestamp()
+                    \FreeFW\Storage\Storage::COND_LOWER => \FreeFW\Tools\Date::getCurrentTimestamp()
                 )
             )
         );
@@ -412,8 +433,7 @@ class Server implements
     {
         $addNewBrokerSession = true;
         // Read if application session exists
-        $myBrokerSession = \FreeFW\DI\DI::get('FreeSSO::Model::BrokerSession');
-        $myBrokerSession->findFirst(
+        $myBrokerSession = \FreeSSO\Model\BrokerSession::findFirst(
             [
                 'brs_token' => $p_appId
             ]
@@ -436,7 +456,9 @@ class Server implements
                         $addNewBrokerSession = true;
                     } else {
                         $myBrokerSession->setBrsEnd(
-                            \FreeFW\Tools\Date::getCurrentTimestamp(\FreeSSO\Constants::BROKER_SESSION_LIFETIME)
+                            \FreeFW\Tools\Date::getCurrentTimestamp(
+                                \FreeSSO\Constants::BROKER_SESSION_LIFETIME
+                            )
                         );
                         $myBrokerSession->save();
                         // Need to touch the session too...
@@ -450,46 +472,59 @@ class Server implements
         }
         if ($addNewBrokerSession) {
             // First, is there a session for the same SSO id ?
-            $myBrokerSession = BrokerSession::getFirst(array(
-                'brs_id' => $p_ssoId
-            ));
-            self::$session = null;
-            if ($myBrokerSession instanceof BrokerSession) {
+            $myBrokerSession = \FreeSSO\Model\BrokerSession::findFirst(
+                [
+                    'brs_id' => $p_ssoId
+                ]
+            );
+            $this->session = false;
+            if ($myBrokerSession instanceof \FreeSSO\Model\BrokerSession) {
                 if ($myBrokerSession->getBrsClientAddress() == $p_ip) {
                     // We share the same session
-                    self::$session = SSOSession::getFirst(array('sess_id'=>$myBrokerSession->getSessId()));
+                    $this->session = \FreeSSO\Model\Session::findFirst(
+                        [
+                            'sess_id' => $myBrokerSession->getSessId()
+                        ]
+                    );
                 }
+            } else {
+                $myBrokerSession = \FreeSSO\Model\BrokerSession::getNew();
             }
-            if (!self::$session instanceof SSOSession) {
-                self::$session = new SSOSession();
-                self::$session
+            $lifetime = \FreeFW\Tools\Date::getCurrentTimestamp(
+                \FreeSSO\Constants::BROKER_SESSION_LIFETIME
+            );
+            if (!$this->session instanceof \FreeSSO\Model\Session) {
+                $this->session = \FreeSSO\Model\Session::getNew();
+                $this->session
+                    ->init()
                     ->setSessStart(\FreeFW\Tools\Date::getCurrentTimestamp())
                     ->setSessClientAddr($p_ip)
+                    ->setSessEnd($lifetime)
                 ;
-                if (self::$session->create() === false) {
-                    // @TODO
+                // @todo : expiration is on domain
+                if ($this->session->create() === false) {
+                    throw new \FreeSSO\SSoException('Can\'t create session !');
                 }
             }
-            $myBrokerSession = new BrokerSession();
             $myBrokerSession
+                ->init()
                 ->setBrkKey($p_key)
                 ->setBrsToken($p_appId)
                 ->setBrsSessionId($p_ssoId)
                 ->setBrsClientAddress($p_ip)
-                ->setSessId(self::$session->getSessId())
-                ->setBrsEnd(\FreeFW\Tools\Date::getCurrentTimestamp(\FreeSSO\Constants::BROKER_SESSION_LIFETIME))
+                ->setSessId($this->session->getSessId())
+                ->setBrsEnd($lifetime)
             ;
             if ($myBrokerSession->create() === false) {
-                // @TODO
+                throw new \FreeSSO\SSoException('Can\'t create brokersession !');
             }
         }
-        BrokerSession::delete(
-            array(
-                'brs_end' => array(
-                    \FreeFW\Model\AbstractStorage::FIND_LOWER => \FreeFW\Tools\Date::getServerDatetime()
-                )
-            )
+        $query = BrokerSession::getQuery(\FreeFW\Model\Query::QUERY_DELETE);
+        $query->conditionLower(
+            'FreeSSO::Model::BrokerSession.brs_end',
+            \FreeFW\Tools\Date::getServerDatetime()
         );
+        $query->execute();
     }
 
     /**
@@ -499,8 +534,8 @@ class Server implements
      */
     public function getIdentifier()
     {
-        if (self::$broker instanceof \FreeSSO\Model\Broker) {
-            return self::$broker->getBrkKey();
+        if ($this->broker instanceof \FreeSSO\Model\Broker) {
+            return $this->broker->getBrkKey();
         }
         return false;
     }
@@ -512,8 +547,8 @@ class Server implements
      */
     public function getBrokerId()
     {
-        if (self::$broker instanceof \FreeSSO\Model\Broker) {
-            return self::$broker->getBrkId();
+        if ($this->broker instanceof \FreeSSO\Model\Broker) {
+            return $this->broker->getBrkId();
         }
         return false;
     }
@@ -525,8 +560,8 @@ class Server implements
      */
     public function getConfiguration()
     {
-        if (self::$broker instanceof \FreeSSO\Model\Broker) {
-            $cfg = self::$broker->getBrkConfig();
+        if ($this->broker instanceof \FreeSSO\Model\Broker) {
+            $cfg = $this->broker->getBrkConfig();
             return json_decode($cfg, true);
         }
         return false;
@@ -541,10 +576,10 @@ class Server implements
      */
     public function updateConfiguration($p_config)
     {
-        if (self::$broker instanceof \FreeSSO\Model\Broker) {
+        if ($this->broker instanceof \FreeSSO\Model\Broker) {
             $cfg = json_encode($p_config);
-            self::$broker->setBrkConfig($cfg);
-            return self::$broker->save();
+            $this->broker->setBrkConfig($cfg);
+            return $this->broker->save();
         }
         return false;
     }
@@ -556,8 +591,8 @@ class Server implements
      */
     public function getPrivateKey()
     {
-        if (self::$broker instanceof \FreeSSO\Model\Broker) {
-            return self::$broker->getBrkCertificate();
+        if ($this->broker instanceof \FreeSSO\Model\Broker) {
+            return $this->broker->getBrkCertificate();
         }
         return false;
     }
@@ -607,7 +642,10 @@ class Server implements
                 return $data;
             }
         } else {
-            throw new SsoException(sprintf('Le login %s n\'existe pas !', $p_login), ErrorCodes::ERROR_LOGIN_NOTFOUND);
+            throw new SsoException(
+                sprintf('Le login %s n\'existe pas !', $p_login),
+                ErrorCodes::ERROR_LOGIN_NOTFOUND
+            );
         }
         return false;
     }
@@ -752,8 +790,13 @@ class Server implements
      *
      * @return \FreeSSO\Model\User|boolean
      */
-    public function registerNewUser($p_login, $p_email, $p_password, $p_datas = array(), $p_withValidation = false)
-    {
+    public function registerNewUser(
+        $p_login,
+        $p_email,
+        $p_password,
+        array $p_datas = [],
+        $p_withValidation = false
+    ) {
         try {
             $this->fireEvent('sso:beforeRegisterNewUser');
         } catch (\Exception $ex) {
@@ -982,5 +1025,35 @@ class Server implements
             }
         }
         return $p_user;
+    }
+
+    /**
+     * Get domain name
+     *
+     * @return string
+     */
+    public function getDomain()
+    {
+        return $this->domain->getDomName();
+    }
+
+    /**
+     * Get SsoId
+     *
+     * @return string
+     */
+    public function getSsoId()
+    {
+        return $this->sso_id;
+    }
+
+    /**
+     * Get AppId
+     *
+     * @return string
+     */
+    public function getAppId()
+    {
+        return $this->app_id;
     }
 }

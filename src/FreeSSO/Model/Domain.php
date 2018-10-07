@@ -6,13 +6,8 @@ namespace FreeSSO\Model;
  *
  * @author : jeromeklam
  */
-class Domain extends \FreeSSO\Model\Base\Domain implements \FreeFW\Interfaces\ValidatorInterface
+class Domain extends \FreeSSO\Model\Base\Domain
 {
-
-    /**
-     * Behaviour
-     */
-    use \FreeFW\Behaviour\ValidatorTrait;
 
     /**
      * Validate model
@@ -31,5 +26,6 @@ class Domain extends \FreeSSO\Model\Base\Domain implements \FreeFW\Interfaces\Va
     public function init()
     {
         $this->dom_id = 0;
+        return $this;
     }
 }

@@ -3,7 +3,6 @@ namespace FreeSSO\Middleware;
 
 use \Psr\Http\Server\MiddlewareInterface;
 use \Psr\Http\Server\RequestHandlerInterface;
-use \Psr\Http\Message\ResponseFactoryInterface;
 use \Psr\Http\Message\ServerRequestInterface;
 use \Psr\Http\Message\ResponseInterface;
 
@@ -15,10 +14,9 @@ use \Psr\Http\Message\ResponseInterface;
 class Broker implements
     MiddlewareInterface,
     \Psr\Log\LoggerAwareInterface,
-    \FreeFW\Interfaces\ConfigAwareTraitInterface,
-    \Psr\Http\Message\ResponseFactoryInterface
+    \FreeFW\Interfaces\ConfigAwareTraitInterface
 {
-    
+
     /**
      * comportements
      */
@@ -61,10 +59,28 @@ class Broker implements
             if ($sso !== false) {
                 $request  = $p_request->withAttribute('broker', $sso->getIdentifier());
                 $response = $p_handler->handle($p_request);
-                $appId    = \PawBx\Sso\Http\Remote::getApplicationCookie();
-                $ssoId    = \PawBx\Sso\Http\Remote::getSSOCookie();
-                $response = $response->withHeader('AppId', $appId);
-                $response = $response->withHeader('SsoId', $ssoId);
+                // Add to header
+                $response = $response->withHeader(\FreeSSO\Constants::HEADER_APP, $sso->getAppId());
+                $response = $response->withHeader(\FreeSSO\Constants::HEADER_CDSSO, $sso->getSsoId());
+                // Add as cookies
+                $cookies = new \FreeFW\Http\Cookies();
+                $cookies->add(
+                    \FreeSSO\Constants::COOKIE_CDSSO,
+                    $sso->getSsoId(),
+                    null,
+                    '/',
+                    false,
+                    $sso->getDomain()
+                );
+                $cookies->add(
+                    \FreeSSO\Constants::COOKIE_APP,
+                    $sso->getAppId(),
+                    null,
+                    '/',
+                    false,
+                    $sso->getDomain()
+                );
+                $response = $cookies->addToResponse($response);
             } else {
                 $this->logger->debug('broker.401');
                 $response = $this->createResponse(401);
@@ -72,7 +88,7 @@ class Broker implements
             // response must be converted to correct type
             return $response;
         } catch (\Exception $ex) {
-            // @todo : critical
+            $this->logger->critical($ex->getMessage());
             return $this->createResponse(500);
         }
     }
