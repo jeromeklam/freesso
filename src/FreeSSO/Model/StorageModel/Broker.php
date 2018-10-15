@@ -16,52 +16,52 @@ abstract class Broker extends \FreeFW\Core\StorageModel
      * @var array
      */
     protected static $PRP_BRK_ID = [
-        'destination' => 'brk_id',
-        'type'        => FFCST::TYPE_BIGINT,
-        'options'     => [FFCST::OPTION_PK]
+        FFCST::PROPERTY_PRIVATE => 'brk_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_PK]
     ];
     protected static $PRP_DOM_ID = [
-        'destination' => 'dom_id',
-        'type'        => FFCST::TYPE_BIGINT,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'dom_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_BRK_KEY = [
-        'destination' => 'brk_key',
-        'type'        => FFCST::TYPE_STRING,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'brk_key',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_BRK_NAME = [
-        'destination' => 'brk_name',
-        'type'        => FFCST::TYPE_STRING,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'brk_name',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_BRK_CERTIFICATE = [
-        'destination' => 'brk_certificate',
-        'type'        => FFCST::TYPE_MD5
+        FFCST::PROPERTY_PRIVATE => 'brk_certificate',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_MD5
     ];
     protected static $PRP_BRK_ACTIVE = [
-        'destination' => 'brk_active',
-        'type'        => FFCST::TYPE_BOOLEAN
+        FFCST::PROPERTY_PRIVATE => 'brk_active',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BOOLEAN
     ];
     protected static $PRP_BRK_TS = [
-        'destination' => 'brk_ts',
-        'type'        => FFCST::TYPE_DATETIME
+        FFCST::PROPERTY_PRIVATE => 'brk_ts',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME
     ];
     protected static $PRP_BRK_API_SCOPE = [
-        'destination' => 'brk_api_scope',
-        'type'        => FFCST::TYPE_TEXT
+        FFCST::PROPERTY_PRIVATE => 'brk_api_scope',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT
     ];
     protected static $PRP_BRK_USERS_SCOPE = [
-        'destination' => 'brk_users_scope',
-        'type'        => FFCST::TYPE_TEXT
+        FFCST::PROPERTY_PRIVATE => 'brk_users_scope',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT
     ];
     protected static $PRP_BRK_IPS = [
-        'destination' => 'brk_ips',
-        'type'        => FFCST::TYPE_TEXT
+        FFCST::PROPERTY_PRIVATE => 'brk_ips',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT
     ];
     protected static $PRP_BRK_CONFIG = [
-        'destination' => 'brk_config',
-        'type'        => FFCST::TYPE_TEXT
+        FFCST::PROPERTY_PRIVATE => 'brk_config',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT
     ];
 
     /**

@@ -16,44 +16,45 @@ abstract class BrokerSession extends \FreeFW\Core\StorageModel
      * @var array
      */
     protected static $PRP_BRS_ID = [
-        'destination' => 'brs_id',
-        'type'        => FFCST::TYPE_BIGINT,
-        'options'     => [FFCST::OPTION_PK]
+        FFCST::PROPERTY_PRIVATE => 'brs_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_PK]
     ];
     protected static $PRP_BRK_KEY = [
-        'destination' => 'brk_key',
-        'type'        => FFCST::TYPE_STRING,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'brk_key',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_BRS_TOKEN = [
-        'destination' => 'brs_token',
-        'type'        => FFCST::TYPE_STRING,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'brs_token',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_BRS_SESSION_ID = [
-        'destination' => 'brs_session_id',
-        'type'        => FFCST::TYPE_BIGINT,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'brs_session_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_BRS_CLIENT_ADDRESS = [
-        'destination' => 'brs_client_address',
-        'type'        => FFCST::TYPE_STRING,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'brs_client_address',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_BRS_DATE_CREATED = [
-        'destination' => 'brs_date_created',
-        'type'        => FFCST::TYPE_DATETIME,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'brs_date_created',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
+        FFCST::PROPERTY_DEFAULT => FFCST::DEFAULT_NOW
     ];
     protected static $PRP_BRS_END = [
-        'destination' => 'brs_end',
-        'type'        => FFCST::TYPE_DATETIME,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'brs_end',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_SESS_ID = [
-        'destination' => 'sess_id',
-        'type'        => FFCST::TYPE_BIGINT,
-        'options'     => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_PRIVATE => 'sess_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
 
     /**

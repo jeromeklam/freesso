@@ -3,1063 +3,60 @@
  * ... ...
  * @author jeromeklam
  */
-namespace FreeSSO\Model\Raw;
+namespace FreeSSO\Model;
 
 /**
  * Classe : User
  * @author : jeromeklam
  */
-class User extends \FreeFW\Model\AbstractPDOStorage
+class User extends \FreeSSO\Model\Raw\User implements \FreeFW\Interfaces\User
 {
 
     /**
-     * User types
-     * @var string
-     */
-    const TYPE_USER      = 'USER';
-    const TYPE_IP        = 'IP';
-    const TYPE_ANONYMOUS = 'ANONYMOUS';
-    const TYPE_UUID      = 'UUID';
-    const TYPE_REST      = 'REST';
-
-    /**
-     * User titles
-     * @var string
-     */
-    const TITLE_MISTER = 'MISTER';
-    const TITLE_MADAM  = 'MADAM';
-    const TITLE_MISS   = 'MISS';
-    const TITLE_OTHER  = 'OTHER';
-
-    /**
-     * user_id
+     * Quota SMS pour un groupe !!
      * @var number
      */
-    protected $user_id = null;
-    const DESC_USER_ID = array(
-        'name'   => 'user_id',
-        'column' => 'user_id',
-        'field'  => 'user_id',
-        'type'   => \FreeFW\Constants::TYPE_BIGINT,
-        'camel'  => 'UserId',
-        'snake'  => 'user_id',
-        'getter' => 'getUserId',
-        'setter' => 'setUserId',
-        'search' => false,
-        'key'    => true,
-        'uniq'   => true
-    );
+    protected $sms_user = false;
+
     /**
-     * user_login
-     * @var String
+     * User accounts
+     * @var array
      */
-    protected $user_login = null;
-    const DESC_USER_LOGIN = array(
-        'name'     => 'user_login',
-        'column'   => 'user_login',
-        'field'    => 'user_login',
-        'type'     => \FreeFW\Constants::TYPE_STRING,
-        'camel'    => 'UserLogin',
-        'snake'    => 'user_login',
-        'getter'   => 'getUserLogin',
-        'setter'   => 'setUserLogin',
-        'required' => true,
-        'uniq'     => true,
-        'search'   => true
-    );
+    protected $user_accounts = [];
+
     /**
-     * user_password
-     * @var String
+     * Les liens
+     * @var array
      */
-    protected $user_password = null;
-    const DESC_USER_PASSWORD = array(
-        'name'     => 'user_password',
-        'column'   => 'user_password',
-        'field'    => 'user_password',
-        'type'     => \FreeFW\Constants::TYPE_PASSWORD,
-        'camel'    => 'UserPassword',
-        'snake'    => 'user_password',
-        'getter'   => 'getUserPassword',
-        'setter'   => 'setUserPassword',
-        'json'     => false,
-        'required' => true,
-        'search'   => true
-    );
+    protected $links = null;
+
     /**
-     * user_active
-     * @var String
-     */
-    protected $user_active = false;
-    const DESC_USER_ACTIVE = array(
-        'name'   => 'user_active',
-        'column' => 'user_active',
-        'field'  => 'user_active',
-        'type'   => \FreeFW\Constants::TYPE_BOOLEAN,
-        'camel'  => 'UserActive',
-        'snake'  => 'user_active',
-        'getter' => 'getUserActive',
-        'setter' => 'setUserActive',
-        'search' => false
-    );
-    /**
-     * user_salt
-     * @var String
-     */
-    protected $user_salt = null;
-    const DESC_USER_SALT = array(
-        'name'   => 'user_salt',
-        'column' => 'user_salt',
-        'field'  => 'user_salt',
-        'type'   => \FreeFW\Constants::TYPE_STRING,
-        'camel'  => 'UserSalt',
-        'snake'  => 'user_salt',
-        'getter' => 'getUserSalt',
-        'setter' => 'setUserSalt',
-        'json'   => false,
-        'search' => true
-    );
-    /**
-     * user_email
-     * @var String
-     */
-    protected $user_email = null;
-    const DESC_USER_EMAIL = array(
-        'name'     => 'user_email',
-        'column'   => 'user_email',
-        'field'    => 'user_email',
-        'type'     => \FreeFW\Constants::TYPE_STRING,
-        'camel'    => 'UserEmail',
-        'snake'    => 'user_email',
-        'getter'   => 'getUserEmail',
-        'setter'   => 'setUserEmail',
-        'required' => true,
-        'uniq'     => true,
-        'search'   => true
-    );
-    /**
-     * user_first_name
-     * @var String
-     */
-    protected $user_first_name = null;
-    const DESC_USER_FIRST_NAME = array(
-        'name'   => 'user_first_name',
-        'column' => 'user_first_name',
-        'field'  => 'user_first_name',
-        'type'   => \FreeFW\Constants::TYPE_STRING,
-        'camel'  => 'UserFirstName',
-        'snake'  => 'user_first_name',
-        'getter' => 'getUserFirstName',
-        'setter' => 'setUserFirstName',
-        'search' => true
-    );
-    /**
-     * user_last_name
-     * @var String
-     */
-    protected $user_last_name = null;
-    const DESC_USER_LAST_NAME = array(
-        'name'   => 'user_last_name',
-        'column' => 'user_last_name',
-        'field'  => 'user_last_name',
-        'type'   => \FreeFW\Constants::TYPE_STRING,
-        'camel'  => 'UserLastName',
-        'snake'  => 'user_last_name',
-        'getter' => 'getUserLastName',
-        'setter' => 'setUserLastName',
-        'search' => true
-    );
-    /**
-     * user_title
-     * @var String
-     */
-    protected $user_title = self::TITLE_OTHER;
-    const DESC_USER_TITLE = array(
-        'name'   => 'user_title',
-        'column' => 'user_title',
-        'field'  => 'user_title',
-        'type'   => \FreeFW\Constants::TYPE_SELECT,
-        'list'   => array(self::TITLE_OTHER, self::TITLE_MISTER, self::TITLE_MISS, self::TITLE_MADAM),
-        'camel'  => 'UserTitle',
-        'snake'  => 'user_title',
-        'getter' => 'getUserTitle',
-        'setter' => 'setUserTitle',
-        'search' => true
-    );
-    /**
-     * user_roles
-     * @var String
-     */
-    protected $user_roles = null;
-    const DESC_USER_ROLES = array(
-        'name'   => 'user_roles',
-        'column' => 'user_roles',
-        'field'  => 'user_roles',
-        'type'   => \FreeFW\Constants::TYPE_TEXT,
-        'camel'  => 'UserRoles',
-        'snake'  => 'user_roles',
-        'getter' => 'getUserRoles',
-        'setter' => 'setUserRoles',
-        'search' => false
-    );
-    /**
-     * user_type
-     * @var String
-     */
-    protected $user_type = self::TYPE_USER;
-    const DESC_USER_TYPE = array(
-        'name'   => 'user_type',
-        'column' => 'user_type',
-        'field'  => 'user_type',
-        'type'   => \FreeFW\Constants::TYPE_SELECT,
-        'list'   => array(
-            self::TYPE_USER,
-            self::TYPE_ANONYMOUS,
-            self::TYPE_IP,
-            self::TYPE_REST,
-            self::TYPE_UUID
-        ),
-        'camel'  => 'UserType',
-        'snake'  => 'user_type',
-        'getter' => 'getUserType',
-        'setter' => 'setUserType',
-        'search' => true
-    );
-    /**
-     * user_ips
-     * @var String
-     */
-    protected $user_ips = null;
-    const DESC_USER_IPS = array(
-        'name'   => 'user_ips',
-        'column' => 'user_ips',
-        'field'  => 'user_ips',
-        'type'   => \FreeFW\Constants::TYPE_TEXT,
-        'camel'  => 'UserIps',
-        'snake'  => 'user_ips',
-        'getter' => 'getUserIps',
-        'setter' => 'setUserIps',
-        'search' => false
-    );
-    /**
-     * user_last_update
+     * User key : extern id
      * @var string
      */
-    protected $user_last_update = null;
-    const DESC_USER_LAST_UPDATE = array(
-        'name'   => 'user_last_update',
-        'column' => 'user_last_update',
-        'field'  => 'user_last_update',
-        'type'   => \FreeFW\Constants::TYPE_DATETIME,
-        'camel'  => 'UserLastUpdate',
-        'snake'  => 'user_last_update',
-        'getter' => 'getUserLastUpdate',
-        'setter' => 'setUserLastUpdate',
-        'search' => false
-    );
-    /**
-     * user_preferred_language
-     * @var String
-     */
-    protected $user_preferred_language = \FreeFW\Constants::LANG_FR;
-    const DESC_USER_PREFERRED_LANGUAGE = array(
-        'name'   => 'user_preferred_language',
-        'column' => 'user_preferred_language',
-        'field'  => 'user_preferred_language',
-        'type'   => \FreeFW\Constants::TYPE_STRING,
-        'camel'  => 'UserPreferredLanguage',
-        'snake'  => 'user_preferred_language',
-        'getter' => 'getUserPreferredLanguage',
-        'setter' => 'setUserPreferredLanguage',
-        'search' => true
-    );
-    /**
-     * user_avatar
-     * @var String
-     */
-    protected $user_avatar = null;
-    const DESC_USER_AVATAR = array(
-        'name'   => 'user_avatar',
-        'column' => 'user_avatar',
-        'field'  => 'user_avatar',
-        'type'   => \FreeFW\Constants::TYPE_TEXT,
-        'camel'  => 'UserAvatar',
-        'snake'  => 'user_avatar',
-        'getter' => 'getUserAvatar',
-        'setter' => 'setUserAvatar',
-        'search' => false
-    );
-    /**
-     * user_cache
-     * @var String
-     */
-    protected $user_cache = null;
-    const DESC_USER_CACHE = array(
-        'name'   => 'user_cache',
-        'column' => 'user_cache',
-        'field'  => 'user_cache',
-        'type'   => \FreeFW\Constants::TYPE_JSON,
-        'camel'  => 'UserCache',
-        'snake'  => 'user_cache',
-        'getter' => 'getUserCache',
-        'setter' => 'setUserCache',
-        'search' => false
-    );
-    /**
-     * user_val_string
-     * @var String
-     */
-    protected $user_val_string = null;
-    const DESC_USER_VAL_STRING = array(
-        'name'   => 'user_val_string',
-        'column' => 'user_val_string',
-        'field'  => 'user_val_string',
-        'type'   => \FreeFW\Constants::TYPE_STRING,
-        'camel'  => 'UserValString',
-        'snake'  => 'user_val_string',
-        'getter' => 'getUserValString',
-        'setter' => 'setUserValString',
-        'json'   => false,
-        'search' => true
-    );
-    /**
-     * user_val_end
-     * @var string
-     */
-    protected $user_val_end = null;
-    const DESC_USER_VAL_END = array(
-        'name'   => 'user_val_end',
-        'column' => 'user_val_end',
-        'field'  => 'user_val_end',
-        'type'   => \FreeFW\Constants::TYPE_DATETIME,
-        'camel'  => 'UserValEnd',
-        'snake'  => 'user_val_end',
-        'getter' => 'getUserValEnd',
-        'setter' => 'setUserValEnd',
-        'json'   => false,
-        'search' => false
-    );
-    /**
-     * user_val_login
-     * @var String
-     */
-    protected $user_val_login = null;
-    const DESC_USER_VAL_LOGIN = array(
-        'name'   => 'user_val_login',
-        'column' => 'user_val_login',
-        'field'  => 'user_val_login',
-        'type'   => \FreeFW\Constants::TYPE_STRING,
-        'camel'  => 'UserValLogin',
-        'snake'  => 'user_val_login',
-        'getter' => 'getUserValLogin',
-        'setter' => 'setUserValLogin',
-        'json'   => false,
-        'search' => true
-    );
-    /**
-     * user_cnx
-     * @var String
-     */
-    protected $user_cnx = null;
-    const DESC_USER_CNX = array(
-        'name'   => 'user_cnx',
-        'column' => 'user_cnx',
-        'field'  => 'user_cnx',
-        'type'   => \FreeFW\Constants::TYPE_JSON,
-        'camel'  => 'UserCnx',
-        'snake'  => 'user_cnx',
-        'json'   => array(
-            'title'      => 'Connexion',
-            'type'       => 'object',
-            'properties' => array(
-                'database.host'       => array('type' => 'string'),
-                'database.user'       => array('type' => 'string'),
-                'database.password'   => array('type' => 'string'),
-                'database.name'       => array('type' => 'string'),
-                'webservice.url'      => array('type' => 'string'),
-                'webservice.user'     => array('type' => 'string'),
-                'webservice.password' => array('type' => 'string')
-            )
-        ),
-        'getter' => 'getUserCnx',
-        'setter' => 'setUserCnx',
-        'search' => false
-    );
-    /**
-     * confirm
-     * @var String
-     */
-    protected $confirm = null;
-    const DESC_VAL_CONFIRM = array(
-        'name'     => 'confirm',
-        'field'    => 'confirm',
-        'column'   => false,
-        'type'     => \FreeFW\Constants::TYPE_PASSWORD,
-        'camel'    => 'confirm',
-        'snake'    => 'confirm',
-        'getter'   => 'getConfirm',
-        'setter'   => 'setConfirm',
-        'search'   => true
-    );
-    /**
-     * user_extern_code
-     * @var String
-     */
-    protected $user_extern_code = null;
-    const DESC_USER_EXTERN_CODE = array(
-        'name'   => 'user_extern_code',
-        'column' => 'user_extern_code',
-        'field'  => 'user_extern_code',
-        'type'   => \FreeFW\Constants::TYPE_STRING,
-        'camel'  => 'UserExternCode',
-        'snake'  => 'user_extern_code',
-        'getter' => 'getUserExternCode',
-        'setter' => 'setUserExternCode',
-        'json'   => false,
-        'search' => true
-    );
-    /**
-     * Source
-     * @var String
-     */
-    protected static $source = 'FreeFW_users';
+    protected $user_key = null;
 
     /**
-     * Retourne la source
+     * Retourne le quota SMS
      *
-     * @return string
+     * @return \FreeFW\Sms\Model\User
      */
-    public static function getSource()
+    public function getSmsUser()
     {
-        return self::$source;
+        return $this->sms_user;
     }
 
     /**
-     * Retourne le descriptif des colonnes par nom en db
+     * Affectation du quota SMS
      *
-     * @return array
+     * @param \FreeFW\Sms\Model\User $sms_user
+     *
+     * @return User
      */
-    public static function getColumnDescByName()
+    public function setSmsUser($sms_user)
     {
-        return array(
-            'user_id'                 => self::DESC_USER_ID,
-            'user_login'              => self::DESC_USER_LOGIN,
-            'user_password'           => self::DESC_USER_PASSWORD,
-            'user_active'             => self::DESC_USER_ACTIVE,
-            'user_salt'               => self::DESC_USER_SALT,
-            'user_email'              => self::DESC_USER_EMAIL,
-            'user_first_name'         => self::DESC_USER_FIRST_NAME,
-            'user_last_name'          => self::DESC_USER_LAST_NAME,
-            'user_title'              => self::DESC_USER_TITLE,
-            'user_roles'              => self::DESC_USER_ROLES,
-            'user_type'               => self::DESC_USER_TYPE,
-            'user_ips'                => self::DESC_USER_IPS,
-            'user_last_update'        => self::DESC_USER_LAST_UPDATE,
-            'user_preferred_language' => self::DESC_USER_PREFERRED_LANGUAGE,
-            'user_avatar'             => self::DESC_USER_AVATAR,
-            'user_cache'              => self::DESC_USER_CACHE,
-            'user_val_string'         => self::DESC_USER_VAL_STRING,
-            'user_val_end'            => self::DESC_USER_VAL_END,
-            'user_val_login'          => self::DESC_USER_VAL_LOGIN,
-            'user_cnx'                => self::DESC_USER_CNX,
-            'user_extern_code'        => self::DESC_USER_EXTERN_CODE,
-        );
-    }
-
-    /**
-     * Retourne le descriptif des colonnes par nom de propriété
-     *
-     * @return array
-     */
-    public static function getColumnDescByField()
-    {
-        return array(
-            'user_id'                 => self::DESC_USER_ID,
-            'user_login'              => self::DESC_USER_LOGIN,
-            'user_password'           => self::DESC_USER_PASSWORD,
-            'user_active'             => self::DESC_USER_ACTIVE,
-            'user_salt'               => self::DESC_USER_SALT,
-            'user_email'              => self::DESC_USER_EMAIL,
-            'user_first_name'         => self::DESC_USER_FIRST_NAME,
-            'user_last_name'          => self::DESC_USER_LAST_NAME,
-            'user_title'              => self::DESC_USER_TITLE,
-            'user_roles'              => self::DESC_USER_ROLES,
-            'user_type'               => self::DESC_USER_TYPE,
-            'user_ips'                => self::DESC_USER_IPS,
-            'user_last_update'        => self::DESC_USER_LAST_UPDATE,
-            'user_preferred_language' => self::DESC_USER_PREFERRED_LANGUAGE,
-            'user_avatar'             => self::DESC_USER_AVATAR,
-            'user_cache'              => self::DESC_USER_CACHE,
-            'user_val_string'         => self::DESC_USER_VAL_STRING,
-            'user_val_end'            => self::DESC_USER_VAL_END,
-            'user_val_login'          => self::DESC_USER_VAL_LOGIN,
-            'user_cnx'                => self::DESC_USER_CNX,
-            'user_extern_code'        => self::DESC_USER_EXTERN_CODE,
-            'confirm'                 => self::DESC_VAL_CONFIRM
-        );
-    }
-
-    /**
-     * Setter user_id
-     *
-     * @param number $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserId($p_value)
-    {
-        $this->user_id = $p_value;
+        $this->sms_user = $sms_user;
         return $this;
-    }
-
-    /**
-     * Getter user_id
-     *
-     * @return number
-     */
-    public function getUserId()
-    {
-        return $this->user_id;
-    }
-
-    /**
-     * Setter user_login
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserLogin($p_value)
-    {
-        $this->user_login = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_login
-     *
-     * @return string
-     */
-    public function getUserLogin()
-    {
-        return $this->user_login;
-    }
-
-    /**
-     * Setter user_password
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserPassword($p_value)
-    {
-        $this->user_password = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_password
-     *
-     * @return string
-     */
-    public function getUserPassword()
-    {
-        return $this->user_password;
-    }
-
-    /**
-     * Setter user_active
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserActive($p_value)
-    {
-        $this->user_active = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_active
-     *
-     * @return string
-     */
-    public function getUserActive()
-    {
-        return $this->user_active;
-    }
-
-    /**
-     * Setter user_salt
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserSalt($p_value)
-    {
-        $this->user_salt = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_salt
-     *
-     * @return string
-     */
-    public function getUserSalt()
-    {
-        return $this->user_salt;
-    }
-
-    /**
-     * Setter user_email
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserEmail($p_value)
-    {
-        $this->user_email = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_email
-     *
-     * @return string
-     */
-    public function getUserEmail()
-    {
-        return $this->user_email;
-    }
-
-    /**
-     * Setter user_first_name
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserFirstName($p_value)
-    {
-        $this->user_first_name = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_first_name
-     *
-     * @return string
-     */
-    public function getUserFirstName()
-    {
-        return $this->user_first_name;
-    }
-
-    /**
-     * Setter user_last_name
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserLastName($p_value)
-    {
-        $this->user_last_name = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_last_name
-     *
-     * @return string
-     */
-    public function getUserLastName()
-    {
-        return $this->user_last_name;
-    }
-
-    /**
-     * Setter user_title
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserTitle($p_value)
-    {
-        $this->user_title = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_title
-     *
-     * @return string
-     */
-    public function getUserTitle()
-    {
-        if ($this->user_title === null) {
-            $this->user_title = self::TITLE_OTHER;
-        }
-        return $this->user_title;
-    }
-
-    /**
-     * Setter user_roles
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserRoles($p_value)
-    {
-        $this->user_roles = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_roles
-     *
-     * @return string
-     */
-    public function getUserRoles()
-    {
-        return $this->user_roles;
-    }
-
-    /**
-     * Setter user_type
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserType($p_value)
-    {
-        $this->user_type = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_type
-     *
-     * @return string
-     */
-    public function getUserType()
-    {
-        if ($this->user_type === null) {
-            $this->user_type = self::TYPE_USER;
-        }
-        return $this->user_type;
-    }
-
-    /**
-     * Setter user_ips
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserIps($p_value)
-    {
-        $this->user_ips = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_ips
-     *
-     * @return string
-     */
-    public function getUserIps()
-    {
-        return $this->user_ips;
-    }
-
-    /**
-     * Setter user_last_update
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserLastUpdate($p_value)
-    {
-        $this->user_last_update = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_last_update
-     *
-     * @return string
-     */
-    public function getUserLastUpdate()
-    {
-        return $this->user_last_update;
-    }
-
-    /**
-     * Setter user_preferred_language
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserPreferredLanguage($p_value)
-    {
-        $this->user_preferred_language = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_preferred_language
-     *
-     * @return string
-     */
-    public function getUserPreferredLanguage()
-    {
-        return $this->user_preferred_language;
-    }
-
-    /**
-     * Setter user_avatar
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserAvatar($p_value)
-    {
-        $this->user_avatar = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_avatar
-     *
-     * @return string
-     */
-    public function getUserAvatar()
-    {
-        return $this->user_avatar;
-    }
-
-    /**
-     * Setter user_cache
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserCache($p_value)
-    {
-        if (is_array($p_value)) {
-            $this->user_cache = json_encode($p_value);
-        } else {
-            $this->user_cache = $p_value;
-        }
-        return $this;
-    }
-
-    /**
-     * Getter user_cache
-     *
-     * @return string
-     */
-    public function getUserCache()
-    {
-        return $this->user_cache;
-    }
-
-    /**
-     * Setter user_val_string
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserValString($p_value)
-    {
-        $this->user_val_string = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_val_string
-     *
-     * @return string
-     */
-    public function getUserValString()
-    {
-        return $this->user_val_string;
-    }
-
-    /**
-     * Setter user_val_end
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserValEnd($p_value)
-    {
-        $this->user_val_end = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_val_end
-     *
-     * @return string
-     */
-    public function getUserValEnd()
-    {
-        return $this->user_val_end;
-    }
-
-    /**
-     * Setter user_val_login
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserValLogin($p_value)
-    {
-        $this->user_val_login = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_val_login
-     *
-     * @return string
-     */
-    public function getUserValLogin()
-    {
-        return $this->user_val_login;
-    }
-
-    /**
-     * Setter user_extern_code
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\Raw\User
-     */
-    public function setUserExternCode($p_value)
-    {
-        $this->user_extern_code = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_extern_code
-     *
-     * @return string
-     */
-    public function getUserExternCode()
-    {
-        return $this->user_extern_code;
-    }
-
-    /**
-     * Setter user_cnx
-     *
-     * @param string $p_value
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setUserCnx($p_value)
-    {
-        $this->user_cnx = $p_value;
-        return $this;
-    }
-
-    /**
-     * Getter user_cnx
-     *
-     * @return string
-     */
-    public function getUserCnx()
-    {
-        $arr = json_decode($this->user_cnx, true);
-        if (!is_array($arr)) {
-            $arr            = array(
-                'database.host'       => '',
-                'database.user'       => '',
-                'database.password'   => '',
-                'database.name'       => '',
-                'webservice.url'      => '',
-                'webservice.user'     => '',
-                'webservice.password' => ''
-            );
-            $this->user_cnx = json_encode($arr);
-        }
-        return $this->user_cnx;
-    }
-
-    /**
-     * Retourne la liste des colonnes
-     *
-     * @return array
-     */
-    public static function columnMap()
-    {
-        return array(
-            'user_id'                 => 'user_id',
-            'user_login'              => 'user_login',
-            'user_password'           => 'user_password',
-            'user_active'             => 'user_active',
-            'user_salt'               => 'user_salt',
-            'user_email'              => 'user_email',
-            'user_first_name'         => 'user_first_name',
-            'user_last_name'          => 'user_last_name',
-            'user_title'              => 'user_title',
-            'user_roles'              => 'user_roles',
-            'user_type'               => 'user_type',
-            'user_ips'                => 'user_ips',
-            'user_last_update'        => 'user_last_update',
-            'user_preferred_language' => 'user_preferred_language',
-            'user_avatar'             => 'user_avatar',
-            'user_cache'              => 'user_cache',
-            'user_val_string'         => 'user_val_string',
-            'user_val_end'            => 'user_val_end',
-            'user_val_login'          => 'user_val_login',
-            'user_cnx'                => 'user_cnx',
-            'user_extern_code'        => 'user_extern_code'
-        );
-    }
-
-    /**
-     * Retourne la liste des colonnes identifiantes
-     *
-     * @return array      // Tableau de propertyName
-     */
-    public static function columnId()
-    {
-        return array(
-            'user_id'
-        );
-    }
-
-    /**
-     * Retourne les colonnes disponibles en fulltext
-     *
-     * @return array
-     */
-    public static function columnFulltext()
-    {
-        return array(
-            'user_login', 'user_password', 'user_salt', 'user_email', 'user_first_name',
-            'user_last_name', 'user_title', 'user_type', 'user_preferred_language', 'user_val_string',
-            'user_val_login', 'user_extern_code'
-        );
     }
 
     /**
@@ -1076,6 +73,7 @@ class User extends \FreeFW\Model\AbstractPDOStorage
         }
         return false;
     }
+
     /**
      * Is active ?
      *
@@ -1109,6 +107,7 @@ class User extends \FreeFW\Model\AbstractPDOStorage
     {
         return array(self::TYPE_USER, self::TYPE_IP, self::TYPE_ANONYMOUS, self::TYPE_UUID);
     }
+
     /**
      * Add key to cache
      *
@@ -1126,7 +125,6 @@ class User extends \FreeFW\Model\AbstractPDOStorage
         }
         $cache[$p_key] = $p_value;
         $this->cache   = json_encode($cache);
-
         return $this;
     }
 
@@ -1145,7 +143,6 @@ class User extends \FreeFW\Model\AbstractPDOStorage
                 return $cache[$p_key];
             }
         }
-
         return false;
     }
 
@@ -1182,6 +179,9 @@ class User extends \FreeFW\Model\AbstractPDOStorage
             'active'    => $this->isActive(),
             'actToken'  => $this->getUserValString()
         );
+        if ($this->getSmsUser() !== false) {
+            $arr['smsUser'] = $this->getSmsUser();
+        }
         return array_merge($arr, $this->getCacheAsArray());
     }
 
@@ -1216,7 +216,7 @@ class User extends \FreeFW\Model\AbstractPDOStorage
     }
 
     /**
-     * Update ine cache key
+     * Update one cache key
      *
      * @param string $p_key
      * @param mixed $p_value
@@ -1310,5 +310,243 @@ class User extends \FreeFW\Model\AbstractPDOStorage
             return 'Oui';
         }
         return 'Non';
+    }
+
+    /**
+     * Before delete
+     *
+     * @return boolean
+     */
+    public function beforeDelete()
+    {
+        \FreeSSO\Model\LinkUser::delete(
+            array(
+                'user_id' => $this->getUserId()
+            )
+        );
+        \FreeSSO\Model\GroupUser::delete(
+            array(
+                'user_id' => $this->getUserId()
+            )
+        );
+        \FreeSSO\Model\Session::update(
+            array(
+                'user_id' => null
+            ),
+            array(
+                'user_id' => $this->getUserId()
+            )
+        );
+        return true;
+    }
+
+    /**
+     * Return user accounts
+     *
+     * @return array
+     */
+    public function getUserAccounts()
+    {
+        $this->user_accounts = [];
+        $list = \FreeSSO\Model\GroupUser::find(
+            array(
+                'user_id' => $this->getUserId()
+            )
+        );
+        foreach ($list as $idx => $oneAccount) {
+            $this->user_accounts[$oneAccount->getGrpId()] = $oneAccount->getAccounts();
+        }
+        //
+        return $this->user_accounts;
+    }
+
+    /**
+     * Accounts fro broker
+     *
+     * @return array
+     */
+    public function getUserBrokerAccounts()
+    {
+        $accounts = [];
+        $sso      = self::getDIShared('sso');
+        if ($sso) {
+            $list = \FreeSSO\Model\LinkUser::find(
+                array(
+                    'user_id' => $this->getUserId(),
+                    'brk_id'  => $sso->getBrokerId()
+                )
+            );
+            foreach ($list as $idx => $oneLink) {
+                $accounts = array_merge_recursive($accounts, $oneLink->getAccounts());
+            }
+        }
+        return $accounts;
+    }
+
+    /**
+     * Return user accounts
+     *
+     * @return array
+     */
+    public function getUserAccountsAsArray()
+    {
+        $arr = $this->getUserAccounts();
+        $ret = [];
+        foreach ($arr as $idx => $accs) {
+            $ret[$idx] = [];
+            foreach ($accs as $idx2 => $acc) {
+                $ret[$idx][] = $acc;
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Retourne l'identifiant
+     *
+     * @return number
+     */
+    public function getId()
+    {
+        return $this->getUserId();
+    }
+
+    /**
+     * Libellé pour l'affichage
+     *
+     * @return string
+     */
+    public function getDisplay()
+    {
+        return $this->getUserLogin();
+    }
+
+    /**
+     * Retourne tous les liens
+     *
+     * @return array
+     */
+    public function getLinks()
+    {
+        if ($this->links === null) {
+            $this->links = \FreeSSO\Model\LinkUser::find(
+                [
+                    "user_id" => $this->getUserId()
+                ]
+            );
+        }
+        return $this->links;
+    }
+
+    /**
+     * Retourne les liens par type
+     *
+     * @param string $p_type
+     * @param number $p_brk_id
+     *
+     * @return array
+     */
+    public function getLinksByTypeAndBroker($p_type, $p_brk_id)
+    {
+        $links = [];
+        $all   = $this->getLinks();
+        foreach ($all as $idx => $link) {
+            if (strcasecmp($link->getLkuPartnerType(), $p_type) === 0) {
+                if ($link->getBrkId() == $p_brk_id) {
+                    $links[] = $link;
+                }
+            }
+        }
+        return $links;
+    }
+
+    /**
+     * Retourne un compte
+     *
+     * @param string $p_type
+     *
+     * @return \FreeSSO\Model\UserAccount
+     */
+    public function  getAccount($p_type)
+    {
+        $account  = false;
+        $accounts = $this->getUserBrokerAccounts();
+        foreach ($accounts as $idx => $oneAccount) {
+            if ($oneAccount->getType() == $p_type) {
+                $account = $oneAccount;
+                break;
+            }
+        }
+        return $account;
+    }
+
+    /**
+     * Retourne le quota SMS
+     *
+     * @return \FreeSSO\Model\UserQuota
+     */
+    public function getSmsQuota()
+    {
+        $oQuota = null;
+        try {
+            $smsService = $this::getDIService('FreeFW.Sms::Sms');
+            $account    = $this->getAccount(\FreeSSO\Model\UserAccount::TYPE_SMS);
+            if ($account !== false) {
+                $smsUser = $smsService->getSmsQuota(
+                    $account->getProvider(),
+                    $account->getKey1(),
+                    $account->getKey2()
+                );
+                $oQuota = new \FreeSSO\Model\UserQuota();
+                $oQuota
+                    ->setUserId($this->getUserId())
+                    ->setQuota($smsUser->getUserQuotaLeft())
+                ;
+            }
+        } catch (\Exception $ex) {
+            // @todo
+        }
+        return $oQuota;
+    }
+
+    /**
+     * Complément Json
+     *
+     * @param \FreeSSO\Model\User $p_user
+     *
+     * @return array
+     */
+    public static function getJsonComplement($p_user)
+    {
+        $cpl = [
+            'user_accounts' => $p_user->getUserAccountsAsArray()
+        ];
+        if ($p_user->getSmsUser() !== false && $p_user->getSmsUser() !== null) {
+            $cpl['user_sms_account'] = $p_user->getSmsUser()->__toArray();
+        }
+        return $cpl;
+    }
+
+    /**
+     * Affectation de la clef externe
+     *
+     * @param string $p_key
+     *
+     * @return \FreeSSO\Model\User
+     */
+    public function setUserKey($p_key)
+    {
+        $this->user_key = $p_key;
+        return $this;
+    }
+
+    /**
+     * Retourne la clef utilisateur
+     *
+     * @return string
+     */
+    public function getUserKey()
+    {
+        return $this->user_key;
     }
 }

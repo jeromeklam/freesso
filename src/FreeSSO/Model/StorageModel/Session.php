@@ -16,33 +16,33 @@ abstract class Session extends \FreeFW\Core\StorageModel
      * @var array
      */
     protected static $PRP_SESS_ID = [
-        'destination' => 'sess_id',
-        'type'        => FFCST::TYPE_BIGINT,
-        'options'     => [FFCST::OPTION_PK]
+        FFCST::PROPERTY_PRIVATE => 'sess_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_PK]
     ];
     protected static $PRP_USER_ID = [
-        'destination' => 'user_id',
-        'type'        => FFCST::TYPE_BIGINT
+        FFCST::PROPERTY_PRIVATE => 'user_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT
     ];
     protected static $PRP_SESS_START = [
-        'destination' => 'sess_start',
-        'type'        => FFCST::TYPE_DATETIME
+        FFCST::PROPERTY_PRIVATE => 'sess_start',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME
     ];
     protected static $PRP_SESS_END = [
-        'destination' => 'sess_end',
-        'type'        => FFCST::TYPE_DATETIME
+        FFCST::PROPERTY_PRIVATE => 'sess_end',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME
     ];
     protected static $PRP_SESS_TOUCH = [
-        'destination' => 'sess_touch',
-        'type'        => FFCST::TYPE_DATETIME
+        FFCST::PROPERTY_PRIVATE => 'sess_touch',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME
     ];
     protected static $PRP_SESS_CONTENT = [
-        'destination' => 'sess_content',
-        'type'        => FFCST::TYPE_TEXT
+        FFCST::PROPERTY_PRIVATE => 'sess_content',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT
     ];
     protected static $PRP_SESS_CLIENT_ADDR = [
-        'destination' => 'sess_client_addr',
-        'type'        => FFCST::TYPE_STRING
+        FFCST::PROPERTY_PRIVATE => 'sess_client_addr',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING
     ];
 
     /**

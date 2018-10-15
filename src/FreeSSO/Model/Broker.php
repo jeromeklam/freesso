@@ -10,27 +10,6 @@ class Broker extends \FreeSSO\Model\Base\Broker
 {
 
     /**
-     * Validate model
-     *
-     * @return void
-     */
-    protected function validate()
-    {
-    }
-
-    /**
-     *
-     * {@inheritDoc}
-     * @see \FreeFW\Core\Model::init()
-     */
-    public function init()
-    {
-        $this->brk_id     = 0;
-        $this->brk_active = true;
-        return $this;
-    }
-
-    /**
      * Is active ?
      *
      * @return boolean
