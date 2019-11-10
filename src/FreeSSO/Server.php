@@ -166,7 +166,7 @@ class Server implements
             $myBroker = \FreeSSO\Model\Broker::findFirst(
                 [
                     'brk_key'         => $p_brokerKey,
-                    'brk_certificate' => ''
+                    'brk_certificate' => [\FreeFW\Storage\Storage::COND_EQUAL_OR_NULL => '']
                 ]
             );
         }
@@ -264,7 +264,7 @@ class Server implements
             $this->fireEvent('sso:afterSigninByIdAndLogin', $user);
         } catch (\Exception $ex) {
         }
-        return true;
+        return self::$user;
     }
 
     /**
@@ -284,11 +284,11 @@ class Server implements
             $this->fireEvent('sso:beforeSigninByLoginAndPassword');
         } catch (\Exception $ex) {
         }
-        self::$user = false;
+        $this->user = false;
         if ($p_login === null || $p_login == '') {
             throw new SsoException('Le login est obligatoire !', ErrorCodes::ERROR_LOGIN_EMPTY);
         }
-        $user = User::getFirst(array(
+        $user = User::findFirst(array(
             'user_login' => $p_login
         ));
         if ($user instanceof User) {
@@ -303,32 +303,33 @@ class Server implements
                 }
             }
             // Ok, save to session...
-            if (self::$session instanceof SSOSession) {
-                self::$session->setUserId($user->getUserId());
-                self::$session->setSessContent($user->serialize());
-                self::$session->save();
+            if ($this->session instanceof SSOSession) {
+                $this->session->setUserId($user->getUserId());
+                $this->session->setSessContent($user->serialize());
+                $this->session->save();
                 if ($p_remember) {
                     // @todo : set autologin cookie
                 }
-                self::$user = $user;
+                $this->user = $user;
             } else {
                 throw new SsoException('Erreur : impossible de trouver la session !', ErrorCodes::ERROR_GENERAL);
             }
-            if (self::$user->getUserLastUpdate() === null) {
+            if ($this->user->getUserLastUpdate() === null) {
                 try {
-                    $this->fireEvent('sso:lastUserUpdateEmpty', $this, self::$user);
+                    $this->fireEvent('sso:lastUserUpdateEmpty', $this, $this->user);
                 } catch (\Exception $ex) {
-                    self::$user = false;
+                    $this->user = false;
                 }
             }
         } else {
             throw new SsoException(sprintf('Le login %s n\'existe pas !', $p_login), ErrorCodes::ERROR_LOGIN_NOTFOUND);
         }
         try {
-            $this->fireEvent('sso:afterSigninByLoginAndPassword', $user);
+            $this->fireEvent('sso:afterSigninByLoginAndPassword', $this->user);
         } catch (\Exception $ex) {
+            // @todo
         }
-        return true;
+        return $this->user;
     }
 
     /**
@@ -362,30 +363,30 @@ class Server implements
      */
     public function getUser($p_light = false)
     {
-        if (self::$user === null) {
-            self::$user = false;
-            if (self::$session instanceof SSOSession) {
-                if (self::$session->getUserId() !== null) {
-                    self::$user = User::getFirst(array(
-                        'user_id' => self::$session->getUserId()
+        if ($this->user === null) {
+            $this->user = false;
+            if ($this->session instanceof SSOSession) {
+                if ($this->session->getUserId() !== null) {
+                    $this->user = User::getFirst(array(
+                        'user_id' => $this->session->getUserId()
                     ));
-                    if (self::$user instanceof User) {
-                        if (self::$user->getUserLastUpdate() === null) {
+                    if ($this->user instanceof User) {
+                        if ($this->user->getUserLastUpdate() === null) {
                             try {
-                                $this->fireEvent('sso:lastUserUpdateEmpty', self::$user);
+                                $this->fireEvent('sso:lastUserUpdateEmpty', $this->user);
                             } catch (\Exception $ex) {
-                                self::$user = false;
+                                $this->user = false;
                             }
                         }
                     } else {
-                        self::$user = false;
+                        $this->user = false;
                     }
                 }
             } else {
                 throw new SsoException('Erreur : impossible de trouver la session !', ErrorCodes::ERROR_GENERAL);
             }
         }
-        return self::$user;
+        return $this->user;
     }
 
     /**

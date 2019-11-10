@@ -44,10 +44,10 @@ abstract class AutologinCookie extends \FreeFW\Core\StorageModel
     public static function getProperties()
     {
         return [
-            'user_id'     => $PRP_USER_ID,
-            'auto_cookie' => $PRP_AUTO_COOKIE,
-            'auto_ip'     => $PRP_AUTO_IP,
-            'auto_paswd'  => $PRP_AUTO_PASWD
+            'user_id'     => self::$PRP_USER_ID,
+            'auto_cookie' => self::$PRP_AUTO_COOKIE,
+            'auto_ip'     => self::$PRP_AUTO_IP,
+            'auto_paswd'  => self::$PRP_AUTO_PASWD
         ];
     }
 

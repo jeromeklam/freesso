@@ -64,14 +64,14 @@ abstract class PasswordToken extends \FreeFW\Core\StorageModel
     public static function getProperties()
     {
         return [
-            'ptok_id'         => $PRP_PTOK_ID,
-            'ptok_token'      => $PRP_PTOK_TOKEN,
-            'ptok_used'       => $PRP_PTOK_USED,
-            'ptok_email'      => $PRP_PTOK_EMAIL,
-            'user_id'         => $PRP_USER_ID,
-            'ptok_request_ip' => $PRP_PTOK_REQUEST_IP,
-            'ptok_resolve_ip' => $PRP_PTOK_RESOLVE_IP,
-            'ptok_end'        => $PRP_PTOK_END
+            'ptok_id'         => self::$PRP_PTOK_ID,
+            'ptok_token'      => self::$PRP_PTOK_TOKEN,
+            'ptok_used'       => self::$PRP_PTOK_USED,
+            'ptok_email'      => self::$PRP_PTOK_EMAIL,
+            'user_id'         => self::$PRP_USER_ID,
+            'ptok_request_ip' => self::$PRP_PTOK_REQUEST_IP,
+            'ptok_resolve_ip' => self::$PRP_PTOK_RESOLVE_IP,
+            'ptok_end'        => self::$PRP_PTOK_END
         ];
     }
 
