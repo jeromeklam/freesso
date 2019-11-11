@@ -58,6 +58,7 @@ class Broker implements
             $sso = $this->beforeProcess($p_request);
             if ($sso !== false) {
                 $request  = $p_request->withAttribute('broker', $sso->getIdentifier());
+                \FreeFw\DI\DI::setShared('broker', $sso->getBrokerId());
                 $response = $p_handler->handle($p_request);
                 // Add to header
                 $response = $response->withHeader(\FreeSSO\Constants::HEADER_APP, $sso->getAppId());

@@ -18,18 +18,18 @@ class Constants
      * Brokers, ...
      * @var mixed
      */
-    const BROKER_KEY              = 'broker-key';
-    const BROKER_SECRET           = 'broker-secret';
+    const BROKER_KEY              = 'Api-Key';
+    const BROKER_SECRET           = 'Api-Secret';
     const BROKER_SESSION_LIFETIME = 60; // Minutes
 
     /**
      * Cookies default values
      * @var mixed
      */
-    const COOKIE_CDSSO          = 'SsoId';
-    const COOKIE_APP            = 'AppId';
-    const HEADER_CDSSO          = 'SsoId';
-    const HEADER_APP            = 'AppId';
+    const COOKIE_CDSSO          = 'Sso-Id';
+    const COOKIE_APP            = 'App-Id';
+    const HEADER_CDSSO          = 'Sso-Id';
+    const HEADER_APP            = 'App-Id';
     const COOKIE_APP_DAYS       = 360; // Days
 
     /**

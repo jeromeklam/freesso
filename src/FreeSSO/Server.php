@@ -81,17 +81,17 @@ class Server implements
      */
     protected function __construct(ServerRequestInterface $p_request, array $p_options = array())
     {
-        // Peut être un appel rest, ... en-tête API_ID ??
+        // Peut être un appel rest, ... en-tête Api-Id ??
         $this->request = $p_request;
-        if ($this->request->hasHeader('ApiId')) {
-            $key = $this->request->getHeader('ApiId');
+        if ($this->request->hasHeader('Api-Key')) {
+            $key = $this->request->getHeader('Api-Key');
             if (is_array($key)) {
                 $key = $key[0];
             }
             $this->setBroker($key);
         } else {
-            if ($this->request->hasHeader('API_ID')) {
-                $key = $this->request->getHeader('API_ID');
+            if ($this->request->hasHeader('Api-Id')) {
+                $key = $this->request->getHeader('Api-Id');
                 if (is_array($key)) {
                     $key = $key[0];
                 }
