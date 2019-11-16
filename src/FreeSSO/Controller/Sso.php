@@ -18,6 +18,20 @@ class Sso extends \FreeFW\Core\Controller
 {
 
     /**
+     * Check and touch session
+     * 
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     * 
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function check(\Psr\Http\Message\ServerRequestInterface $p_request)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.login.start');
+        $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+        return $this->createResponse(204);
+    }
+
+    /**
      * signIn
      *
      * @param \Psr\Http\Message\ServerRequestInterface $p_request
@@ -63,5 +77,31 @@ class Sso extends \FreeFW\Core\Controller
         }
         $this->logger->debug('FreeSSO.Controller.Sso.login.end');
         return $this->createResponse(200);
+    }
+
+    /**
+     * signIn
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function signOut(\Psr\Http\Message\ServerRequestInterface $p_request)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.logout.start');
+        /**
+         * @var \FreeSSO\Server $sso
+         */
+        try {
+            $sso  = \FreeFW\DI\Di::getShared('sso');
+            $user = $sso->logout();
+            return $this->createResponse(204);
+        } catch (\Exception $ex) {
+            // @todo
+            $error = \FreeFW\Model\Error::getFromException(409, $ex);
+            return $this->createResponse(409, $error);
+        }
+        $this->logger->debug('FreeSSO.Controller.Sso.logout.end');
+        return $this->createResponse(204);
     }
 }

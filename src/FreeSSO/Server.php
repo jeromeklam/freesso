@@ -226,14 +226,14 @@ class Server implements
             $this->fireEvent('sso:beforeSigninByIdAndLogin');
         } catch (\Exception $ex) {
         }
-        self::$user = false;
+        $this->user = false;
         if ($p_login === null || $p_login == '') {
             throw new SsoException('Le login est obligatoire !', ErrorCodes::ERROR_LOGIN_EMPTY);
         }
-        $user = User::getFirst(array(
+        $user = User::findFirst([
             'user_id'    => $p_id,
             'user_login' => $p_login
-        ));
+        ]);
         if ($user instanceof User) {
             if (!$user->isActive()) {
                 throw new SsoException(
@@ -242,19 +242,19 @@ class Server implements
                 );
             }
             // Ok, save to session...
-            if (self::$session instanceof SSOSession) {
-                self::$session->setUserId($user->getUserId());
-                self::$session->setSessContent($user->serialize());
-                self::$session->save();
-                self::$user = $user;
+            if ($this->session instanceof SSOSession) {
+                $this->session->setUserId($user->getUserId());
+                $this->session->setSessContent($user->serialize());
+                $this->session->save();
+                $this->user = $user;
             } else {
                 throw new SsoException('Erreur : impossible de trouver la session !', ErrorCodes::ERROR_GENERAL);
             }
-            if (self::$user->getUserLastUpdate() === null) {
+            if ($this->user->getUserLastUpdate() === null) {
                 try {
-                    $this->fireEvent('sso:lastUserUpdateEmpty', $this, self::$user);
+                    $this->fireEvent('sso:lastUserUpdateEmpty', $this, $this->user);
                 } catch (\Exception $ex) {
-                    self::$user = false;
+                    $this->user = false;
                 }
             }
         } else {
@@ -264,7 +264,7 @@ class Server implements
             $this->fireEvent('sso:afterSigninByIdAndLogin', $user);
         } catch (\Exception $ex) {
         }
-        return self::$user;
+        return $this->user;
     }
 
     /**
@@ -339,13 +339,13 @@ class Server implements
      */
     public function logout()
     {
-        $user = self::$user;
-        if (self::$session instanceof SSOSession) {
-            self::$session
+        $user = $this->user;
+        if ($this->session instanceof SSOSession) {
+            $this->session
                 ->setUserId(null)
                 ->setSessContent(null)
             ;
-            self::$session->save();
+            $this->session->save();
         } else {
             throw new SsoException('Erreur : impossible de trouver la session !', ErrorCodes::ERROR_GENERAL);
         }
@@ -396,7 +396,7 @@ class Server implements
      */
     protected function getBroker()
     {
-        return self::$broker;
+        return $this->broker;
     }
 
     /**
