@@ -54,7 +54,7 @@ class Sso extends \FreeFW\Core\Controller
                     $data->addError(
                         SsoErrors::ERROR_PASSWORD_EMPTY,
                         sprintf('Password required !'),
-                        \FreeFW\Core\Error::TYPE_PRECONDITION,
+                        \FreeSSO\Model\Error::TYPE_PRECONDITION,
                         'password'
                     );
                     return $this->createResponse(409, $data);
@@ -68,11 +68,16 @@ class Sso extends \FreeFW\Core\Controller
                     return $this->createResponse(201, $user);
                 } catch (\Exception $ex) {
                     // @todo
-                    $error = \FreeFW\Model\Error::getFromException(409, $ex);
+                    $error = \FreeSSO\Model\Error::getFromException(409, $ex);
                     return $this->createResponse(409, $error);
                 }
             } else {
-                // @todo
+                $data->addError(
+                    SsoErrors::ERROR_LOGIN_EMPTY,
+                    sprintf('Password required !'),
+                    \FreeFW\Core\Error::TYPE_PRECONDITION,
+                    'login'
+                );
             }
         }
         $this->logger->debug('FreeSSO.Controller.Sso.login.end');
