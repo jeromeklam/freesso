@@ -1,5 +1,5 @@
 <?php
-namespace FreeSSO\Router;
+namespace FreeSSO\Http;
 
 /**
  * FreeSSO routes
