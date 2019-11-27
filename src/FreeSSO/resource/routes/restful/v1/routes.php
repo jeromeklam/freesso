@@ -30,7 +30,7 @@ $localRoutes = [
         'url'        => '/v1/sso/check',
         'controller' => 'FreeSSO::Controller::Sso',
         'function'   => 'check',
-        'auth'       => \FreeFW\Router\Route::AUTH_IN,
+        'auth'       => \FreeFW\Router\Route::AUTH_BOTH,
         'middleware' => []
     ]
 ];

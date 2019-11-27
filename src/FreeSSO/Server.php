@@ -367,7 +367,7 @@ class Server implements
             $this->user = false;
             if ($this->session instanceof SSOSession) {
                 if ($this->session->getUserId() !== null) {
-                    $this->user = User::getFirst(array(
+                    $this->user = User::findFirst(array(
                         'user_id' => $this->session->getUserId()
                     ));
                     if ($this->user instanceof User) {

@@ -28,7 +28,13 @@ class Sso extends \FreeFW\Core\Controller
     {
         $this->logger->debug('FreeSSO.Controller.Sso.login.start');
         $this->logger->debug('FreeSSO.Controller.Sso.login.end');
-        return $this->createResponse(204);
+        $sso  = \FreeFW\DI\Di::getShared('sso');
+        $user = $sso->getUser();
+        if ($user) {
+            return $this->createResponse(200, $user);
+        } else {
+            return $this->createResponse(401);
+        }
     }
 
     /**
@@ -78,6 +84,7 @@ class Sso extends \FreeFW\Core\Controller
                     \FreeFW\Core\Error::TYPE_PRECONDITION,
                     'login'
                 );
+                return $this->createResponse(409, $data);
             }
         }
         $this->logger->debug('FreeSSO.Controller.Sso.login.end');
