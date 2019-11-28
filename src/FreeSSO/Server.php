@@ -406,7 +406,7 @@ class Server implements
      */
     protected function touchSession($p_sess_id)
     {
-        $mySession = SSOSession::getFirst(array('sess_id' => $p_sess_id));
+        $mySession = SSOSession::findFirst(array('sess_id' => $p_sess_id));
         if ($mySession instanceof SSOSession) {
             $mySession
                 ->setSessTouch(\FreeFW\Tools\Date::getServerDatetime())
@@ -464,7 +464,7 @@ class Server implements
                         $myBrokerSession->save();
                         // Need to touch the session too...
                         $this->touchSession($myBrokerSession->getSessId());
-                        self::$session = SSOSession::getFirst(array(
+                        $this->session = SSOSession::findFirst(array(
                             'sess_id' => $myBrokerSession->getSessId()
                         ));
                     }
