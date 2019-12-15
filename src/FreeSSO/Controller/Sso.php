@@ -69,9 +69,16 @@ class Sso extends \FreeFW\Core\Controller
                  * @var \FreeSSO\Server $sso
                  */
                 try {
-                    $sso  = \FreeFW\DI\Di::getShared('sso');
-                    $user = $sso->signinByLoginAndPassword($data->getLogin(), $data->getPassword());
-                    return $this->createResponse(201, $user);
+                    $sso      = \FreeFW\DI\Di::getShared('sso');
+                    $user     = $sso->signinByLoginAndPassword($data->getLogin(), $data->getPassword(), $data->getRemember());
+                    $response = $this->createResponse(201, $user);
+                    if ($data->getRemember()) {
+                        $cookie = $sso-> getAutoLogin();
+                        if ($cookie instanceof \FreeSSO\Model\AutologinCookie) {
+                            $response = $response->withHeader('AutoLogin', $cookie->getAutoCookie());
+                        }
+                    }
+                    return $response;
                 } catch (\Exception $ex) {
                     // @todo
                     $error = \FreeSSO\Model\Error::getFromException(409, $ex);

@@ -75,6 +75,12 @@ class Server implements
     protected $app_id = null;
 
     /**
+     * AutoLogin cookie
+     * @var \FreeSSO\Model\AutologinCookie
+     */
+    protected $autologin = null;
+
+    /**
      * Constructor
      *
      * @param array   $p_options
@@ -212,6 +218,68 @@ class Server implements
     /**
      * Signin
      *
+     * @param string  $p_cookie
+     *
+     * @throws \FreeSSO\SsoException
+     *
+     * @return boolean
+     */
+    public function signinByAutoLogin($p_cookie)
+    {
+        try {
+            $this->fireEvent('sso:beforeSigninByAutoLogin');
+        } catch (\Exception $ex) {
+        }
+        $this->user = false;
+        if ($p_cookie === null || $p_cookie == '') {
+            throw new SsoException('Le cookie est obligatoire !', ErrorCodes::ERROR_LOGIN_EMPTY);
+        }
+        $cookie = \FreeSSO\Model\AutologinCookie::findFirst([
+            'auto_cookie' => $p_cookie
+        ]);
+        if ($cookie) {
+            $user = User::findFirst([
+                'user_id'    => $cookie->getUserId()
+            ]);
+            if ($user instanceof User) {
+                if (!$user->isActive()) {
+                    throw new SsoException(
+                        sprintf('L\'utilisateur n\'est plus actif !'),
+                        ErrorCodes::ERROR_USER_DEACTIVATED
+                    );
+                }
+                // Ok, save to session...
+                if ($this->session instanceof SSOSession) {
+                    $this->session->setUserId($user->getUserId());
+                    $this->session->setSessContent($user->serialize());
+                    $this->session->save();
+                    $this->user = $user;
+                } else {
+                    throw new SsoException('Erreur : impossible de trouver la session !', ErrorCodes::ERROR_GENERAL);
+                }
+                if ($this->user->getUserLastUpdate() === null) {
+                    try {
+                        $this->fireEvent('sso:lastUserUpdateEmpty', $this, $this->user);
+                    } catch (\Exception $ex) {
+                        $this->user = false;
+                    }
+                }
+            } else {
+                throw new SsoException(sprintf('Le login %s n\'existe pas !', $p_cookie), ErrorCodes::ERROR_LOGIN_NOTFOUND);
+            }
+        } else {
+            throw new SsoException(sprintf('Le cookie %s n\'existe pas !', $p_cookie), ErrorCodes::ERROR_LOGIN_NOTFOUND);
+        }
+        try {
+            $this->fireEvent('sso:afterSigninByAutoLogin', $user);
+        } catch (\Exception $ex) {
+        }
+        return $this->user;
+    }
+    
+    /**
+     * Signin
+     *
      * @param string  $p_login
      * @param string  $p_password
      * @param boolean $p_remember
@@ -309,6 +377,20 @@ class Server implements
                 $this->session->save();
                 if ($p_remember) {
                     // @todo : set autologin cookie
+                    $this->autologin = \FreeFW\DI\DI::get('FreeSSO::Model::AutologinCookie');
+                    $this->autologin
+                        ->setUserId($user->getUserId())
+                        ->setAutoTs(\FreeFW\Tools\Date::getCurrentTimestamp())
+                        ->setAutoExpire(\FreeFW\Tools\Date::getCurrentTimestamp(60*24*265))
+                    ;
+                    $this->autologin->create();
+                    \FreeSSO\Model\AutologinCookie::delete(
+                        [
+                            'auto_expire' => [
+                                \FreeFW\Storage\Storage::COND_LOWER => \FreeFW\Tools\Date::getCurrentTimestamp()
+                            ]
+                        ]
+                    );
                 }
                 $this->user = $user;
             } else {
@@ -1056,5 +1138,15 @@ class Server implements
     public function getAppId()
     {
         return $this->app_id;
+    }
+
+    /**
+     * Get autoLogin
+     *
+     * @return \FreeSSO\Model\AutologinCookie
+     */
+    public function getAutoLogin()
+    {
+        return $this->autologin;
     }
 }

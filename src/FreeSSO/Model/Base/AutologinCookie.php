@@ -28,10 +28,16 @@ abstract class AutologinCookie extends \FreeSSO\Model\StorageModel\AutologinCook
     protected $auto_ip = null;
 
     /**
-     * auto_paswd
+     * auto_ts
      * @var string
      */
-    protected $auto_paswd = null;
+    protected $auto_ts = null;
+
+    /**
+     * auto_expire
+     * @var string
+     */
+    protected $auto_expire = null;
 
     /**
      * Set user_id
@@ -103,25 +109,48 @@ abstract class AutologinCookie extends \FreeSSO\Model\StorageModel\AutologinCook
     }
 
     /**
-     * Set auto_paswd
+     * Set auto_ts
      *
      * @param string $p_value
      *
      * @return \FreeSSO\Model\AutologinCookie
      */
-    public function setAutoPaswd($p_value)
+    public function setAutoTs($p_value)
     {
-        $this->auto_paswd = $p_value;
+        $this->auto_ts = $p_value;
         return $this;
     }
 
     /**
-     * Get auto_paswd
+     * Get auto_ts
      *
      * @return string
      */
-    public function getAutoPaswd()
+    public function getAutoTs()
     {
-        return $this->auto_paswd;
+        return $this->auto_ts;
+    }
+
+    /**
+     * Set auto_expire
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\AutologinCookie
+     */
+    public function setAutoExpire($p_value)
+    {
+        $this->auto_expire = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get auto_expire
+     *
+     * @return string
+     */
+    public function getAutoExpire()
+    {
+        return $this->auto_expire;
     }
 }
