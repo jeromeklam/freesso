@@ -162,4 +162,25 @@ abstract class User extends \FreeFW\Core\StorageModel
     {
         return 'sso_user';
     }
+
+    /**
+     * Get One To many relationShips
+     * 
+     * @return array
+     */
+    public function getRelationships()
+    {
+        return [
+            'groups' => [
+                'model' => 'FreeSso::Model::Group',
+                'field' => 'grp_id',
+                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+            ],
+            'brokers' => [
+                'model' => 'FreeSso::Model::Broker',
+                'field' => 'brk_id',
+                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+            ],
+        ];
+    }
 }

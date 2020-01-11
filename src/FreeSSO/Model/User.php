@@ -13,6 +13,18 @@ class User extends \FreeSSO\Model\Base\User implements
 {
 
     /**
+     * Groups
+     * @var [\FreeSSO\Model\Group]
+     */
+    protected $groups = null;
+
+    /**
+     * Brokers
+     * @var [\FreeSSO\Model\Broker]
+     */
+    protected $brokers = null;
+
+    /**
      * Verify user password
      *
      * @param string $p_password
@@ -54,5 +66,57 @@ class User extends \FreeSSO\Model\Base\User implements
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get Groups
+     * 
+     * @return [\FreeSSO\Model\Group]
+     */
+    public function getGroups()
+    {
+        if ($this->groups === null) {
+            $this->groups = new \FreeFW\Model\ResultSet();
+            $conditions   = new \FreeFW\Model\Conditions();
+            $conditions->initFromArray(['user_id' => $this->getUserId()]);
+            $model  = \FreeFW\DI\DI::get('FreeSSO::Model::GroupUser');
+            $query  = $model->getQuery();
+            $rels   = [];
+            $rels[] = 'group';
+            $query
+                ->addConditions($conditions)
+                ->addRelations($rels)
+            ;
+            if ($query->execute()) {
+                $this->groups = $query->getResult();
+            }
+        }
+        return $this->groups;
+    }
+
+    /**
+     * Get Brokers
+     * 
+     * @return \[\FreeSSO\Model\Broker]
+     */
+    public function getBrokers()
+    {
+        if ($this->brokers === null) {
+            $this->brokers = new \FreeFW\Model\ResultSet();
+            $conditions    = new \FreeFW\Model\Conditions();
+            $conditions->initFromArray(['user_id' => $this->getUserId()]);
+            $model  = \FreeFW\DI\DI::get('FreeSSO::Model::UserBroker');
+            $query  = $model->getQuery();
+            $rels   = [];
+            $rels[] = 'broker';
+            $query
+                ->addConditions($conditions)
+                ->addRelations($rels)
+            ;
+            if ($query->execute()) {
+                $this->brokers = $query->getResult();
+            }
+        }
+        return $this->brokers;
     }
 }
