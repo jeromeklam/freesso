@@ -23,7 +23,14 @@ abstract class Broker extends \FreeFW\Core\StorageModel
     protected static $PRP_DOM_ID = [
         FFCST::PROPERTY_PRIVATE => 'dom_id',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED, FFCST::OPTION_FK],
+        FFCST::PROPERTY_FK      => ['domain' =>
+            [
+                'model' => 'FreeSSO::Model::Domain',
+                'field' => 'dom_id',
+                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+            ]
+        ]
     ];
     protected static $PRP_BRK_KEY = [
         FFCST::PROPERTY_PRIVATE => 'brk_key',
@@ -63,6 +70,18 @@ abstract class Broker extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_PRIVATE => 'brk_config',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT
     ];
+    protected static $PRP_GRP_ID = [
+        FFCST::PROPERTY_PRIVATE => 'grp_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED, FFCST::OPTION_FK],
+        FFCST::PROPERTY_FK      => ['group' =>
+            [
+                'model' => 'FreeSSO::Model::Group',
+                'field' => 'grp_id',
+                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+            ]
+        ]
+    ];
 
     /**
      * get properties
@@ -82,7 +101,8 @@ abstract class Broker extends \FreeFW\Core\StorageModel
             'brk_api_scope'   => self::$PRP_BRK_API_SCOPE,
             'brk_users_scope' => self::$PRP_BRK_USERS_SCOPE,
             'brk_ips'         => self::$PRP_BRK_IPS,
-            'brk_config'      => self::$PRP_BRK_CONFIG
+            'brk_config'      => self::$PRP_BRK_CONFIG,
+            'grp_id'          => self::$PRP_GRP_ID,
         ];
     }
 

@@ -106,7 +106,7 @@ class GroupUser extends \FreeSSO\Model\Base\GroupUser
      * 
      * @return \FreeSSO\Model\JobFunction
      */
-    public function gtJobFunction()
+    public function getJobFunction()
     {
         return $this->job_function;
     }

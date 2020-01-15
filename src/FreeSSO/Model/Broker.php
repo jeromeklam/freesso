@@ -10,6 +10,30 @@ class Broker extends \FreeSSO\Model\Base\Broker
 {
 
     /**
+     * Group
+     * @var \FreeSSO\Model\Group
+     */
+    protected $group = null;
+
+    /**
+     * Domain
+     * @var \FreeSSO\Model\Domain
+     */
+    protected $domain = null;
+
+    /**
+     *
+     * {@inheritDoc}
+     * @see \FreeFW\Core\Model::init()
+     */
+    public function init()
+    {
+        $this->brk_id  = 0;
+        $this->brk_key = '';
+        return $this;
+    }
+
+    /**
      * Is active ?
      *
      * @return boolean
@@ -48,5 +72,51 @@ class Broker extends \FreeSSO\Model\Base\Broker
     {
         $arr = \FreeSSO\Model\Domain::find();
         return $arr;
+    }
+
+    /**
+     * Set group
+     * 
+     * @param \FreeSSO\Model\Group $p_group
+     * 
+     * @return \FreeSSO\Model\Broker
+     */
+    public function setGroup($p_group)
+    {
+        $this->group = $p_group;
+        return $this;
+    }
+
+    /**
+     * Get group
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * Set domain
+     * 
+     * @param \FreeSSO\Model\Domain $p_domain
+     * 
+     * @return \FreeSSO\Model\Broker
+     */
+    public function setDomain($p_domain)
+    {
+        $this->domain = $p_domain;
+        return $this;
+    }
+
+    /**
+     * Get domain
+     *
+     * @return \FreeSSO\Model\Domain
+     */
+    public function getDomain()
+    {
+        return $this->domain;
     }
 }

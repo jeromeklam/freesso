@@ -18,6 +18,12 @@ class Group extends \FreeSSO\Model\Base\Group
     protected $group_type = null;
 
     /**
+     * Parent group
+     * @var \FreeSSO\Model\Group
+     */
+    protected $parent = null;
+
+    /**
      *
      * {@inheritDoc}
      * @see \FreeFW\Core\Model::init()
@@ -50,5 +56,28 @@ class Group extends \FreeSSO\Model\Base\Group
     public function getGroupType()
     {
         return $this->group_type;
+    }
+
+    /**
+     * Set parent
+     * 
+     * @param \FreeSSO\Model\Group $p_group
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function setParent($p_group)
+    {
+        $this->group = $p_group;
+        return $this;
+    }
+
+    /**
+     * Get group
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function getParent()
+    {
+        return $this->group;
     }
 }

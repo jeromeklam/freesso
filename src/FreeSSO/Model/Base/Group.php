@@ -88,6 +88,12 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     protected $grp_to = null;
 
     /**
+     * grp_parent_id
+     * @var int
+     */
+    protected $grp_parent_id = null;
+
+    /**
      * Set grp_id
      *
      * @param int $p_value
@@ -384,5 +390,28 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     public function getGrpTo()
     {
         return $this->grp_to;
+    }
+
+    /**
+     * Set parent group
+     * 
+     * @param int $p_value
+     * 
+     * @return \FreeSSO\Model\Base\Group
+     */
+    public function setGrpParentId($p_value)
+    {
+        $this->grp_parent_id = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get parent group
+     * 
+     * @return int
+     */
+    public function getGrpParentId()
+    {
+        return $this->grp_parent_id;
     }
 }
