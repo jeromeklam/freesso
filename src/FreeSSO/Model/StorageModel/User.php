@@ -32,7 +32,7 @@ abstract class User extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_USER_ACTIVE = [
         FFCST::PROPERTY_PRIVATE => 'user_active',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_INTEGER,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BOOLEAN,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_USER_SALT = [
@@ -72,7 +72,7 @@ abstract class User extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_USER_IPS = [
         FFCST::PROPERTY_PRIVATE => 'user_ips',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
         FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_USER_LAST_UPDATE = [
@@ -92,7 +92,7 @@ abstract class User extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_USER_CACHE = [
         FFCST::PROPERTY_PRIVATE => 'user_cache',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
         FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_USER_VAL_STRING = [
@@ -112,7 +112,7 @@ abstract class User extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_USER_CNX = [
         FFCST::PROPERTY_PRIVATE => 'user_cnx',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_JSONIGNORE]
     ];
     protected static $PRP_USER_EXTERN_CODE = [

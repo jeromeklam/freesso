@@ -13,6 +13,16 @@ class User extends \FreeSSO\Model\Base\User implements
 {
 
     /**
+     * 
+     * @var string
+     */
+    const TYPE_USER      = 'USER';
+    const TYPE_IP        = 'IP';
+    const TYPE_UUID      = 'UUID';
+    const TYPE_ANONYMOUS = 'ANONYMOUS';
+    const TYPE_REST      = 'REST';
+
+    /**
      * Groups
      * @var [\FreeSSO\Model\Group]
      */
@@ -23,6 +33,21 @@ class User extends \FreeSSO\Model\Base\User implements
      * @var [\FreeSSO\Model\Broker]
      */
     protected $brokers = null;
+
+    /**
+     *
+     * {@inheritDoc}
+     * @see \FreeFW\Core\Model::init()
+     */
+    public function init()
+    {
+        $this->user_id     = 0;
+        $this->user_salt   = md5(uniqid('test', true));
+        $this->user_type   = self::TYPE_USER;
+        $this->user_active = false;
+        $this->createNewPassword($this->user_salt);
+        return $this;
+    }
 
     /**
      * Verify user password
