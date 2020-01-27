@@ -87,7 +87,7 @@ class Sso extends \FreeFW\Core\Controller
             } else {
                 $data->addError(
                     SsoErrors::ERROR_LOGIN_EMPTY,
-                    sprintf('Password required !'),
+                    sprintf('Login required !'),
                     \FreeFW\Core\Error::TYPE_PRECONDITION,
                     'login'
                 );
