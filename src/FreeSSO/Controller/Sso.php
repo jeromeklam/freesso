@@ -60,7 +60,7 @@ class Sso extends \FreeFW\Core\Controller
                     $data->addError(
                         SsoErrors::ERROR_PASSWORD_EMPTY,
                         sprintf('Password required !'),
-                        \FreeSSO\Model\Error::TYPE_PRECONDITION,
+                        \FreeFW\Core\Error::TYPE_PRECONDITION,
                         'password'
                     );
                     return $this->createResponse(409, $data);
