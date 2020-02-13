@@ -73,7 +73,7 @@ abstract class Group extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
         FFCST::PROPERTY_FK      => ['country' =>
             [
-                'model' => 'FreeSSO::Model::Country',
+                'model' => 'FreeFW::Model::Country',
                 'field' => 'cnty_id',
                 'type'  => \FreeFW\Model\Query::JOIN_LEFT
             ]
@@ -85,7 +85,7 @@ abstract class Group extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
         FFCST::PROPERTY_FK      => ['lang' =>
             [
-                'model' => 'FreeSSO::Model::Lang',
+                'model' => 'FreeFW::Model::Lang',
                 'field' => 'lang_id',
                 'type'  => \FreeFW\Model\Query::JOIN_LEFT
             ]
@@ -93,12 +93,12 @@ abstract class Group extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_GRP_FROM = [
         FFCST::PROPERTY_PRIVATE => 'grp_from',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
         FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_GRP_TO = [
         FFCST::PROPERTY_PRIVATE => 'grp_to',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
         FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_GRP_PARENT_ID = [

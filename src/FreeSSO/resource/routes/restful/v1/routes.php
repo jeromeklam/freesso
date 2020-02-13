@@ -569,7 +569,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
         'include'    => [
-            'default' => ['group_type']
+            'default' => ['group_type', 'country', 'lang', 'parent']
         ],
         'results' => [
             '200' => [
@@ -587,7 +587,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
         'include'    => [
-            'default' => ['group_type']
+            'default' => ['group_type', 'country', 'lang', 'parent']
         ],
         'results' => [
             '200' => [
@@ -605,7 +605,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
         'include'    => [
-            'default' => []
+            'default' => ['group_type', 'country', 'lang', 'parent']
         ],
         'results' => [
             '200' => [
@@ -623,7 +623,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
         'include'    => [
-            'default' => []
+            'default' => ['group_type', 'country', 'lang', 'parent']
         ],
         'results' => [
             '201' => [

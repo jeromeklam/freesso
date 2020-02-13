@@ -24,14 +24,29 @@ class Group extends \FreeSSO\Model\Base\Group
     protected $parent = null;
 
     /**
+     * Country
+     * @var \FreeFW\Model\Country
+     */
+    protected $country = null;
+
+    /**
+     * Lang
+     * @var \FreeFW\Model\Lang
+     */
+    protected $lang = null;
+
+    /**
      *
      * {@inheritDoc}
      * @see \FreeFW\Core\Model::init()
      */
     public function init()
     {
-        $this->grp_id  = 0;
-        $this->grpt_id = null;
+        $this->grp_id        = 0;
+        $this->grpt_id       = null;
+        $this->grp_parent_id = null;
+        $this->cnty_id       = null;
+        $this->lang_id       = null;
         return $this;
     }
 
@@ -79,5 +94,51 @@ class Group extends \FreeSSO\Model\Base\Group
     public function getParent()
     {
         return $this->group;
+    }
+
+    /**
+     * Set country
+     * 
+     * @param \FreeFW\Model\Country $p_country
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function setCountry($p_country)
+    {
+        $this->country = $p_country;
+        return $this;
+    }
+
+    /**
+     * Get country
+     * 
+     * @return \FreeFW\Model\Country
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set lang
+     * 
+     * @param \FreeFW\Model\Lang $p_lang
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function setLang($p_lang)
+    {
+        $this->lang = $p_lang;
+        return $this;
+    }
+
+    /**
+     * Get lang
+     * 
+     * @return \FreeFW\Model\Lang
+     */
+    public function getLang()
+    {
+        return $this->lang;
     }
 }
