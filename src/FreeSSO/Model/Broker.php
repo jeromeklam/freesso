@@ -28,8 +28,9 @@ class Broker extends \FreeSSO\Model\Base\Broker
      */
     public function init()
     {
-        $this->brk_id  = 0;
-        $this->brk_key = '';
+        $this->brk_id     = 0;
+        $this->brk_key    = '';
+        $this->brk_active = false;
         return $this;
     }
 
@@ -94,6 +95,13 @@ class Broker extends \FreeSSO\Model\Base\Broker
      */
     public function getGroup()
     {
+        if ($this->group === null) {
+            $this->group = \FreeSSO\Model\Group::findFirst(
+                [
+                    'grp_id' => $this->getGrpId()
+                ]
+            );
+        }
         return $this->group;
     }
 

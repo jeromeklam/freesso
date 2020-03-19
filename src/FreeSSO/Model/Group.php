@@ -82,7 +82,7 @@ class Group extends \FreeSSO\Model\Base\Group
      */
     public function setParent($p_group)
     {
-        $this->group = $p_group;
+        $this->parent = $p_group;
         return $this;
     }
 
@@ -93,7 +93,7 @@ class Group extends \FreeSSO\Model\Base\Group
      */
     public function getParent()
     {
-        return $this->group;
+        return $this->parent;
     }
 
     /**

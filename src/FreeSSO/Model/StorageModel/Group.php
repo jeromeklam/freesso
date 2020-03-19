@@ -113,6 +113,31 @@ abstract class Group extends \FreeFW\Core\StorageModel
             ]
         ]
     ];
+    protected static $PRP_GRP_MONEY_CODE = [
+        FFCST::PROPERTY_PRIVATE => 'grp_money_code',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+    ];
+    protected static $PRP_GRP_LOGO = [
+        FFCST::PROPERTY_PRIVATE => 'grp_logo',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    protected static $PRP_GRP_EMAIL_HEADER = [
+        FFCST::PROPERTY_PRIVATE => 'grp_email_header',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    protected static $PRP_GRP_EMAIL_FOOTER = [
+        FFCST::PROPERTY_PRIVATE => 'grp_email_footer',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    protected static $PRP_GRP_SIGN = [
+        FFCST::PROPERTY_PRIVATE => 'grp_sign',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
 
     /**
      * get properties
@@ -122,20 +147,25 @@ abstract class Group extends \FreeFW\Core\StorageModel
     public static function getProperties()
     {
         return [
-            'grp_id'        => self::$PRP_GRP_ID,
-            'grpt_id'       => self::$PRP_GRPT_ID,
-            'grp_code'      => self::$PRP_GRP_CODE,
-            'grp_name'      => self::$PRP_GRP_NAME,
-            'grp_address1'  => self::$PRP_GRP_ADDRESS1,
-            'grp_address2'  => self::$PRP_GRP_ADDRESS2,
-            'grp_address3'  => self::$PRP_GRP_ADDRESS3,
-            'grp_cp'        => self::$PRP_GRP_CP,
-            'grp_town'      => self::$PRP_GRP_TOWN,
-            'cnty_id'       => self::$PRP_CNTY_ID,
-            'lang_id'       => self::$PRP_LANG_ID,
-            'grp_from'      => self::$PRP_GRP_FROM,
-            'grp_to'        => self::$PRP_GRP_TO,
-            'grp_parent_id' => self::$PRP_GRP_PARENT_ID,
+            'grp_id'           => self::$PRP_GRP_ID,
+            'grpt_id'          => self::$PRP_GRPT_ID,
+            'grp_code'         => self::$PRP_GRP_CODE,
+            'grp_name'         => self::$PRP_GRP_NAME,
+            'grp_address1'     => self::$PRP_GRP_ADDRESS1,
+            'grp_address2'     => self::$PRP_GRP_ADDRESS2,
+            'grp_address3'     => self::$PRP_GRP_ADDRESS3,
+            'grp_cp'           => self::$PRP_GRP_CP,
+            'grp_town'         => self::$PRP_GRP_TOWN,
+            'cnty_id'          => self::$PRP_CNTY_ID,
+            'lang_id'          => self::$PRP_LANG_ID,
+            'grp_from'         => self::$PRP_GRP_FROM,
+            'grp_to'           => self::$PRP_GRP_TO,
+            'grp_parent_id'    => self::$PRP_GRP_PARENT_ID,
+            'grp_money_code'   => self::$PRP_GRP_MONEY_CODE,
+            'grp_logo'         => self::$PRP_GRP_LOGO,
+            'grp_email_header' => self::$PRP_GRP_EMAIL_HEADER,
+            'grp_email_footer' => self::$PRP_GRP_EMAIL_FOOTER,
+            'grp_sign'         => self::$PRP_GRP_SIGN,
         ];
     }
 

@@ -94,6 +94,36 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     protected $grp_parent_id = null;
 
     /**
+     * grp_money_code
+     * @var string
+     */
+    protected $grp_money_code = null;
+
+    /**
+     * grp_logo
+     * @var mixed
+     */
+    protected $grp_logo = null;
+
+    /**
+     * grp_email_header
+     * @var mixed
+     */
+    protected $grp_email_header = null;
+
+    /**
+     * grp_email_footer
+     * @var mixed
+     */
+    protected $grp_email_footer = null;
+
+    /**
+     * grp_sign
+     * @var mixed
+     */
+    protected $grp_sign = null;
+
+    /**
      * Set grp_id
      *
      * @param int $p_value
@@ -393,11 +423,11 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     }
 
     /**
-     * Set parent group
-     * 
+     * Set grp_parent_id
+     *
      * @param int $p_value
-     * 
-     * @return \FreeSSO\Model\Base\Group
+     *
+     * @return \FreeSSO\Model\Group
      */
     public function setGrpParentId($p_value)
     {
@@ -406,12 +436,127 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     }
 
     /**
-     * Get parent group
-     * 
+     * Get grp_parent_id
+     *
      * @return int
      */
     public function getGrpParentId()
     {
         return $this->grp_parent_id;
+    }
+
+    /**
+     * Set grp_money_code
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpMoneyCode($p_value)
+    {
+        $this->grp_money_code = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_money_code
+     *
+     * @return string
+     */
+    public function getGrpMoneyCode()
+    {
+        return $this->grp_money_code;
+    }
+
+    /**
+     * Set grp_logo
+     *
+     * @param mixed $p_value
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpLogo($p_value)
+    {
+        $this->grp_logo = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_logo
+     *
+     * @return mixed
+     */
+    public function getGrpLogo()
+    {
+        return $this->grp_logo;
+    }
+
+    /**
+     * Set grp_email_header
+     *
+     * @param mixed $p_value
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpEmailHeader($p_value)
+    {
+        $this->grp_email_header = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_email_header
+     *
+     * @return mixed
+     */
+    public function getGrpEmailHeader()
+    {
+        return $this->grp_email_header;
+    }
+
+    /**
+     * Set grp_email_footer
+     *
+     * @param mixed $p_value
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpEmailFooter($p_value)
+    {
+        $this->grp_email_footer = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_email_footer
+     *
+     * @return mixed
+     */
+    public function getGrpEmailFooter()
+    {
+        return $this->grp_email_footer;
+    }
+
+    /**
+     * Set grp_sign
+     *
+     * @param mixed $p_value
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpSign($p_value)
+    {
+        $this->grp_sign = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_sign
+     *
+     * @return mixed
+     */
+    public function getGrpSign()
+    {
+        return $this->grp_sign;
     }
 }

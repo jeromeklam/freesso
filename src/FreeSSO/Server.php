@@ -356,9 +356,11 @@ class Server implements
         if ($p_login === null || $p_login == '') {
             throw new SsoException('Le login est obligatoire !', ErrorCodes::ERROR_LOGIN_EMPTY);
         }
-        $user = User::findFirst(array(
-            'user_login' => $p_login
-        ));
+        $user = User::findFirst(
+            [
+                'user_login' => $p_login
+            ]
+        );
         if ($user instanceof User) {
             if (!$user->verifyPassword($p_password)) {
                 throw new SsoException(sprintf('Le mot de passe est incorrect !'), ErrorCodes::ERROR_PASSWORD_WRONG);
@@ -637,6 +639,19 @@ class Server implements
     }
 
     /**
+     * Return broker group
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function getBrokerGroup()
+    {
+        if ($this->broker instanceof \FreeSSO\Model\Broker) {
+            return $this->broker->getGroup();
+        }
+        return false;
+    }
+
+    /**
      * Return configuration
      *
      * @return array | boolean
@@ -689,18 +704,18 @@ class Server implements
      */
     public function getUserPasswordToken($p_login)
     {
-        $user = User::getFirst(
-            array(
+        $user = User::findFirst(
+            [
                 'user_login' => $p_login
-            )
+            ]
         );
         if ($user instanceof User) {
             // First delete olders
             $olders = PasswordToken::find(
-                array(
+                [
                     'user_id'   =>  $user->getUserId(),
                     'ptok_used' => 0
-                )
+                ]
             );
             foreach ($olders as $oneToken) {
                 if (!$oneToken->remove()) {
@@ -708,11 +723,11 @@ class Server implements
                 }
             }
             // New one
-            $data          = array();
+            $data          = [];
             $token         = md5(uniqid(microtime(true)));
             $data['email'] = $user->getUserEmail();
             $data['token'] = $token;
-            $pToken        = new PasswordToken();
+            $pToken        = \FreeFW\DI\DI::get('FreeSSO::Model::PasswordToken');
             $pToken
                 ->setPtokToken($token)
                 ->setPtokEmail($user->getUserEmail())

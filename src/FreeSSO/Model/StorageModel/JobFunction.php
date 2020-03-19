@@ -23,12 +23,12 @@ abstract class JobFunction extends \FreeFW\Core\StorageModel
     protected static $PRP_FCT_CODE = [
         FFCST::PROPERTY_PRIVATE => 'fct_code',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_FCT_NAME = [
         FFCST::PROPERTY_PRIVATE => 'fct_name',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
     protected static $PRP_FCT_FROM = [
         FFCST::PROPERTY_PRIVATE => 'fct_from',

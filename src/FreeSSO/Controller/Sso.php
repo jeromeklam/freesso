@@ -99,7 +99,54 @@ class Sso extends \FreeFW\Core\Controller
     }
 
     /**
-     * signIn
+     * AskPassword
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function askPassword(\Psr\Http\Message\ServerRequestInterface $p_request)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.askPassword.start');
+        $apiParams = $p_request->getAttribute('api_params', false);
+        $data      = null;
+        //
+        if ($apiParams->hasData()) {
+            /**
+             * @var \FreeSSO\Model\LoginRequest $data
+             */
+            $data = $apiParams->getData();
+            if ($data->getLogin() != '') {
+                /**
+                 * @var \FreeSSO\Server $sso
+                 */
+                try {
+                    $sso   = \FreeFW\DI\Di::getShared('sso');
+                    $user  = $sso->getUserPasswordToken($data->getLogin());
+                    $group = $sso->getBrokerGroup();
+                    var_export($group);die;
+                    return $response;
+                } catch (\Exception $ex) {
+                    // @todo
+                    $error = \FreeSSO\Model\Error::getFromException(409, $ex);
+                    return $this->createResponse(409, $error);
+                }
+            } else {
+                $data->addError(
+                    SsoErrors::ERROR_LOGIN_EMPTY,
+                    sprintf('Login required !'),
+                    \FreeFW\Core\Error::TYPE_PRECONDITION,
+                    'login'
+                    );
+                return $this->createResponse(409, $data);
+            }
+        }
+        $this->logger->debug('FreeSSO.Controller.Sso.askPassword.end');
+        return $this->createResponse(204);
+    }
+    
+    /**
+     * signOut
      *
      * @param \Psr\Http\Message\ServerRequestInterface $p_request
      *

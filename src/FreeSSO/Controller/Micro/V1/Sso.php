@@ -133,6 +133,31 @@ class Sso extends \FreeFW\Controller\Base
         }
         return $this->createCustomResponse(200, [], $user);
     }
+    
+    /**
+     * 
+     * @param ServerRequestInterface $request
+     *
+     * @return ResponseInterface
+     */
+    public function askPassword($request)
+    {
+        $errors    = new \FreeFW\Http\Errors();
+        $ssoServer = $this->getDIShared('sso');
+        try {
+            if (!$request->hasAttribute('login') || $request->getAttribute('login') == '') {
+                $errors->addRequiredField(SsoErrors::ERROR_LOGIN_EMPTY, 'login');
+            }
+            $login = $request->getAttribute('login');
+            $token = $ssoServer->getUserPasswordToken($login);
+            $group = $ssoServer->getBrokerGroup();
+            var_export($group);die;
+        } catch (\Exception $ex) {
+            $errors->addCritical($ex->getCode(), $ex->getMessage());
+            return $this->createCustomResponse(500, [], $errors);
+        }
+        return $this->createCustomResponse(204, []);
+    }
 
     /**
      * Log user in

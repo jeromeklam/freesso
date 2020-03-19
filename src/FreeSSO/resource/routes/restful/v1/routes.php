@@ -34,6 +34,17 @@ $localRoutes = [
         'middleware' => []
     ],
     /**
+     * AskPassword standard
+     */
+    'freesso.user.askpassword' => [
+        'method'     => \FreeFW\Router\Route::METHOD_POST,
+        'url'        => '/v1/sso/ask-password',
+        'controller' => 'FreeSSO::Controller::Sso',
+        'function'   => 'askPassword',
+        'auth'       => \FreeFW\Router\Route::AUTH_NONE,
+        'middleware' => []
+    ],
+    /**
      * ########################################################################
      * GroupType
      * ########################################################################
