@@ -12,6 +12,18 @@ class UserBroker extends \FreeSSO\Model\Base\UserBroker
 {
 
     /**
+     * Methods
+     * @var string
+     */
+    const METHOD_AUTO = 'AUTO';
+
+    /**
+     * Types
+     * @var string
+     */
+    const TYPE_APP = 'APP';
+
+    /**
      * Broker
      * @var \FreeSSO\Model\Broker
      */

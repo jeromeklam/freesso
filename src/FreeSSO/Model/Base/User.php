@@ -136,6 +136,12 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     protected $user_extern_code = null;
 
     /**
+     * lang_id
+     * @var number
+     */
+    protected $lang_id = null;
+
+    /**
      * Set user_id
      *
      * @param int $p_value
@@ -616,5 +622,28 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     public function getUserExternCode()
     {
         return $this->user_extern_code;
+    }
+
+    /**
+     * Set lang_id
+     *
+     * @param number $p_value
+     *
+     * @return \FreeSSO\Model\User
+     */
+    public function setLangId($p_value)
+    {
+        $this->lang_id = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get lang_id
+     *
+     * @return number
+     */
+    public function getLangId()
+    {
+        return $this->lang_id;
     }
 }

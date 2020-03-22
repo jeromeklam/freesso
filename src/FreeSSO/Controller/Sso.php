@@ -38,6 +38,96 @@ class Sso extends \FreeFW\Core\Controller
     }
 
     /**
+     * Save
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function save(\Psr\Http\Message\ServerRequestInterface $p_request)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.save.start');
+        $this->logger->debug('FreeSSO.Controller.Sso.save.end');
+        $sso  = \FreeFW\DI\Di::getShared('sso');
+        /**
+         * 
+         * @var \FreeSSO\Model\User $user
+         */
+        $user = $sso->getUser();
+        if ($user) {
+            $apiParams = $p_request->getAttribute('api_params', false);
+            $data      = null;
+            //
+            if ($apiParams->hasData()) {
+                /**
+                 * @var \FreeSSO\Model\User $data
+                 */
+                $data = $apiParams->getData();
+                // I only update some fields...
+                $user
+                    ->setUserFirstName($data->getUserFirstName())
+                    ->setUserLastName($data->getUserLastName())
+                    ->setUserEmail($data->getUserEmail())
+                    ->setLangId($data->getLang()->getLangId())
+                ;
+                if (!$user->save()) {
+                    return $this->createResponse(409, $user);
+                }
+                return $this->createResponse(200, $user);
+            }
+            return $this->createResponse(409, 'no-data');
+        } else {
+            return $this->createResponse(401);
+        }
+    }
+
+    /**
+     * Update config
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function updateConfig(\Psr\Http\Message\ServerRequestInterface $p_request)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.save.start');
+        $this->logger->debug('FreeSSO.Controller.Sso.save.end');
+        $sso  = \FreeFW\DI\Di::getShared('sso');
+        /**
+         *
+         * @var \FreeSSO\Model\User $user
+         */
+        $user = $sso->getUser();
+        if ($user) {
+            $apiParams = $p_request->getAttribute('api_params', false);
+            $data      = null;
+            //
+            if ($apiParams->hasData()) {
+                /**
+                 * @var \FreeSSO\Model\ConfigRequest $data
+                 */
+                $data = $apiParams->getData();
+                // I only update some fields...
+                $config = $user->getConfig();
+                if (strtoupper($data->getConfigType()) === 'SETTINGS') {
+                    $config->setUbrkConfig($data->getConfig());
+                } else {
+                    if (strtoupper($data->getConfigType()) === 'CACHE') {
+                        $config->setUbrkCache($data->getConfig());
+                    }
+                }
+                if (!$config->save()) {
+                    return $this->createResponse(409);
+                }
+                return $this->createResponse(204);
+            }
+            return $this->createResponse(409, 'no-data');
+        } else {
+            return $this->createResponse(401);
+        }
+    }
+
+    /**
      * signIn
      *
      * @param \Psr\Http\Message\ServerRequestInterface $p_request
@@ -122,10 +212,31 @@ class Sso extends \FreeFW\Core\Controller
                  */
                 try {
                     $sso   = \FreeFW\DI\Di::getShared('sso');
-                    $user  = $sso->getUserPasswordToken($data->getLogin());
-                    $group = $sso->getBrokerGroup();
-                    var_export($group);die;
-                    return $response;
+                    $user  = $sso->getUserByLogin($data->getLogin());
+                    if ($user) {
+                        $emailService = \FreeFW\DI\DI::get('FreeFW::Service::Email');
+                        $langId       = strtolower($user->getLangId());
+                        $email        = $emailService->getEmail('ASK_PASSWORD', $langId);
+                        $token        = $sso->getUserPasswordToken($data->getLogin());
+                        $datas = [
+                            'broker' => $sso->getConfiguration(),
+                            'login'  => $user->getUserLogin(),
+                            'token'  => $token['token']
+                        ];
+                        if ($token) {
+                            $group = $sso->getBrokerGroup();
+                            $datas['header'] = $group->getGrpEmailHeader();
+                            $datas['footer'] = $group->getGrpEmailFooter();
+                            $datas['sign'] = $group->getGrpSign();
+                            $datas = \FreeFW\Tools\PBXArray::reduceKeys($datas);
+                            $email->mergeDatas($datas);
+                            var_export($datas);
+                            var_export($email);die;
+                            
+                            return $response;
+                        }
+                    }
+                    return $this->createResponse(409);
                 } catch (\Exception $ex) {
                     // @todo
                     $error = \FreeSSO\Model\Error::getFromException(409, $ex);
@@ -137,14 +248,81 @@ class Sso extends \FreeFW\Core\Controller
                     sprintf('Login required !'),
                     \FreeFW\Core\Error::TYPE_PRECONDITION,
                     'login'
-                    );
+                );
                 return $this->createResponse(409, $data);
             }
         }
         $this->logger->debug('FreeSSO.Controller.Sso.askPassword.end');
         return $this->createResponse(204);
     }
-    
+
+    /**
+     * changePassword
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function changePassword(\Psr\Http\Message\ServerRequestInterface $p_request)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.changePassword.start');
+        $apiParams = $p_request->getAttribute('api_params', false);
+        $data      = null;
+        //
+        if ($apiParams->hasData()) {
+            /**
+             * @var \FreeSSO\Model\ChangePassword $data
+             */
+            $data = $apiParams->getData();
+            if ($data->getPassword() != '') {
+                $token = $data->getToken();
+                /**
+                 * @var \FreeSSO\Server $sso
+                 */
+                try {
+                    $sso   = \FreeFW\DI\Di::getShared('sso');
+                    if ($token != '') {
+                        $user = $sso->getUserFromPasswordToken($token);
+                        if ($user) {
+                            $user->changeUserPasswordFromToken($token, $data->getPassword());
+                            return $this->createResponse(204);
+                        } else {
+                            $data->addError(
+                                SsoErrors::ERROR_TOKEN_NOT_FOUND,
+                                sprintf('Token not found or invalid !'),
+                                \FreeFW\Core\Error::TYPE_PRECONDITION,
+                                'token'
+                            );
+                            return $this->createResponse(409, $data);
+                        }
+                    } else {
+                        $user = $sso->getUser();
+                        if ($user) {
+                            if ($sso->changeUserPassword($user, $data->getPassword2(), $data->getPassword())) {
+                                return $this->createResponse(204);
+                            }
+                        }
+                    }
+                    return $this->createResponse(409);
+                } catch (\Exception $ex) {
+                    // @todo
+                    $error = \FreeSSO\Model\Error::getFromException(409, $ex);
+                    return $this->createResponse(409, $error);
+                }
+            } else {
+                $data->addError(
+                    SsoErrors::ERROR_PASSWORD_EMPTY,
+                    sprintf('Password is mandatory !'),
+                    \FreeFW\Core\Error::TYPE_PRECONDITION,
+                    'password'
+                );
+                return $this->createResponse(409, $data);
+            }
+        }
+        $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
+        return $this->createResponse(204);
+    }
+
     /**
      * signOut
      *

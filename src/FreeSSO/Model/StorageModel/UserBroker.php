@@ -66,12 +66,22 @@ abstract class UserBroker extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_UBRK_AUTH_DATAS = [
         FFCST::PROPERTY_PRIVATE => 'ubrk_auth_datas',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
         FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_UBRK_END = [
         FFCST::PROPERTY_PRIVATE => 'ubrk_end',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    protected static $PRP_UBRK_CONFIG = [
+        FFCST::PROPERTY_PRIVATE => 'ubrk_config',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    protected static $PRP_UBRK_CACHE = [
+        FFCST::PROPERTY_PRIVATE => 'ubrk_cache',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
         FFCST::PROPERTY_OPTIONS => []
     ];
 
@@ -91,7 +101,9 @@ abstract class UserBroker extends \FreeFW\Core\StorageModel
             'ubrk_partner_id'   => self::$PRP_UBRK_PARTNER_ID,
             'ubrk_auth_method'  => self::$PRP_UBRK_AUTH_METHOD,
             'ubrk_auth_datas'   => self::$PRP_UBRK_AUTH_DATAS,
-            'ubrk_end'          => self::$PRP_UBRK_END
+            'ubrk_end'          => self::$PRP_UBRK_END,
+            'ubrk_config'       => self::$PRP_UBRK_CONFIG,
+            'ubrk_cache'        => self::$PRP_UBRK_CACHE
         ];
     }
 

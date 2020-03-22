@@ -64,6 +64,18 @@ abstract class UserBroker extends \FreeSSO\Model\StorageModel\UserBroker
     protected $ubrk_end = null;
 
     /**
+     * ubrk_config
+     * @var string
+     */
+    protected $ubrk_config = null;
+
+    /**
+     * ubrk_cache
+     * @var string
+     */
+    protected $ubrk_cache = null;
+
+    /**
      * Set ubrk_id
      *
      * @param int $p_value
@@ -268,5 +280,51 @@ abstract class UserBroker extends \FreeSSO\Model\StorageModel\UserBroker
     public function getUbrkEnd()
     {
         return $this->ubrk_end;
+    }
+
+    /**
+     * Set config
+     * 
+     * @param string $p_value
+     * 
+     * @return \FreeSSO\Model\Base\UserBroker
+     */
+    public function setUbrkConfig($p_value)
+    {
+        $this->ubrk_config = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get config
+     * 
+     * @return string
+     */
+    public function getUrbkConfig()
+    {
+        return $this->ubrk_config;
+    }
+
+    /**
+     * Set cache
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Base\UserBroker
+     */
+    public function setUbrkCache($p_value)
+    {
+        $this->ubrk_cache = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get cache
+     *
+     * @return string
+     */
+    public function getUrbkCache()
+    {
+        return $this->ubrk_cache;
     }
 }

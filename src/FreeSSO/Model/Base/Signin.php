@@ -22,6 +22,18 @@ abstract class Signin extends \FreeSSO\Model\StorageModel\Signin
     protected $password = null;
 
     /**
+     * password2
+     * @var string
+     */
+    protected $password2 = null;
+
+    /**
+     * token for password change
+     * @var string
+     */
+    protected $token = null;
+
+    /**
      * remember
      * @var int
      */
@@ -74,6 +86,29 @@ abstract class Signin extends \FreeSSO\Model\StorageModel\Signin
     }
 
     /**
+     * Set password2
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Signin
+     */
+    public function setPassword2($p_value)
+    {
+        $this->password2 = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get password2
+     *
+     * @return string
+     */
+    public function getPassword2()
+    {
+        return $this->password2;
+    }
+
+    /**
      * Set remember
      *
      * @param int $p_value
@@ -94,5 +129,28 @@ abstract class Signin extends \FreeSSO\Model\StorageModel\Signin
     public function getRemember()
     {
         return $this->remember;
+    }
+
+    /**
+     * Set token
+     * 
+     * @param string $p_token
+     * 
+     * @return \FreeSSO\Model\Base\Signin
+     */
+    public function setToken($p_token)
+    {
+        $this->token = $p_token;
+        return $this;
+    }
+
+    /**
+     * Get token
+     * 
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
     }
 }

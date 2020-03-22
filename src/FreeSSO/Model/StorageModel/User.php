@@ -120,6 +120,18 @@ abstract class User extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_JSONIGNORE]
     ];
+    protected static $PRP_LANG_ID = [
+        FFCST::PROPERTY_PRIVATE => 'lang_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
+        FFCST::PROPERTY_FK      => ['lang' =>
+            [
+                'model' => 'FreeFW::Model::Lang',
+                'field' => 'lang_id',
+                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+            ]
+        ]
+    ];
 
     /**
      * get properties
@@ -149,7 +161,8 @@ abstract class User extends \FreeFW\Core\StorageModel
             'user_val_end'            => self::$PRP_USER_VAL_END,
             'user_val_login'          => self::$PRP_USER_VAL_LOGIN,
             'user_cnx'                => self::$PRP_USER_CNX,
-            'user_extern_code'        => self::$PRP_USER_EXTERN_CODE
+            'user_extern_code'        => self::$PRP_USER_EXTERN_CODE,
+            'lang_id'                 => self::$PRP_LANG_ID
         ];
     }
 
@@ -172,13 +185,18 @@ abstract class User extends \FreeFW\Core\StorageModel
     {
         return [
             'groups' => [
-                'model' => 'FreeSso::Model::Group',
+                'model' => 'FreeSSO::Model::Group',
                 'field' => 'grp_id',
                 'type'  => \FreeFW\Model\Query::JOIN_LEFT
             ],
             'brokers' => [
-                'model' => 'FreeSso::Model::Broker',
+                'model' => 'FreeSSO::Model::Broker',
                 'field' => 'brk_id',
+                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+            ],
+            'config' => [
+                'model' => 'FreeSSO::Model::UserBroker',
+                'field' => 'ubrk_id',
                 'type'  => \FreeFW\Model\Query::JOIN_LEFT
             ],
         ];

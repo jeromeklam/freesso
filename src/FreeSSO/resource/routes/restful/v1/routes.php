@@ -9,7 +9,10 @@ $localRoutes = [
         'controller' => 'FreeSSO::Controller::Sso',
         'function'   => 'signIn',
         'auth'       => \FreeFW\Router\Route::AUTH_OUT,
-        'middleware' => []
+        'middleware' => [],
+        'include'    => [
+            'default' => ['lang', 'config']
+        ],
     ],
     /**
      * SignOut standard
@@ -23,6 +26,21 @@ $localRoutes = [
         'middleware' => []
     ],
     /**
+     * Save user datas
+     */
+    'freesso.user.save' => [
+        'method'     => \FreeFW\Router\Route::METHOD_PUT,
+        'model'      => 'FreeSSO::Model::User',
+        'url'        => '/v1/sso/save',
+        'controller' => 'FreeSSO::Controller::Sso',
+        'function'   => 'save',
+        'auth'       => \FreeFW\Router\Route::AUTH_BOTH,
+        'middleware' => [],
+        'include'    => [
+            'default' => ['lang', 'config']
+        ],
+    ],
+    /**
      * Check and touch session
      */
     'freesso.user.check' => [
@@ -31,7 +49,10 @@ $localRoutes = [
         'controller' => 'FreeSSO::Controller::Sso',
         'function'   => 'check',
         'auth'       => \FreeFW\Router\Route::AUTH_BOTH,
-        'middleware' => []
+        'middleware' => [],
+        'include'    => [
+            'default' => ['lang', 'config']
+        ],
     ],
     /**
      * AskPassword standard
@@ -42,6 +63,39 @@ $localRoutes = [
         'controller' => 'FreeSSO::Controller::Sso',
         'function'   => 'askPassword',
         'auth'       => \FreeFW\Router\Route::AUTH_NONE,
+        'middleware' => []
+    ],
+    /**
+     * updatePassword standard
+     */
+    'freesso.user.updatepassword' => [
+        'method'     => \FreeFW\Router\Route::METHOD_POST,
+        'url'        => '/v1/sso/update-password',
+        'controller' => 'FreeSSO::Controller::Sso',
+        'function'   => 'changePassword',
+        'auth'       => \FreeFW\Router\Route::AUTH_BOTH,
+        'middleware' => []
+    ],
+    /**
+     * ChangePassword standard
+     */
+    'freesso.user.changepassword' => [
+        'method'     => \FreeFW\Router\Route::METHOD_POST,
+        'url'        => '/v1/sso/change-password',
+        'controller' => 'FreeSSO::Controller::Sso',
+        'function'   => 'changePassword',
+        'auth'       => \FreeFW\Router\Route::AUTH_NONE,
+        'middleware' => []
+    ],
+    /**
+     * updateConfig standard
+     */
+    'freesso.user.updateconfig' => [
+        'method'     => \FreeFW\Router\Route::METHOD_POST,
+        'url'        => '/v1/sso/update-config',
+        'controller' => 'FreeSSO::Controller::Sso',
+        'function'   => 'updateConfig',
+        'auth'       => \FreeFW\Router\Route::AUTH_BOTH,
         'middleware' => []
     ],
     /**

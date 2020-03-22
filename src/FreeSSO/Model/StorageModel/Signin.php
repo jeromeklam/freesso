@@ -25,10 +25,20 @@ abstract class Signin extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
+    protected static $PRP_PASSWORD2 = [
+        FFCST::PROPERTY_PRIVATE => 'password2',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
     protected static $PRP_REMEMBER = [
         FFCST::PROPERTY_PRIVATE => 'remember',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_INTEGER,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+    ];
+    protected static $PRP_TOKEN = [
+        FFCST::PROPERTY_PRIVATE => 'token',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => []
     ];
 
     /**
@@ -39,9 +49,11 @@ abstract class Signin extends \FreeFW\Core\StorageModel
     public static function getProperties()
     {
         return [
-            'login'    => self::$PRP_LOGIN,
-            'password' => self::$PRP_PASSWORD,
-            'remember' => self::$PRP_REMEMBER
+            'login'     => self::$PRP_LOGIN,
+            'password'  => self::$PRP_PASSWORD,
+            'password2' => self::$PRP_PASSWORD2,
+            'remember'  => self::$PRP_REMEMBER,
+            'token'     => self::$PRP_TOKEN,
         ];
     }
 

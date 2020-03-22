@@ -757,18 +757,18 @@ class Server implements
      */
     public function getUserFromPasswordToken($p_token)
     {
-        $token = PasswordToken::getFirst(
-            array(
-                'ptok_token' => [\FreeFW\Model\AbstractStorage::FIND_EQUAL => $p_token],
-                'ptok_used'  => [\FreeFW\Model\AbstractStorage::FIND_EQUAL => 0],
-                'ptok_end'   => [\FreeFW\Model\AbstractStorage::FIND_GREATER => \FreeFW\Tools\Date::getServerDatetime()]
-            )
+        $token = PasswordToken::findFirst(
+            [
+                'ptok_token' => [\FreeFW\Storage\Storage::COND_EQUAL => $p_token],
+                'ptok_used'  => [\FreeFW\Storage\Storage::COND_EQUAL => 0],
+                'ptok_end'   => [\FreeFW\Storage\Storage::COND_GREATER => \FreeFW\Tools\Date::getServerDatetime()]
+            ]
         );
         if ($token instanceof PasswordToken) {
-            $user = User::getFirst(
-                array(
+            $user = User::findFirst(
+                [
                     'user_id' => $token->getUserId()
-                )
+                ]
             );
             if ($user instanceof User) {
                 return $user;
@@ -811,9 +811,11 @@ class Server implements
      */
     public function getUserByLogin($p_login)
     {
-        $user = User::getFirst(array(
-            'user_login' => $p_login
-        ));
+        $user = User::findFirst(
+            [
+                'user_login' => $p_login
+            ]
+        );
         if ($user instanceof User) {
             if ($user->getUserLastUpdate() === null) {
                 try {
@@ -839,10 +841,10 @@ class Server implements
         if (false !== ($user = $this->getUserFromPasswordToken($p_token))) {
             $user->setUserPassword(md5($user->getUserSalt() . $p_password));
             $user->save();
-            $token = PasswordToken::getFirst(
-                array(
+            $token = PasswordToken::findFirst(
+                [
                     'ptok_token' => $p_token
-                )
+                ]
             );
             if ($token instanceof PasswordToken) {
                 $token->setPtokUsed(1);
@@ -872,7 +874,6 @@ class Server implements
             throw new SsoException('Mot de passe incorrect !', ErrorCodes::ERROR_PASSWORD_WRONG);
         }
         throw new SsoException('Mot de passe incorrect !', ErrorCodes::ERROR_PASSWORD_WRONG);
-        return false;
     }
 
     /**
