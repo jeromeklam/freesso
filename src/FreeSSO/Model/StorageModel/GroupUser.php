@@ -91,7 +91,27 @@ abstract class GroupUser extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_INTEGER,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
-
+    protected static $PRP_GRU_TS = [
+        FFCST::PROPERTY_PRIVATE => 'gru_ts',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    protected static $PRP_GRU_EXTERN_ID = [
+        FFCST::PROPERTY_PRIVATE => 'gru_extern_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    protected static $PRP_GRU_INFORMATIONS = [
+        FFCST::PROPERTY_PRIVATE => 'gru_informations',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    protected static $PRP_GRU_RGPD = [
+        FFCST::PROPERTY_PRIVATE => 'gru_rgpd',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    
     /**
      * get properties
      *
@@ -100,17 +120,21 @@ abstract class GroupUser extends \FreeFW\Core\StorageModel
     public static function getProperties()
     {
         return [
-            'gru_id'         => self::$PRP_GRU_ID,
-            'grp_id'         => self::$PRP_GRP_ID,
-            'user_id'        => self::$PRP_USER_ID,
-            'fct_id'         => self::$PRP_FCT_ID,
-            'gru_privileges' => self::$PRP_GRU_PRIVILEGES,
-            'gru_tel1'       => self::$PRP_GRU_TEL1,
-            'gru_tel2'       => self::$PRP_GRU_TEL2,
-            'gru_email'      => self::$PRP_GRU_EMAIL,
-            'gru_from'       => self::$PRP_GRU_FROM,
-            'gru_to'         => self::$PRP_GRU_TO,
-            'gru_activ'      => self::$PRP_GRU_ACTIV
+            'gru_id'           => self::$PRP_GRU_ID,
+            'grp_id'           => self::$PRP_GRP_ID,
+            'user_id'          => self::$PRP_USER_ID,
+            'fct_id'           => self::$PRP_FCT_ID,
+            'gru_privileges'   => self::$PRP_GRU_PRIVILEGES,
+            'gru_tel1'         => self::$PRP_GRU_TEL1,
+            'gru_tel2'         => self::$PRP_GRU_TEL2,
+            'gru_email'        => self::$PRP_GRU_EMAIL,
+            'gru_from'         => self::$PRP_GRU_FROM,
+            'gru_to'           => self::$PRP_GRU_TO,
+            'gru_activ'        => self::$PRP_GRU_ACTIV,
+            'gru_ts'           => self::$PRP_GRU_TS,
+            'gru_extern_id'    => self::$PRP_GRU_EXTERN_ID,
+            'gru_informations' => self::$PRP_GRU_INFORMATIONS,
+            'gru_rgpd'         => self::$PRP_GRU_RGPD
         ];
     }
 

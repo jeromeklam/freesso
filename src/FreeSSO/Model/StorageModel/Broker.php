@@ -44,7 +44,7 @@ abstract class Broker extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_BRK_CERTIFICATE = [
         FFCST::PROPERTY_PRIVATE => 'brk_certificate',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_MD5
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT
     ];
     protected static $PRP_BRK_ACTIVE = [
         FFCST::PROPERTY_PRIVATE => 'brk_active',
@@ -82,6 +82,10 @@ abstract class Broker extends \FreeFW\Core\StorageModel
             ]
         ]
     ];
+    protected static $PRP_BRK_TYPE = [
+        FFCST::PROPERTY_PRIVATE => 'brk_type',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING
+    ];
 
     /**
      * get properties
@@ -103,6 +107,7 @@ abstract class Broker extends \FreeFW\Core\StorageModel
             'brk_ips'         => self::$PRP_BRK_IPS,
             'brk_config'      => self::$PRP_BRK_CONFIG,
             'grp_id'          => self::$PRP_GRP_ID,
+            'brk_type'        => self::$PRP_BRK_TYPE
         ];
     }
 

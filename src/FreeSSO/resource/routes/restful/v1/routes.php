@@ -11,7 +11,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_OUT,
         'middleware' => [],
         'include'    => [
-            'default' => ['lang', 'config']
+            'default' => ['lang', 'config', 'realms']
         ],
     ],
     /**
@@ -37,7 +37,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_BOTH,
         'middleware' => [],
         'include'    => [
-            'default' => ['lang', 'config']
+            'default' => ['lang', 'config', 'realms']
         ],
     ],
     /**
@@ -51,7 +51,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_BOTH,
         'middleware' => [],
         'include'    => [
-            'default' => ['lang', 'config']
+            'default' => ['lang', 'config', 'realms']
         ],
     ],
     /**
@@ -465,7 +465,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
         'include'    => [
-            'default' => []
+            'default' => ['group', 'domain']
         ],
         'results' => [
             '200' => [
@@ -483,7 +483,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
         'include'    => [
-            'default' => []
+            'default' => ['group', 'domain']
         ],
         'results' => [
             '201' => [
@@ -532,6 +532,9 @@ $localRoutes = [
         'function'   => 'getAll',
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
+        'include'    => [
+            'default' => ['lang']
+        ],
         'results' => [
             '200' => [
                 'type'  => \FreeFW\Router\Route::RESULT_LIST,
@@ -548,7 +551,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
         'include'    => [
-            'default' => ['brokers', 'brokers.broker', 'groups', 'groups.group']
+            'default' => ['brokers', 'brokers.broker', 'groups', 'groups.group', 'lang']
         ],
         'results' => [
             '200' => [
@@ -566,7 +569,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
         'include'    => [
-            'default' => []
+            'default' => ['brokers', 'brokers.broker', 'groups', 'groups.group', 'lang']
         ],
         'results' => [
             '200' => [
@@ -584,7 +587,7 @@ $localRoutes = [
         'auth'       => \FreeFW\Router\Route::AUTH_IN,
         'middleware' => [],
         'include'    => [
-            'default' => []
+            'default' => ['brokers', 'brokers.broker', 'groups', 'groups.group', 'lang']
         ],
         'results' => [
             '201' => [

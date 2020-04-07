@@ -100,6 +100,12 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     protected $grp_money_code = null;
 
     /**
+     * grp_money_input
+     * @var string
+     */
+    protected $grp_money_input = null;
+
+    /**
      * grp_logo
      * @var mixed
      */
@@ -122,6 +128,18 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
      * @var mixed
      */
     protected $grp_sign = null;
+
+    /**
+     * grp_realm_id
+     * @var int
+     */
+    protected $grp_realm_id = null;
+
+    /**
+     * grp_config
+     * @var string
+     */
+    protected $grp_config = null;
 
     /**
      * Set grp_id
@@ -469,6 +487,29 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     }
 
     /**
+     * Set grp_money_input
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpMoneyInput($p_value)
+    {
+        $this->grp_money_input = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_money_input
+     *
+     * @return string
+     */
+    public function getGrpMoneyInput()
+    {
+        return $this->grp_money_input;
+    }
+
+    /**
      * Set grp_logo
      *
      * @param mixed $p_value
@@ -558,5 +599,51 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     public function getGrpSign()
     {
         return $this->grp_sign;
+    }
+
+    /**
+     * Set realm id
+     * 
+     * @param int $p_value
+     * 
+     * @return \FreeSSO\Model\Base\Group
+     */
+    public function setGrpRealmId($p_value)
+    {
+        $this->grp_realm_id = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get realm id
+     * 
+     * @return number
+     */
+    public function getGrpRealmId()
+    {
+        return $this->grp_realm_id;
+    }
+
+    /**
+     * Set config
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Base\Group
+     */
+    public function setGrpConfig($p_value)
+    {
+        $this->grp_config = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get config
+     * 
+     * @return string
+     */
+    public function getGrpConfig()
+    {
+        return $this->grp_config;
     }
 }

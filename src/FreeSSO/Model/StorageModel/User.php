@@ -62,7 +62,7 @@ abstract class User extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_USER_ROLES = [
         FFCST::PROPERTY_PRIVATE => 'user_roles',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
         FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_USER_TYPE = [
@@ -185,18 +185,23 @@ abstract class User extends \FreeFW\Core\StorageModel
     {
         return [
             'groups' => [
-                'model' => 'FreeSSO::Model::Group',
-                'field' => 'grp_id',
+                'model' => 'FreeSSO::Model::GroupUser',
+                'field' => 'user_id',
                 'type'  => \FreeFW\Model\Query::JOIN_LEFT
             ],
             'brokers' => [
-                'model' => 'FreeSSO::Model::Broker',
-                'field' => 'brk_id',
+                'model' => 'FreeSSO::Model::UserBroker',
+                'field' => 'user_id',
                 'type'  => \FreeFW\Model\Query::JOIN_LEFT
             ],
             'config' => [
                 'model' => 'FreeSSO::Model::UserBroker',
                 'field' => 'ubrk_id',
+                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+            ],
+            'realms' => [
+                'model' => 'FreeSSO::Model::GroupUser',
+                'field' => 'user_id',
                 'type'  => \FreeFW\Model\Query::JOIN_LEFT
             ],
         ];

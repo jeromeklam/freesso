@@ -8,7 +8,7 @@ namespace FreeSSO\Model\Base;
  */
 abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
 {
-    
+
     /**
      * brk_id
      * @var int
@@ -81,6 +81,12 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
      */
     protected $grp_id = null;
     
+    /**
+     * Type
+     * @var string
+     */
+    protected $brk_type = null;
+
     /**
      * Set brk_id
      *
@@ -355,5 +361,28 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     public function getGrpId()
     {
         return $this->grp_id;
+    }
+
+    /**
+     * Set type
+     * 
+     * @param string $p_value
+     * 
+     * @return \FreeSSO\Model\Base\Broker
+     */
+    public function setBrkType($p_value)
+    {
+        $this->brk_type = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get type
+     * 
+     * @return string
+     */
+    public function getBrkType()
+    {
+        return $this->brk_type;
     }
 }

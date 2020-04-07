@@ -76,6 +76,30 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     protected $gru_activ = null;
 
     /**
+     * gru_ts
+     * @var string
+     */
+    protected $gru_ts = null;
+
+    /**
+     * gru_extern_id
+     * @var string
+     */
+    protected $gru_extern_id = null;
+
+    /**
+     * gru_informations
+     * @var mixed
+     */
+    protected $gru_informations = null;
+
+    /**
+     * gru_rgpd
+     * @var mixed
+     */
+    protected $gru_rgpd = null;
+
+    /**
      * Set gru_id
      *
      * @param int $p_value
@@ -326,5 +350,97 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     public function getGruActiv()
     {
         return $this->gru_activ;
+    }
+
+    /**
+     * Set gru_ts
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\GroupUser
+     */
+    public function setGruTs($p_value)
+    {
+        $this->gru_ts = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get gru_ts
+     *
+     * @return string
+     */
+    public function getGruTs()
+    {
+        return $this->gru_ts;
+    }
+
+    /**
+     * Set gru_extern_id
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\GroupUser
+     */
+    public function setGruExternId($p_value)
+    {
+        $this->gru_extern_id = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get gru_extern_id
+     *
+     * @return string
+     */
+    public function getGruExternId()
+    {
+        return $this->gru_extern_id;
+    }
+
+    /**
+     * Set gru_informations
+     *
+     * @param mixed $p_value
+     *
+     * @return \FreeSSO\Model\GroupUser
+     */
+    public function setGruInformations($p_value)
+    {
+        $this->gru_informations = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get gru_informations
+     *
+     * @return mixed
+     */
+    public function getGruInformations()
+    {
+        return $this->gru_informations;
+    }
+
+    /**
+     * Set gru_rgpd
+     *
+     * @param mixed $p_value
+     *
+     * @return \FreeSSO\Model\GroupUser
+     */
+    public function setGruRgpd($p_value)
+    {
+        $this->gru_rgpd = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get gru_rgpd
+     *
+     * @return mixed
+     */
+    public function getGruRgpd()
+    {
+        return $this->gru_rgpd;
     }
 }

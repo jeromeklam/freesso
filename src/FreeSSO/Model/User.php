@@ -47,6 +47,12 @@ class User extends \FreeSSO\Model\Base\User implements
     protected $config = null;
 
     /**
+     * 
+     * @var [\FreeSSO\Model\Group]
+     */
+    protected $realms = null;
+
+    /**
      *
      * {@inheritDoc}
      * @see \FreeFW\Core\Model::init()
@@ -220,5 +226,39 @@ class User extends \FreeSSO\Model\Base\User implements
             }
         }
         return $this->config;
+    }
+
+    /**
+     * Get user realms for current broker
+     * 
+     * @return [\FreeSSO\Model\Group]
+     */
+    public function getRealms()
+    {
+        return $this->realms;
+        $sso   = \FreeFW\DI\DI::getShared('sso');
+        $group = $sso->getBrokerGroup();
+        if ($group && $this->realms === null) {
+            $this->realms = new \FreeFW\Model\ResultSet();
+            $conditions   = new \FreeFW\Model\Conditions();
+            $conditions->initFromArray(
+                [
+                    'users.user_id' => $this->getUserId(),
+                    'grp_realm_id' => $group->getGrpId()
+                ]
+            );
+            $model  = \FreeFW\DI\DI::get('FreeSSO::Model::Group');
+            $query  = $model->getQuery();
+            $rels   = [];
+            $rels[] = 'users';
+            $query
+                ->addConditions($conditions)
+                ->addRelations($rels)
+            ;
+            if ($query->execute()) {
+                $this->realms = $query->getResult();
+            }
+        }
+        return $this->realms;
     }
 }

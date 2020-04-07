@@ -42,11 +42,13 @@ class Group extends \FreeSSO\Model\Base\Group
      */
     public function init()
     {
-        $this->grp_id        = 0;
-        $this->grpt_id       = null;
-        $this->grp_parent_id = null;
-        $this->cnty_id       = null;
-        $this->lang_id       = null;
+        $this->grp_id          = 0;
+        $this->grpt_id         = null;
+        $this->grp_parent_id   = null;
+        $this->cnty_id         = null;
+        $this->lang_id         = null;
+        $this->grp_money_code  = 'EUR';
+        $this->grp_money_input = 'EUR';
         return $this;
     }
 
@@ -140,5 +142,21 @@ class Group extends \FreeSSO\Model\Base\Group
     public function getLang()
     {
         return $this->lang;
+    }
+
+    /**
+     * On create
+     * 
+     * @return boolean
+     */
+    public function afterCreate()
+    {
+        if ($this->getGrpParentId() === null || $this->getGrpParentId() <= 0) {
+            $this->setGrpRealmId($this->getGrpId());
+        } else {
+            $this->setGrpRealmId($this->getGrpParentId());
+        }
+        $this->save();
+        return true;
     }
 }

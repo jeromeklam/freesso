@@ -118,6 +118,11 @@ abstract class Group extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
     ];
+    protected static $PRP_GRP_MONEY_INPUT = [
+        FFCST::PROPERTY_PRIVATE => 'grp_money_input',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+    ];
     protected static $PRP_GRP_LOGO = [
         FFCST::PROPERTY_PRIVATE => 'grp_logo',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
@@ -135,6 +140,23 @@ abstract class Group extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_GRP_SIGN = [
         FFCST::PROPERTY_PRIVATE => 'grp_sign',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_OPTIONS => []
+    ];
+    protected static $PRP_GRP_REALM_ID = [
+        FFCST::PROPERTY_PRIVATE => 'grp_realm_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
+        FFCST::PROPERTY_FK      => ['realm' =>
+            [
+                'model' => 'FreeSSO::Model::Group',
+                'field' => 'grp_id',
+                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+            ]
+        ]
+    ];
+    protected static $PRP_GRP_CONFIG = [
+        FFCST::PROPERTY_PRIVATE => 'grp_config',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
         FFCST::PROPERTY_OPTIONS => []
     ];
@@ -162,10 +184,13 @@ abstract class Group extends \FreeFW\Core\StorageModel
             'grp_to'           => self::$PRP_GRP_TO,
             'grp_parent_id'    => self::$PRP_GRP_PARENT_ID,
             'grp_money_code'   => self::$PRP_GRP_MONEY_CODE,
+            'grp_money_input'  => self::$PRP_GRP_MONEY_INPUT,
             'grp_logo'         => self::$PRP_GRP_LOGO,
             'grp_email_header' => self::$PRP_GRP_EMAIL_HEADER,
             'grp_email_footer' => self::$PRP_GRP_EMAIL_FOOTER,
             'grp_sign'         => self::$PRP_GRP_SIGN,
+            'grp_realm_id'     => self::$PRP_GRP_REALM_ID,
+            'grp_config'       => self::$PRP_GRP_CONFIG,
         ];
     }
 
@@ -177,5 +202,21 @@ abstract class Group extends \FreeFW\Core\StorageModel
     public static function getSource()
     {
         return 'sso_group';
+    }
+
+    /**
+     * Get One To many relationShips
+     *
+     * @return array
+     */
+    public function getRelationships()
+    {
+        return [
+            'users' => [
+                'model' => 'FreeSSO::Model::GroupUser',
+                'field' => 'grp_id',
+                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+            ]
+        ];
     }
 }

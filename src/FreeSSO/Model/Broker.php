@@ -10,6 +10,14 @@ class Broker extends \FreeSSO\Model\Base\Broker
 {
 
     /**
+     * Type
+     * @var string
+     */
+    const TYPE_MANUAL = 'MANUAL';
+    const TYPE_EXTERN = 'EXTERN';
+    const TYPE_LINK   = 'LINK';
+
+    /**
      * Group
      * @var \FreeSSO\Model\Group
      */
@@ -31,6 +39,7 @@ class Broker extends \FreeSSO\Model\Base\Broker
         $this->brk_id     = 0;
         $this->brk_key    = '';
         $this->brk_active = false;
+        $this->brk_type   = self::TYPE_MANUAL;
         return $this;
     }
 
