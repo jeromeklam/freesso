@@ -493,8 +493,8 @@ class Server implements
         $mySession = SSOSession::findFirst(array('sess_id' => $p_sess_id));
         if ($mySession instanceof SSOSession) {
             $mySession
-                ->setSessTouch(\FreeFW\Tools\Date::getServerDatetime())
-                ->setSessEnd(\FreeFW\Tools\Date::getServerDatetime(60*24))
+                ->setSessTouch(\FreeFW\Tools\Date::getCurrentTimestamp())
+                ->setSessEnd(\FreeFW\Tools\Date::getCurrentTimestamp(60*24))
             ;
             $mySession->save();
         }
@@ -607,7 +607,7 @@ class Server implements
         $query = BrokerSession::getQuery(\FreeFW\Model\Query::QUERY_DELETE);
         $query->conditionLower(
             'FreeSSO::Model::BrokerSession.brs_end',
-            \FreeFW\Tools\Date::getServerDatetime()
+            \FreeFW\Tools\Date::getCurrentTimestamp()
         );
         $query->execute();
     }
@@ -734,7 +734,7 @@ class Server implements
                 ->setUserId($user->getUserId())
                 ->setPtokRequestIp('')
                 ->setPtokUsed(0)
-                ->setPtokEnd(\FreeFW\Tools\Date::getServerDatetime(60))
+                ->setPtokEnd(\FreeFW\Tools\Date::getCurrentTimestamp(60))
             ;
             if ($pToken->create()) {
                 return $data;
@@ -761,7 +761,7 @@ class Server implements
             [
                 'ptok_token' => [\FreeFW\Storage\Storage::COND_EQUAL => $p_token],
                 'ptok_used'  => [\FreeFW\Storage\Storage::COND_EQUAL => 0],
-                'ptok_end'   => [\FreeFW\Storage\Storage::COND_GREATER => \FreeFW\Tools\Date::getServerDatetime()]
+                'ptok_end'   => [\FreeFW\Storage\Storage::COND_GREATER => \FreeFW\Tools\Date::getCurrentTimestamp()]
             ]
         );
         if ($token instanceof PasswordToken) {
@@ -923,7 +923,7 @@ class Server implements
                 ->setUserActive(0)
                 ->setUserValLogin($p_login)
                 ->setUserValString(md5(uniqid($p_login)))
-                ->setUserValEnd(\FreeFW\Tools\Date::getServerDatetime(60*24*2))
+                ->setUserValEnd(\FreeFW\Tools\Date::getCurrentTimestamp(60*24*2))
             ;
         }
         if ($user->create()) {
@@ -986,7 +986,7 @@ class Server implements
     {
         $p_user
             ->setUserValString(md5(uniqid('valid')))
-            ->setUserValEnd(\FreeFW\Tools\Date::getServerDatetime(60*24*2))
+            ->setUserValEnd(\FreeFW\Tools\Date::getCurrentTimestamp(60*24*2))
         ;
         if ($p_user->save()) {
             // Send email
