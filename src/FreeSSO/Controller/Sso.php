@@ -216,24 +216,47 @@ class Sso extends \FreeFW\Core\Controller
                     if ($user) {
                         $emailService = \FreeFW\DI\DI::get('FreeFW::Service::Email');
                         $langId       = strtolower($user->getLangId());
-                        $email        = $emailService->getEmail('ASK_PASSWORD', $langId);
-                        $token        = $sso->getUserPasswordToken($data->getLogin());
-                        $datas = [
-                            'broker' => $sso->getConfiguration(),
-                            'login'  => $user->getUserLogin(),
-                            'token'  => $token['token']
-                        ];
-                        if ($token) {
-                            $group = $sso->getBrokerGroup();
-                            $datas['header'] = $group->getGrpEmailHeader();
-                            $datas['footer'] = $group->getGrpEmailFooter();
-                            $datas['sign'] = $group->getGrpSign();
-                            $datas = \FreeFW\Tools\PBXArray::reduceKeys($datas);
-                            $email->mergeDatas($datas);
-                            var_export($datas);
-                            var_export($email);die;
-                            
-                            return $response;
+                        /**
+                         * 
+                         * @var \FreeFW\Model\Email $email
+                         */
+                        $email = $emailService->getEmail('ASK_PASSWORD', $langId);
+                        if ($email) {
+                            $token = $sso->getUserPasswordToken($data->getLogin());
+                            $datas = [
+                                'broker' => $sso->getConfiguration(),
+                                'login'  => $user->getUserLogin(),
+                                'token'  => $token['token']
+                            ];
+                            if ($token) {
+                                $group = $sso->getBrokerGroup();
+                                $datas['header'] = $group->getGrpEmailHeader();
+                                $datas['footer'] = $group->getGrpEmailFooter();
+                                $datas['sign'] = $group->getGrpSign();
+                                $datas = \FreeFW\Tools\PBXArray::reduceKeys($datas);
+                                $email->mergeDatas($datas);
+                                /**
+                                 * @var \FreeFW\Model\Message $message
+                                 */
+                                $message = \FreeFW\DI\DI::get('FreeFW::Model::Message');
+                                $message
+                                    ->setMsgType(\FreeFW\Model\Message::TYPE_EMAIL)
+                                    ->setMsgStatus(\FreeFW\Model\Message::STATUS_WAITING)
+                                    ->setLangId($langId)
+                                    ->setMsgObjectName('FreeSSO_User')
+                                    ->setMsgObjectId($user->getUserId())
+                                    ->setMsgSubject($email->getEmailSubject())
+                                    ->setMsgBody($email->getEmailBody())
+                                    ->addDest($user->getUserLogin())
+                                    ->setFrom($email->getEmailFrom(), $email->getEmailFromName())
+                                    ->setReplyTo($email->getEmailReplyTo(), $email->getEmailFromName())
+                                ;
+                                if ($message->create()) {
+                                    $message->send();
+                                }
+                                //
+                                return $this->createResponse(201);
+                            }
                         }
                     }
                     return $this->createResponse(409);
