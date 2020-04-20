@@ -4,7 +4,7 @@
     "description" : "Free PHP SSO",
     "keywords"    : ["FREE", "SSO", "PHP"],
     "homepage"    : "http://github.com/jeromeklam",
-    "license"     : "gpl",
+    "license"     : "LGPL-3.0-only",
     "authors" : [
         {
             "name"  : "KLAM Jérôme",
