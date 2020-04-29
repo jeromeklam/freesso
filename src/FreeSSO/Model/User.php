@@ -235,7 +235,6 @@ class User extends \FreeSSO\Model\Base\User implements
      */
     public function getRealms()
     {
-        return $this->realms;
         $sso   = \FreeFW\DI\DI::getShared('sso');
         $group = $sso->getBrokerGroup();
         if ($group && $this->realms === null) {
