@@ -78,22 +78,22 @@ abstract class GroupUser extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_GRU_FROM = [
         FFCST::PROPERTY_PRIVATE => 'gru_from',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
         FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_GRU_TO = [
         FFCST::PROPERTY_PRIVATE => 'gru_to',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
         FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_GRU_ACTIV = [
         FFCST::PROPERTY_PRIVATE => 'gru_activ',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_INTEGER,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BOOLEAN,
+        FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_GRU_TS = [
         FFCST::PROPERTY_PRIVATE => 'gru_ts',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
         FFCST::PROPERTY_OPTIONS => []
     ];
     protected static $PRP_GRU_EXTERN_ID = [

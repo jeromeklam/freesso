@@ -36,9 +36,10 @@ class GroupUser extends \FreeSSO\Model\Base\GroupUser
      */
     public function init()
     {
-        $this->gru_id  = 0;
-        $this->grp_id  = null;
-        $this->user_id = null;
+        $this->gru_id    = 0;
+        $this->grp_id    = null;
+        $this->user_id   = null;
+        $this->gru_activ = false;
         return $this;
     }
 
