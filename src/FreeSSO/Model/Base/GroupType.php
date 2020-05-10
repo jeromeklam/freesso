@@ -29,13 +29,13 @@ abstract class GroupType extends \FreeSSO\Model\StorageModel\GroupType
 
     /**
      * grpt_from
-     * @var string
+     * @var mixed
      */
     protected $grpt_from = null;
 
     /**
      * grpt_to
-     * @var string
+     * @var mixed
      */
     protected $grpt_to = null;
 
@@ -111,7 +111,7 @@ abstract class GroupType extends \FreeSSO\Model\StorageModel\GroupType
     /**
      * Set grpt_from
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\GroupType
      */
@@ -124,7 +124,7 @@ abstract class GroupType extends \FreeSSO\Model\StorageModel\GroupType
     /**
      * Get grpt_from
      *
-     * @return string
+     * @return mixed
      */
     public function getGrptFrom()
     {
@@ -134,7 +134,7 @@ abstract class GroupType extends \FreeSSO\Model\StorageModel\GroupType
     /**
      * Set grpt_to
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\GroupType
      */
@@ -147,7 +147,7 @@ abstract class GroupType extends \FreeSSO\Model\StorageModel\GroupType
     /**
      * Get grpt_to
      *
-     * @return string
+     * @return mixed
      */
     public function getGrptTo()
     {

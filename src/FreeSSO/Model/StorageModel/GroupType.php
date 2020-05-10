@@ -11,34 +11,46 @@ use \FreeFW\Constants as FFCST;
 abstract class GroupType extends \FreeFW\Core\StorageModel
 {
 
-/**
- * Field properties as static arrays
- * @var array
- */
+    /**
+     * Field properties as static arrays
+     * @var array
+     */
     protected static $PRP_GRPT_ID = [
         FFCST::PROPERTY_PRIVATE => 'grpt_id',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED, FFCST::OPTION_PK]
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED, FFCST::OPTION_PK],
+        FFCST::PROPERTY_COMMENT => 'Identifiant du type de groupe',
+        FFCST::PROPERTY_SAMPLE  => 123,
     ];
     protected static $PRP_GRPT_CODE = [
         FFCST::PROPERTY_PRIVATE => 'grpt_code',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Code court',
+        FFCST::PROPERTY_SAMPLE  => 'TYPE1',
+        FFCST::PROPERTY_MAX     => 20,
     ];
     protected static $PRP_GRPT_NAME = [
         FFCST::PROPERTY_PRIVATE => 'grpt_name',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
+        FFCST::PROPERTY_COMMENT => 'Nom du type de groupe',
+        FFCST::PROPERTY_SAMPLE  => 'Mon type 1',
+        FFCST::PROPERTY_MAX     => 80,
     ];
     protected static $PRP_GRPT_FROM = [
         FFCST::PROPERTY_PRIVATE => 'grpt_from',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Début de validitée',
+        FFCST::PROPERTY_SAMPLE  => '2020-04-01 14:00:23',
     ];
     protected static $PRP_GRPT_TO = [
         FFCST::PROPERTY_PRIVATE => 'grpt_to',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Fin de validitée',
+        FFCST::PROPERTY_SAMPLE  => null,
     ];
 
     /**
@@ -65,5 +77,13 @@ abstract class GroupType extends \FreeFW\Core\StorageModel
     public static function getSource()
     {
         return 'sso_group_type';
+    }
+
+    /**
+     * Retourne une explication de la table
+     */
+    public static function getSourceComments()
+    {
+        return 'Gestion des types de groupes';
     }
 }

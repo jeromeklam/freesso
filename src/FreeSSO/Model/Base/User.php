@@ -29,7 +29,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
 
     /**
      * user_active
-     * @var int
+     * @var bool
      */
     protected $user_active = null;
 
@@ -64,10 +64,10 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     protected $user_title = null;
 
     /**
-     * user_roles
+     * user_scope
      * @var mixed
      */
-    protected $user_roles = null;
+    protected $user_scope = null;
 
     /**
      * user_type
@@ -83,7 +83,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
 
     /**
      * user_last_update
-     * @var string
+     * @var mixed
      */
     protected $user_last_update = null;
 
@@ -113,7 +113,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
 
     /**
      * user_val_end
-     * @var string
+     * @var mixed
      */
     protected $user_val_end = null;
 
@@ -137,7 +137,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
 
     /**
      * lang_id
-     * @var number
+     * @var int
      */
     protected $lang_id = null;
 
@@ -213,7 +213,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     /**
      * Set user_active
      *
-     * @param int $p_value
+     * @param bool $p_value
      *
      * @return \FreeSSO\Model\User
      */
@@ -226,7 +226,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     /**
      * Get user_active
      *
-     * @return int
+     * @return bool
      */
     public function getUserActive()
     {
@@ -349,26 +349,26 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     }
 
     /**
-     * Set user_roles
+     * Set user_scope
      *
      * @param mixed $p_value
      *
      * @return \FreeSSO\Model\User
      */
-    public function setUserRoles($p_value)
+    public function setUserScope($p_value)
     {
-        $this->user_roles = $p_value;
+        $this->user_scope = $p_value;
         return $this;
     }
 
     /**
-     * Get user_roles
+     * Get user_scope
      *
      * @return mixed
      */
-    public function getUserRoles()
+    public function getUserScope()
     {
-        return $this->user_roles;
+        return $this->user_scope;
     }
 
     /**
@@ -420,7 +420,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     /**
      * Set user_last_update
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\User
      */
@@ -433,7 +433,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     /**
      * Get user_last_update
      *
-     * @return string
+     * @return mixed
      */
     public function getUserLastUpdate()
     {
@@ -535,7 +535,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     /**
      * Set user_val_end
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\User
      */
@@ -548,7 +548,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     /**
      * Get user_val_end
      *
-     * @return string
+     * @return mixed
      */
     public function getUserValEnd()
     {
@@ -627,7 +627,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     /**
      * Set lang_id
      *
-     * @param number $p_value
+     * @param int $p_value
      *
      * @return \FreeSSO\Model\User
      */
@@ -640,7 +640,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\User
     /**
      * Get lang_id
      *
-     * @return number
+     * @return int
      */
     public function getLangId()
     {

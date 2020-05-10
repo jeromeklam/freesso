@@ -81,6 +81,12 @@ class Server implements
     protected $autologin = null;
 
     /**
+     * Is it a new SSO_ID ?
+     * @var boolean
+     */
+    protected $new_session = false;
+
+    /**
      * Constructor
      *
      * @param array   $p_options
@@ -159,7 +165,6 @@ class Server implements
     public function setBroker($p_brokerKey)
     {
         $myBroker = false;
-        $exists   = false;
         if (substr_count($p_brokerKey, '@') == 1) {
             $parts    = explode('@', $p_brokerKey);
             $myBroker = \FreeSSO\Model\Broker::findFirst(
@@ -208,7 +213,8 @@ class Server implements
                 $this->broker->getBrkKey(),
                 $this->sso_id,
                 $this->app_id,
-                $cliIp
+                $cliIp,
+                $this->domain->getDomSessionMinutes()
             );
         } else {
             throw new \FreeSSO\SsoException(sprintf('Broker %s not found !', $p_brokerKey));
@@ -276,7 +282,7 @@ class Server implements
         }
         return $this->user;
     }
-    
+
     /**
      * Signin
      *
@@ -290,6 +296,11 @@ class Server implements
      */
     public function signinByIdAndLogin($p_id, $p_login)
     {
+        // First, if new session, it is not possible... Server has revoked token...
+        if ($this->new_session) {
+            $this->user = false;
+            return $this->user;
+        }
         try {
             $this->fireEvent('sso:beforeSigninByIdAndLogin');
         } catch (\Exception $ex) {
@@ -447,6 +458,9 @@ class Server implements
      */
     public function getUser($p_light = false)
     {
+        if ($this->new_session) {
+            $this->user = null;
+        }
         if ($this->user === null) {
             $this->user = false;
             if ($this->session instanceof SSOSession) {
@@ -500,27 +514,33 @@ class Server implements
         }
         SSOSession::delete(
             array(
-                'sess_end' => array(
+                'sess_end' => [
                     \FreeFW\Storage\Storage::COND_LOWER => \FreeFW\Tools\Date::getCurrentTimestamp()
-                )
+                ]
             )
         );
     }
 
     /**
+     * Verify broker session, create one if necessary
      *
      * @param string $p_key
      * @param string $p_ssoId
      * @param string $p_appId
      * @param string $p_ip
+     * @param string $p_lifetime
      */
-    protected function verifyBrokerSession($p_key, $p_ssoId, $p_appId, $p_ip)
+    protected function verifyBrokerSession($p_key, $p_ssoId, $p_appId, $p_ip, $p_lifetime = 0)
     {
         $addNewBrokerSession = true;
+        if ($p_lifetime <= 0) {
+            $p_lifetime = \FreeSSO\Constants::BROKER_SESSION_LIFETIME;
+        }
         // Read if application session exists
         $myBrokerSession = \FreeSSO\Model\BrokerSession::findFirst(
             [
-                'brs_token' => $p_appId
+                'brs_token' => $p_appId,
+                'brk_key'   => $this->broker->getBrkKey()
             ]
         );
         if ($myBrokerSession instanceof \FreeSSO\Model\BrokerSession) {
@@ -541,9 +561,7 @@ class Server implements
                         $addNewBrokerSession = true;
                     } else {
                         $myBrokerSession->setBrsEnd(
-                            \FreeFW\Tools\Date::getCurrentTimestamp(
-                                \FreeSSO\Constants::BROKER_SESSION_LIFETIME
-                            )
+                            \FreeFW\Tools\Date::getCurrentTimestamp($p_lifetime)
                         );
                         $myBrokerSession->save();
                         // Need to touch the session too...
@@ -556,10 +574,12 @@ class Server implements
             }
         }
         if ($addNewBrokerSession) {
+            // Set to true to prevent reuse of JWT... with no session...
+            $this->new_session = true;
             // First, is there a session for the same SSO id ?
             $myBrokerSession = \FreeSSO\Model\BrokerSession::findFirst(
                 [
-                    'brs_id' => $p_ssoId
+                    'brs_session_id' => $p_ssoId
                 ]
             );
             $this->session = false;
@@ -571,20 +591,19 @@ class Server implements
                             'sess_id' => $myBrokerSession->getSessId()
                         ]
                     );
+                    $this->new_session = false;
                 }
             } else {
                 $myBrokerSession = \FreeSSO\Model\BrokerSession::getNew();
             }
-            $lifetime = \FreeFW\Tools\Date::getCurrentTimestamp(
-                \FreeSSO\Constants::BROKER_SESSION_LIFETIME
-            );
+            $lifetime = \FreeFW\Tools\Date::getCurrentTimestamp($p_lifetime);
             if (!$this->session instanceof \FreeSSO\Model\Session) {
                 $this->session = \FreeSSO\Model\Session::getNew();
                 $this->session
-                    ->init()
                     ->setSessStart(\FreeFW\Tools\Date::getCurrentTimestamp())
                     ->setSessClientAddr($p_ip)
                     ->setSessEnd($lifetime)
+                    ->setUserId(null)
                 ;
                 // @todo : expiration is on domain
                 if ($this->session->create() === false) {
@@ -592,7 +611,7 @@ class Server implements
                 }
             }
             $myBrokerSession
-                ->init()
+                ->initModel()
                 ->setBrkKey($p_key)
                 ->setBrsToken($p_appId)
                 ->setBrsSessionId($p_ssoId)
@@ -607,6 +626,12 @@ class Server implements
         $query = BrokerSession::getQuery(\FreeFW\Model\Query::QUERY_DELETE);
         $query->conditionLower(
             'FreeSSO::Model::BrokerSession.brs_end',
+            \FreeFW\Tools\Date::getCurrentTimestamp()
+        );
+        $query->execute();
+        $query = SSOSession::getQuery(\FreeFW\Model\Query::QUERY_DELETE);
+        $query->conditionLower(
+            'FreeSSO::Model::Session.sess_end',
             \FreeFW\Tools\Date::getCurrentTimestamp()
         );
         $query->execute();

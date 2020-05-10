@@ -14,75 +14,75 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
      * @var int
      */
     protected $brk_id = null;
-    
+
     /**
      * dom_id
      * @var int
      */
     protected $dom_id = null;
-    
+
     /**
      * brk_key
      * @var string
      */
     protected $brk_key = null;
-    
+
     /**
      * brk_name
      * @var string
      */
     protected $brk_name = null;
-    
+
     /**
      * brk_certificate
      * @var string
      */
     protected $brk_certificate = null;
-    
+
     /**
      * brk_active
-     * @var int
+     * @var bool
      */
     protected $brk_active = null;
-    
+
     /**
      * brk_ts
-     * @var string
+     * @var mixed
      */
     protected $brk_ts = null;
-    
+
     /**
      * brk_api_scope
      * @var mixed
      */
     protected $brk_api_scope = null;
-    
+
     /**
      * brk_users_scope
      * @var mixed
      */
     protected $brk_users_scope = null;
-    
+
     /**
      * brk_ips
      * @var mixed
      */
     protected $brk_ips = null;
-    
+
     /**
      * brk_config
      * @var mixed
      */
     protected $brk_config = null;
-    
+
     /**
      * grp_id
      * @var int
      */
     protected $grp_id = null;
-    
+
     /**
-     * Type
+     * brk_type
      * @var string
      */
     protected $brk_type = null;
@@ -99,7 +99,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_id = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_id
      *
@@ -109,7 +109,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     {
         return $this->brk_id;
     }
-    
+
     /**
      * Set dom_id
      *
@@ -122,7 +122,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->dom_id = $p_value;
         return $this;
     }
-    
+
     /**
      * Get dom_id
      *
@@ -132,7 +132,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     {
         return $this->dom_id;
     }
-    
+
     /**
      * Set brk_key
      *
@@ -145,7 +145,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_key = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_key
      *
@@ -155,7 +155,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     {
         return $this->brk_key;
     }
-    
+
     /**
      * Set brk_name
      *
@@ -168,7 +168,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_name = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_name
      *
@@ -178,7 +178,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     {
         return $this->brk_name;
     }
-    
+
     /**
      * Set brk_certificate
      *
@@ -191,7 +191,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_certificate = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_certificate
      *
@@ -201,11 +201,11 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     {
         return $this->brk_certificate;
     }
-    
+
     /**
      * Set brk_active
      *
-     * @param int $p_value
+     * @param bool $p_value
      *
      * @return \FreeSSO\Model\Broker
      */
@@ -214,21 +214,21 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_active = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_active
      *
-     * @return int
+     * @return bool
      */
     public function getBrkActive()
     {
         return $this->brk_active;
     }
-    
+
     /**
      * Set brk_ts
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\Broker
      */
@@ -237,17 +237,17 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_ts = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_ts
      *
-     * @return string
+     * @return mixed
      */
     public function getBrkTs()
     {
         return $this->brk_ts;
     }
-    
+
     /**
      * Set brk_api_scope
      *
@@ -260,7 +260,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_api_scope = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_api_scope
      *
@@ -270,7 +270,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     {
         return $this->brk_api_scope;
     }
-    
+
     /**
      * Set brk_users_scope
      *
@@ -283,7 +283,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_users_scope = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_users_scope
      *
@@ -293,7 +293,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     {
         return $this->brk_users_scope;
     }
-    
+
     /**
      * Set brk_ips
      *
@@ -306,7 +306,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_ips = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_ips
      *
@@ -316,7 +316,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     {
         return $this->brk_ips;
     }
-    
+
     /**
      * Set brk_config
      *
@@ -329,7 +329,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->brk_config = $p_value;
         return $this;
     }
-    
+
     /**
      * Get brk_config
      *
@@ -339,7 +339,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     {
         return $this->brk_config;
     }
-    
+
     /**
      * Set grp_id
      *
@@ -352,7 +352,7 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
         $this->grp_id = $p_value;
         return $this;
     }
-    
+
     /**
      * Get grp_id
      *
@@ -364,11 +364,11 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     }
 
     /**
-     * Set type
-     * 
+     * Set brk_type
+     *
      * @param string $p_value
-     * 
-     * @return \FreeSSO\Model\Base\Broker
+     *
+     * @return \FreeSSO\Model\Broker
      */
     public function setBrkType($p_value)
     {
@@ -377,8 +377,8 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     }
 
     /**
-     * Get type
-     * 
+     * Get brk_type
+     *
      * @return string
      */
     public function getBrkType()

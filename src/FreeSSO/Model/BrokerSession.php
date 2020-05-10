@@ -8,4 +8,33 @@ namespace FreeSSO\Model;
  */
 class BrokerSession extends \FreeSSO\Model\Base\BrokerSession
 {
+
+    /**
+     * Session
+     * @var \FreeSSO\Model\Session
+     */
+    protected $session;
+
+    /**
+     * Set session
+     *
+     * @param \FreeSSO\Model\Session $p_session
+     *
+     * @return \FreeSSO\Model\BrokerSession
+     */
+    public function setSession($p_session)
+    {
+        $this->session = $p_session;
+        return $this;
+    }
+
+    /**
+     * Get session
+     *
+     * @return \FreeSSO\Model\Session
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
 }

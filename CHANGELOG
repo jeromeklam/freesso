@@ -1,5 +1,7 @@
 # 1.0.4 : --/--/2020
 
+* Routes refactoring
+* SSO session bug
 * User config, cache
 * GroupUser, field type corrections
 * Send AskPassWord email

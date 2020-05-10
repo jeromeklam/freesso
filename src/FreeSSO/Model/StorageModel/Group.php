@@ -11,71 +11,98 @@ use \FreeFW\Constants as FFCST;
 abstract class Group extends \FreeFW\Core\StorageModel
 {
 
-/**
- * Field properties as static arrays
- * @var array
- */
+    /**
+     * Field properties as static arrays
+     * @var array
+     */
     protected static $PRP_GRP_ID = [
         FFCST::PROPERTY_PRIVATE => 'grp_id',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED, FFCST::OPTION_PK]
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED, FFCST::OPTION_PK],
+        FFCST::PROPERTY_COMMENT => 'Identifiant du groupe',
+        FFCST::PROPERTY_SAMPLE  => 123,
     ];
     protected static $PRP_GRPT_ID = [
         FFCST::PROPERTY_PRIVATE => 'grpt_id',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED, FFCST::OPTION_FK],
+        FFCST::PROPERTY_COMMENT => 'Identifiant du type de groupe',
+        FFCST::PROPERTY_SAMPLE  => 123,
         FFCST::PROPERTY_FK      => ['group_type' =>
             [
-                'model' => 'FreeSSO::Model::GroupType',
-                'field' => 'grpt_id',
-                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+                FFCST::FOREIGN_MODEL => 'FreeSSO::Model::GroupType',
+                FFCST::FOREIGN_FIELD => 'grpt_id',
+                FFCST::FOREIGN_TYPE  => \FreeFW\Model\Query::JOIN_LEFT
             ]
         ]
     ];
     protected static $PRP_GRP_CODE = [
         FFCST::PROPERTY_PRIVATE => 'grp_code',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
+        FFCST::PROPERTY_COMMENT => 'Le code court du groupe',
+        FFCST::PROPERTY_SAMPLE  => 'GRP1',
+        FFCST::PROPERTY_MAX     => 20,
     ];
     protected static $PRP_GRP_NAME = [
         FFCST::PROPERTY_PRIVATE => 'grp_name',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
+        FFCST::PROPERTY_COMMENT => 'Le nom du groupe',
+        FFCST::PROPERTY_SAMPLE  => 'Mon groupe 1',
+        FFCST::PROPERTY_MAX     => 80,
     ];
     protected static $PRP_GRP_ADDRESS1 = [
         FFCST::PROPERTY_PRIVATE => 'grp_address1',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'La première ligne d\'adresse',
+        FFCST::PROPERTY_SAMPLE  => '1 Rue test',
+        FFCST::PROPERTY_MAX     => 80,
     ];
     protected static $PRP_GRP_ADDRESS2 = [
         FFCST::PROPERTY_PRIVATE => 'grp_address2',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'La seconde ligne d\'adresse',
+        FFCST::PROPERTY_SAMPLE  => 'A côté de l\'église',
+        FFCST::PROPERTY_MAX     => 80,
     ];
     protected static $PRP_GRP_ADDRESS3 = [
         FFCST::PROPERTY_PRIVATE => 'grp_address3',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'La troisième ligne d\'adresse',
+        FFCST::PROPERTY_SAMPLE  => 'Cedex 20',
+        FFCST::PROPERTY_MAX     => 80,
     ];
     protected static $PRP_GRP_CP = [
         FFCST::PROPERTY_PRIVATE => 'grp_cp',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Le code postal',
+        FFCST::PROPERTY_SAMPLE  => '12345',
+        FFCST::PROPERTY_MAX     => 20,
     ];
     protected static $PRP_GRP_TOWN = [
         FFCST::PROPERTY_PRIVATE => 'grp_town',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'La ville',
+        FFCST::PROPERTY_SAMPLE  => 'Jolieville',
+        FFCST::PROPERTY_MAX     => 80,
     ];
     protected static $PRP_CNTY_ID = [
         FFCST::PROPERTY_PRIVATE => 'cnty_id',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
+        FFCST::PROPERTY_COMMENT => 'L\'identifiant du pays',
+        FFCST::PROPERTY_SAMPLE  => 123,
         FFCST::PROPERTY_FK      => ['country' =>
             [
-                'model' => 'FreeFW::Model::Country',
-                'field' => 'cnty_id',
-                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+                FFCST::FOREIGN_MODEL => 'FreeFW::Model::Country',
+                FFCST::FOREIGN_FIELD => 'cnty_id',
+                FFCST::FOREIGN_TYPE  => \FreeFW\Model\Query::JOIN_LEFT
             ]
         ]
     ];
@@ -83,82 +110,110 @@ abstract class Group extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_PRIVATE => 'lang_id',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
+        FFCST::PROPERTY_COMMENT => 'L\'identifiant de la langue par défaut pour ce groupe',
+        FFCST::PROPERTY_SAMPLE  => 123,
         FFCST::PROPERTY_FK      => ['lang' =>
             [
-                'model' => 'FreeFW::Model::Lang',
-                'field' => 'lang_id',
-                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+                FFCST::FOREIGN_MODEL => 'FreeFW::Model::Lang',
+                FFCST::FOREIGN_FIELD => 'lang_id',
+                FFCST::FOREIGN_TYPE  => \FreeFW\Model\Query::JOIN_LEFT
             ]
         ]
     ];
     protected static $PRP_GRP_FROM = [
         FFCST::PROPERTY_PRIVATE => 'grp_from',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Début de validité',
+        FFCST::PROPERTY_SAMPLE  => '2020-01-01 12:00:00',
     ];
     protected static $PRP_GRP_TO = [
         FFCST::PROPERTY_PRIVATE => 'grp_to',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Fin de validité',
+        FFCST::PROPERTY_SAMPLE  => '2021-01-01 12:00:00',
     ];
     protected static $PRP_GRP_PARENT_ID = [
         FFCST::PROPERTY_PRIVATE => 'grp_parent_id',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
+        FFCST::PROPERTY_COMMENT => 'L\'identifiant du groupe parent',
+        FFCST::PROPERTY_SAMPLE  => 123,
         FFCST::PROPERTY_FK      => ['parent' =>
             [
-                'model' => 'FreeSSO::Model::Group',
-                'field' => 'grp_id',
-                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+                FFCST::FOREIGN_MODEL => 'FreeSSO::Model::Group',
+                FFCST::FOREIGN_FIELD => 'grp_id',
+                FFCST::FOREIGN_TYPE  => \FreeFW\Model\Query::JOIN_LEFT
             ]
         ]
     ];
     protected static $PRP_GRP_MONEY_CODE = [
         FFCST::PROPERTY_PRIVATE => 'grp_money_code',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_SELECT,
+        FFCST::PROPERTY_ENUM    => ['EUR','USD','CHF','GBD','IDR'],
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
+        FFCST::PROPERTY_COMMENT => 'Le code de la monnaie de stockage',
+        FFCST::PROPERTY_DEFAULT => 'EUR',
+        FFCST::PROPERTY_SAMPLE  => 'EUR',
     ];
     protected static $PRP_GRP_MONEY_INPUT = [
         FFCST::PROPERTY_PRIVATE => 'grp_money_input',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_SELECT,
+        FFCST::PROPERTY_ENUM    => ['EUR','USD','CHF','GBD','IDR'],
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
+        FFCST::PROPERTY_COMMENT => 'Le code de la monnaie de saisie',
+        FFCST::PROPERTY_DEFAULT => 'EUR',
+        FFCST::PROPERTY_SAMPLE  => 'EUR',
     ];
     protected static $PRP_GRP_LOGO = [
         FFCST::PROPERTY_PRIVATE => 'grp_logo',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Le logo',
+        FFCST::PROPERTY_SAMPLE  => '1HKJUYSQDGSQJ1dqdsqjhSDKq...',
     ];
     protected static $PRP_GRP_EMAIL_HEADER = [
         FFCST::PROPERTY_PRIVATE => 'grp_email_header',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_HTML,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'L\'en-tête de page de correspondance',
+        FFCST::PROPERTY_SAMPLE  => '<p>Mairie de Jolieville</p>',
     ];
     protected static $PRP_GRP_EMAIL_FOOTER = [
         FFCST::PROPERTY_PRIVATE => 'grp_email_footer',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Le pied de page de correspondance',
+        FFCST::PROPERTY_SAMPLE  => '<p>Le maire</p>',
     ];
     protected static $PRP_GRP_SIGN = [
         FFCST::PROPERTY_PRIVATE => 'grp_sign',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'La signature',
+        FFCST::PROPERTY_SAMPLE  => 'hkHKUY3d§2dGUGJGu...',
     ];
     protected static $PRP_GRP_REALM_ID = [
         FFCST::PROPERTY_PRIVATE => 'grp_realm_id',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
+        FFCST::PROPERTY_COMMENT => 'L\identifiant du domaine principal, par défaut soi-même',
+        FFCST::PROPERTY_SAMPLE  => 123,
         FFCST::PROPERTY_FK      => ['realm' =>
             [
-                'model' => 'FreeSSO::Model::Group',
-                'field' => 'grp_id',
-                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+                FFCST::FOREIGN_MODEL => 'FreeSSO::Model::Group',
+                FFCST::FOREIGN_FIELD => 'grp_id',
+                FFCST::FOREIGN_TYPE  => \FreeFW\Model\Query::JOIN_LEFT
             ]
         ]
     ];
     protected static $PRP_GRP_CONFIG = [
         FFCST::PROPERTY_PRIVATE => 'grp_config',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_JSON,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'La configuration au format json',
+        FFCST::PROPERTY_SAMPLE  => '{"site-public","https://mairie-joliville.fr"}',
     ];
 
     /**
@@ -205,6 +260,14 @@ abstract class Group extends \FreeFW\Core\StorageModel
     }
 
     /**
+     * Retourne une explication de la table
+     */
+    public static function getSourceComments()
+    {
+        return 'Gestion des groupes';
+    }
+
+    /**
      * Get One To many relationShips
      *
      * @return array
@@ -213,9 +276,11 @@ abstract class Group extends \FreeFW\Core\StorageModel
     {
         return [
             'users' => [
-                'model' => 'FreeSSO::Model::GroupUser',
-                'field' => 'grp_id',
-                'type'  => \FreeFW\Model\Query::JOIN_LEFT
+                FFCST::REL_MODEL   => 'FreeSSO::Model::GroupUser',
+                FFCST::REL_FIELD   => 'grp_id',
+                FFCST::REL_TYPE    => \FreeFW\Model\Query::JOIN_LEFT,
+                FFCST::REL_COMMENT => 'Les utilisateurs du groupe',
+                FFCST::REL_REMOVE  => FFCST::REL_REMOVE_CASCADE
             ]
         ];
     }

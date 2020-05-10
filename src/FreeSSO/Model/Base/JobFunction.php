@@ -29,13 +29,13 @@ abstract class JobFunction extends \FreeSSO\Model\StorageModel\JobFunction
 
     /**
      * fct_from
-     * @var string
+     * @var mixed
      */
     protected $fct_from = null;
 
     /**
      * fct_to
-     * @var string
+     * @var mixed
      */
     protected $fct_to = null;
 
@@ -44,7 +44,7 @@ abstract class JobFunction extends \FreeSSO\Model\StorageModel\JobFunction
      *
      * @param int $p_value
      *
-     * @return \FreeFW\Model\JobFunction
+     * @return \FreeSSO\Model\JobFunction
      */
     public function setFctId($p_value)
     {
@@ -67,7 +67,7 @@ abstract class JobFunction extends \FreeSSO\Model\StorageModel\JobFunction
      *
      * @param string $p_value
      *
-     * @return \FreeFW\Model\JobFunction
+     * @return \FreeSSO\Model\JobFunction
      */
     public function setFctCode($p_value)
     {
@@ -90,7 +90,7 @@ abstract class JobFunction extends \FreeSSO\Model\StorageModel\JobFunction
      *
      * @param string $p_value
      *
-     * @return \FreeFW\Model\JobFunction
+     * @return \FreeSSO\Model\JobFunction
      */
     public function setFctName($p_value)
     {
@@ -111,9 +111,9 @@ abstract class JobFunction extends \FreeSSO\Model\StorageModel\JobFunction
     /**
      * Set fct_from
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
-     * @return \FreeFW\Model\JobFunction
+     * @return \FreeSSO\Model\JobFunction
      */
     public function setFctFrom($p_value)
     {
@@ -124,7 +124,7 @@ abstract class JobFunction extends \FreeSSO\Model\StorageModel\JobFunction
     /**
      * Get fct_from
      *
-     * @return string
+     * @return mixed
      */
     public function getFctFrom()
     {
@@ -134,9 +134,9 @@ abstract class JobFunction extends \FreeSSO\Model\StorageModel\JobFunction
     /**
      * Set fct_to
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
-     * @return \FreeFW\Model\JobFunction
+     * @return \FreeSSO\Model\JobFunction
      */
     public function setFctTo($p_value)
     {
@@ -147,7 +147,7 @@ abstract class JobFunction extends \FreeSSO\Model\StorageModel\JobFunction
     /**
      * Get fct_to
      *
-     * @return string
+     * @return mixed
      */
     public function getFctTo()
     {

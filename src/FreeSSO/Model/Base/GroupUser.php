@@ -34,10 +34,10 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     protected $fct_id = null;
 
     /**
-     * gru_privileges
-     * @var string
+     * gru_scope
+     * @var mixed
      */
-    protected $gru_privileges = null;
+    protected $gru_scope = null;
 
     /**
      * gru_tel1
@@ -59,25 +59,25 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
 
     /**
      * gru_from
-     * @var string
+     * @var mixed
      */
     protected $gru_from = null;
 
     /**
      * gru_to
-     * @var string
+     * @var mixed
      */
     protected $gru_to = null;
 
     /**
      * gru_activ
-     * @var int
+     * @var bool
      */
     protected $gru_activ = null;
 
     /**
      * gru_ts
-     * @var string
+     * @var mixed
      */
     protected $gru_ts = null;
 
@@ -192,26 +192,26 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     }
 
     /**
-     * Set gru_privileges
+     * Set gru_scope
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\GroupUser
      */
-    public function setGruPrivileges($p_value)
+    public function setGruScope($p_value)
     {
-        $this->gru_privileges = $p_value;
+        $this->gru_scope = $p_value;
         return $this;
     }
 
     /**
-     * Get gru_privileges
+     * Get gru_scope
      *
-     * @return string
+     * @return mixed
      */
-    public function getGruPrivileges()
+    public function getGruScope()
     {
-        return $this->gru_privileges;
+        return $this->gru_scope;
     }
 
     /**
@@ -286,7 +286,7 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     /**
      * Set gru_from
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\GroupUser
      */
@@ -299,7 +299,7 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     /**
      * Get gru_from
      *
-     * @return string
+     * @return mixed
      */
     public function getGruFrom()
     {
@@ -309,7 +309,7 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     /**
      * Set gru_to
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\GroupUser
      */
@@ -322,7 +322,7 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     /**
      * Get gru_to
      *
-     * @return string
+     * @return mixed
      */
     public function getGruTo()
     {
@@ -332,7 +332,7 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     /**
      * Set gru_activ
      *
-     * @param int $p_value
+     * @param bool $p_value
      *
      * @return \FreeSSO\Model\GroupUser
      */
@@ -345,7 +345,7 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     /**
      * Get gru_activ
      *
-     * @return int
+     * @return bool
      */
     public function getGruActiv()
     {
@@ -355,7 +355,7 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     /**
      * Set gru_ts
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\GroupUser
      */
@@ -368,7 +368,7 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     /**
      * Get gru_ts
      *
-     * @return string
+     * @return mixed
      */
     public function getGruTs()
     {

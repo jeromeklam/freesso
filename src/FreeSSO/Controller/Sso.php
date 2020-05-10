@@ -19,9 +19,9 @@ class Sso extends \FreeFW\Core\Controller
 
     /**
      * Check and touch session
-     * 
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $p_request
-     * 
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function check(\Psr\Http\Message\ServerRequestInterface $p_request)
@@ -50,7 +50,7 @@ class Sso extends \FreeFW\Core\Controller
         $this->logger->debug('FreeSSO.Controller.Sso.save.end');
         $sso  = \FreeFW\DI\Di::getShared('sso');
         /**
-         * 
+         *
          * @var \FreeSSO\Model\User $user
          */
         $user = $sso->getUser();
@@ -217,7 +217,7 @@ class Sso extends \FreeFW\Core\Controller
                         $emailService = \FreeFW\DI\DI::get('FreeFW::Service::Email');
                         $langId       = strtolower($user->getLangId());
                         /**
-                         * 
+                         *
                          * @var \FreeFW\Model\Email $email
                          */
                         $email = $emailService->getEmail('ASK_PASSWORD', $langId);

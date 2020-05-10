@@ -77,13 +77,13 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
 
     /**
      * grp_from
-     * @var string
+     * @var mixed
      */
     protected $grp_from = null;
 
     /**
      * grp_to
-     * @var string
+     * @var mixed
      */
     protected $grp_to = null;
 
@@ -137,7 +137,7 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
 
     /**
      * grp_config
-     * @var string
+     * @var mixed
      */
     protected $grp_config = null;
 
@@ -397,7 +397,7 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     /**
      * Set grp_from
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\Group
      */
@@ -410,7 +410,7 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     /**
      * Get grp_from
      *
-     * @return string
+     * @return mixed
      */
     public function getGrpFrom()
     {
@@ -420,7 +420,7 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     /**
      * Set grp_to
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
      * @return \FreeSSO\Model\Group
      */
@@ -433,7 +433,7 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     /**
      * Get grp_to
      *
-     * @return string
+     * @return mixed
      */
     public function getGrpTo()
     {
@@ -602,11 +602,11 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     }
 
     /**
-     * Set realm id
-     * 
+     * Set grp_realm_id
+     *
      * @param int $p_value
-     * 
-     * @return \FreeSSO\Model\Base\Group
+     *
+     * @return \FreeSSO\Model\Group
      */
     public function setGrpRealmId($p_value)
     {
@@ -615,9 +615,9 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     }
 
     /**
-     * Get realm id
-     * 
-     * @return number
+     * Get grp_realm_id
+     *
+     * @return int
      */
     public function getGrpRealmId()
     {
@@ -625,11 +625,11 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     }
 
     /**
-     * Set config
+     * Set grp_config
      *
-     * @param string $p_value
+     * @param mixed $p_value
      *
-     * @return \FreeSSO\Model\Base\Group
+     * @return \FreeSSO\Model\Group
      */
     public function setGrpConfig($p_value)
     {
@@ -638,9 +638,9 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     }
 
     /**
-     * Get config
-     * 
-     * @return string
+     * Get grp_config
+     *
+     * @return mixed
      */
     public function getGrpConfig()
     {

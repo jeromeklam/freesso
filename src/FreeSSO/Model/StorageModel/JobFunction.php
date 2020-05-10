@@ -11,34 +11,46 @@ use \FreeFW\Constants as FFCST;
 abstract class JobFunction extends \FreeFW\Core\StorageModel
 {
 
-/**
- * Field properties as static arrays
- * @var array
- */
+    /**
+     * Field properties as static arrays
+     * @var array
+     */
     protected static $PRP_FCT_ID = [
         FFCST::PROPERTY_PRIVATE => 'fct_id',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED, FFCST::OPTION_PK]
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED, FFCST::OPTION_PK],
+        FFCST::PROPERTY_COMMENT => 'Identifiant de la fonction',
+        FFCST::PROPERTY_SAMPLE  => 123,
     ];
     protected static $PRP_FCT_CODE = [
         FFCST::PROPERTY_PRIVATE => 'fct_code',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
+        FFCST::PROPERTY_COMMENT => 'Code',
+        FFCST::PROPERTY_SAMPLE  => 'ADMIN',
+        FFCST::PROPERTY_MAX     => 20,
     ];
     protected static $PRP_FCT_NAME = [
         FFCST::PROPERTY_PRIVATE => 'fct_name',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED]
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
+        FFCST::PROPERTY_COMMENT => 'Nom',
+        FFCST::PROPERTY_SAMPLE  => 'Administrateur',
+        FFCST::PROPERTY_MAX     => 80,
     ];
     protected static $PRP_FCT_FROM = [
         FFCST::PROPERTY_PRIVATE => 'fct_from',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Début de validité',
+        FFCST::PROPERTY_SAMPLE  => '2020-01-01 15:00:00',
     ];
     protected static $PRP_FCT_TO = [
         FFCST::PROPERTY_PRIVATE => 'fct_to',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIME,
-        FFCST::PROPERTY_OPTIONS => []
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_DATETIMETZ,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Fin de validité',
+        FFCST::PROPERTY_SAMPLE  => null,
     ];
 
     /**
@@ -65,5 +77,13 @@ abstract class JobFunction extends \FreeFW\Core\StorageModel
     public static function getSource()
     {
         return 'sso_job_function';
+    }
+
+    /**
+     * Retourne une explication de la table
+     */
+    public static function getSourceComments()
+    {
+        return 'Gestion des fonctions';
     }
 }

@@ -1,8 +1,6 @@
 <?php
 namespace FreeSSO\Model;
 
-use \FreeFW\Constants as FFCST;
-
 /**
  * User
  *
@@ -13,7 +11,7 @@ class User extends \FreeSSO\Model\Base\User implements
 {
 
     /**
-     * 
+     *
      * @var string
      */
     const TYPE_USER      = 'USER';
@@ -47,7 +45,7 @@ class User extends \FreeSSO\Model\Base\User implements
     protected $config = null;
 
     /**
-     * 
+     *
      * @var [\FreeSSO\Model\Group]
      */
     protected $realms = null;
@@ -59,12 +57,7 @@ class User extends \FreeSSO\Model\Base\User implements
      */
     public function init()
     {
-        $this->user_id     = 0;
         $this->user_salt   = md5(uniqid('test', true));
-        $this->user_type   = self::TYPE_USER;
-        $this->user_active = false;
-        $this->lang_id     = null;
-        $this->config      = null;
         $this->createNewPassword($this->user_salt);
         return $this;
     }
@@ -115,12 +108,12 @@ class User extends \FreeSSO\Model\Base\User implements
 
     /**
      * Get Groups
-     * 
+     *
      * @return [\FreeSSO\Model\Group]
      */
     public function getGroups()
     {
-        if ($this->groups === null) {
+        if ($this->groups === null && $this->getUserId() > 0) {
             $this->groups = new \FreeFW\Model\ResultSet();
             $conditions   = new \FreeFW\Model\Conditions();
             $conditions->initFromArray(['user_id' => $this->getUserId()]);
@@ -141,12 +134,12 @@ class User extends \FreeSSO\Model\Base\User implements
 
     /**
      * Get Brokers
-     * 
+     *
      * @return \[\FreeSSO\Model\Broker]
      */
     public function getBrokers()
     {
-        if ($this->brokers === null) {
+        if ($this->brokers === null && $this->getUserId() > 0) {
             $this->brokers = new \FreeFW\Model\ResultSet();
             $conditions    = new \FreeFW\Model\Conditions();
             $conditions->initFromArray(['user_id' => $this->getUserId()]);
@@ -169,7 +162,7 @@ class User extends \FreeSSO\Model\Base\User implements
      * Set lang
      *
      * @param \FreeFW\Model\Lang $p_lang
-     * 
+     *
      * @return \FreeSSO\Model\User
      */
     public function setLang($p_lang)
@@ -180,7 +173,7 @@ class User extends \FreeSSO\Model\Base\User implements
 
     /**
      * Get lang
-     * 
+     *
      * @return \FreeFW\Model\Lang
      */
     public function getLang()
@@ -193,7 +186,7 @@ class User extends \FreeSSO\Model\Base\User implements
 
     /**
      * Get config
-     * 
+     *
      * @return \FreeSSO\Model\UserBroker
      */
     public function getConfig()
@@ -230,7 +223,7 @@ class User extends \FreeSSO\Model\Base\User implements
 
     /**
      * Get user realms for current broker
-     * 
+     *
      * @return [\FreeSSO\Model\Group]
      */
     public function getRealms()
