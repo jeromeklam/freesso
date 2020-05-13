@@ -173,7 +173,7 @@ abstract class User extends \FreeFW\Core\StorageModel
     protected static $PRP_USER_EXTERN_CODE = [
         FFCST::PROPERTY_PRIVATE => 'user_extern_code',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_JSONIGNORE],
+        FFCST::PROPERTY_OPTIONS => [],
         FFCST::PROPERTY_COMMENT => 'Code externe de l\'utilisateur',
         FFCST::PROPERTY_SAMPLE  => 'TEST',
         FFCST::PROPERTY_MAX     => 255,
@@ -184,6 +184,7 @@ abstract class User extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
         FFCST::PROPERTY_COMMENT => 'Langue par défaut de l\'utilisateur',
         FFCST::PROPERTY_SAMPLE  => 123,
+        FFCST::PROPERTY_DEFAULT => FFCST::DEFAULT_LANG,
         FFCST::PROPERTY_FK      => ['lang' =>
             [
                 FFCST::FOREIGN_MODEL => 'FreeFW::Model::Lang',
@@ -252,6 +253,21 @@ abstract class User extends \FreeFW\Core\StorageModel
     public static function getAutocompleteField()
     {
         return ['user_first_name', 'user_first_name'];
+    }
+
+    /**
+     * Get uniq indexes
+     *
+     * @return array[]
+     */
+    public static function getUniqIndexes()
+    {
+        return [
+            'login' => [
+                FFCST::INDEX_FIELDS => 'user_login',
+                FFCST::INDEX_EXISTS => '6410001',
+            ]
+        ];
     }
 
     /**

@@ -224,7 +224,69 @@ class Server implements
     /**
      * Signin
      *
-     * @param string  $p_cookie
+     * @param string $p_token
+     *
+     * @throws \FreeSSO\SsoException
+     *
+     * @return boolean
+     */
+    public function signinByUserToken($p_token)
+    {
+        try {
+            $this->fireEvent('sso:beforeSigninByAutoLogin');
+        } catch (\Exception $ex) {
+        }
+        $this->user = false;
+        if ($p_token === null || $p_token == '') {
+            throw new SsoException('Le token est obligatoire !', ErrorCodes::ERROR_LOGIN_EMPTY);
+        }
+        $userToken = \FreeSSO\Model\UserToken::findFirst([
+            'utok_token' => $p_token
+        ]);
+        if ($userToken) {
+            $user = User::findFirst([
+                'user_id'    => $userToken->getUserId()
+            ]);
+            if ($user instanceof User) {
+                if (!$user->isActive()) {
+                    throw new SsoException(
+                        sprintf('L\'utilisateur n\'est plus actif !'),
+                        ErrorCodes::ERROR_USER_DEACTIVATED
+                        );
+                }
+                // Ok, save to session...
+                if ($this->session instanceof SSOSession) {
+                    $this->session->setUserId($user->getUserId());
+                    $this->session->setSessContent($user->serialize());
+                    $this->session->save();
+                    $this->user = $user;
+                } else {
+                    throw new SsoException('Erreur : impossible de trouver la session !', ErrorCodes::ERROR_GENERAL);
+                }
+                if ($this->user->getUserLastUpdate() === null) {
+                    try {
+                        $this->fireEvent('sso:lastUserUpdateEmpty', $this, $this->user);
+                    } catch (\Exception $ex) {
+                        $this->user = false;
+                    }
+                }
+            } else {
+                throw new SsoException(sprintf('Le token %s n\'existe pas !', $p_token), ErrorCodes::ERROR_LOGIN_NOTFOUND);
+            }
+        } else {
+            throw new SsoException(sprintf('Le token %s n\'existe pas !', $p_token), ErrorCodes::ERROR_LOGIN_NOTFOUND);
+        }
+        try {
+            $this->fireEvent('sso:afterSigninByAutoLogin', $user);
+        } catch (\Exception $ex) {
+        }
+        return $this->user;
+    }
+
+    /**
+     * Signin
+     *
+     * @param string $p_cookie
      *
      * @throws \FreeSSO\SsoException
      *
@@ -648,6 +710,19 @@ class Server implements
             return $this->broker->getBrkKey();
         }
         return false;
+    }
+
+    /**
+     * Return auth methods
+     *
+     * @return array
+     */
+    public function getAuthMethods()
+    {
+        if ($this->broker instanceof \FreeSSO\Model\Broker) {
+            return explode(',', $this->broker->getBrkAuth());
+        }
+        return [];
     }
 
     /**

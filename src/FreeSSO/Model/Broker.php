@@ -66,7 +66,7 @@ class Broker extends \FreeSSO\Model\Base\Broker
      */
     public function verifyApiScope($p_scope)
     {
-        $scopes = explode(';', $this->getBrkApiScope());
+        $scopes = explode(',', $this->getBrkApiScope());
         if (in_array($p_scope, $scopes) || array_key_exists($p_scope, $scopes)) {
             return true;
         }
@@ -86,9 +86,9 @@ class Broker extends \FreeSSO\Model\Base\Broker
 
     /**
      * Set group
-     * 
+     *
      * @param \FreeSSO\Model\Group $p_group
-     * 
+     *
      * @return \FreeSSO\Model\Broker
      */
     public function setGroup($p_group)
@@ -116,9 +116,9 @@ class Broker extends \FreeSSO\Model\Base\Broker
 
     /**
      * Set domain
-     * 
+     *
      * @param \FreeSSO\Model\Domain $p_domain
-     * 
+     *
      * @return \FreeSSO\Model\Broker
      */
     public function setDomain($p_domain)

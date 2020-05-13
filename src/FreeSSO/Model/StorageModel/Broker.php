@@ -54,7 +54,7 @@ abstract class Broker extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_BRK_CERTIFICATE = [
         FFCST::PROPERTY_PRIVATE => 'brk_certificate',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
         FFCST::PROPERTY_OPTIONS => [],
         FFCST::PROPERTY_COMMENT => 'Le certificat du broker : md5 ou +',
         FFCST::PROPERTY_SAMPLE  => '8ba1f94d6924f62611462e50d6b52df5',
@@ -76,17 +76,24 @@ abstract class Broker extends \FreeFW\Core\StorageModel
     ];
     protected static $PRP_BRK_API_SCOPE = [
         FFCST::PROPERTY_PRIVATE => 'brk_api_scope',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
         FFCST::PROPERTY_OPTIONS => [],
         FFCST::PROPERTY_COMMENT => 'Les restrictions d\'usages, séparées par, vide pour tout authoriser',
         FFCST::PROPERTY_SAMPLE  => '',
     ];
     protected static $PRP_BRK_USERS_SCOPE = [
         FFCST::PROPERTY_PRIVATE => 'brk_users_scope',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
         FFCST::PROPERTY_OPTIONS => [],
         FFCST::PROPERTY_COMMENT => 'Les restrictions des types d\'utilisateurs, séparées par, vide pour tout authoriser',
         FFCST::PROPERTY_SAMPLE  => '',
+    ];
+    protected static $PRP_BRK_AUTH = [
+        FFCST::PROPERTY_PRIVATE => 'brk_auth',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Les types d\'authorisations séparées par , vide ne permet pas de se connecter',
+        FFCST::PROPERTY_SAMPLE  => 'JWT,HAWK',
     ];
     protected static $PRP_BRK_IPS = [
         FFCST::PROPERTY_PRIVATE => 'brk_ips',
@@ -94,6 +101,13 @@ abstract class Broker extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_OPTIONS => [],
         FFCST::PROPERTY_COMMENT => 'Les restrictions d\'IPs au format json, vide pour tout authoriser',
         FFCST::PROPERTY_SAMPLE  => '[{"value":"192.168.0.1","label":"Mon IP locale"}]',
+    ];
+    protected static $PRP_BRK_SAME_IP = [
+        FFCST::PROPERTY_PRIVATE => 'brk_same_ip',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BOOLEAN,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'L\'IP de la connexion est à vérifier ?',
+        FFCST::PROPERTY_SAMPLE  => true,
     ];
     protected static $PRP_BRK_CONFIG = [
         FFCST::PROPERTY_PRIVATE => 'brk_config',
@@ -119,7 +133,7 @@ abstract class Broker extends \FreeFW\Core\StorageModel
     protected static $PRP_BRK_TYPE = [
         FFCST::PROPERTY_PRIVATE => 'brk_type',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_SELECT,
-        FFCST::PROPERTY_ENUM    => ['EXTERN','LINK','MANUAL'],
+        FFCST::PROPERTY_ENUM    => ['EXTERN','LINK','MANUAL','TECH'],
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
         FFCST::PROPERTY_COMMENT => 'Le type de broker',
         FFCST::PROPERTY_SAMPLE  => 'MANUAL'
@@ -142,7 +156,9 @@ abstract class Broker extends \FreeFW\Core\StorageModel
             'brk_ts'          => self::$PRP_BRK_TS,
             'brk_api_scope'   => self::$PRP_BRK_API_SCOPE,
             'brk_users_scope' => self::$PRP_BRK_USERS_SCOPE,
+            'brk_auth'        => self::$PRP_BRK_AUTH,
             'brk_ips'         => self::$PRP_BRK_IPS,
+            'brk_same_ip'     => self::$PRP_BRK_SAME_IP,
             'brk_config'      => self::$PRP_BRK_CONFIG,
             'grp_id'          => self::$PRP_GRP_ID,
             'brk_type'        => self::$PRP_BRK_TYPE
@@ -175,5 +191,24 @@ abstract class Broker extends \FreeFW\Core\StorageModel
     public static function getAutocompleteField()
     {
         return ['brk_key', 'brk_name'];
+    }
+
+    /**
+     * Get uniq indexes
+     *
+     * @return array[]
+     */
+    public static function getUniqIndexes()
+    {
+        return [
+            'key' => [
+                FFCST::INDEX_FIELDS => 'brk_key',
+                FFCST::INDEX_EXISTS => '6410010',
+            ],
+            'name' => [
+                FFCST::INDEX_FIELDS => 'brk_name',
+                FFCST::INDEX_EXISTS => '6410011',
+            ]
+        ];
     }
 }

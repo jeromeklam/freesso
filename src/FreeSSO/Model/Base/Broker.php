@@ -53,21 +53,33 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
 
     /**
      * brk_api_scope
-     * @var mixed
+     * @var string
      */
     protected $brk_api_scope = null;
 
     /**
      * brk_users_scope
-     * @var mixed
+     * @var string
      */
     protected $brk_users_scope = null;
+
+    /**
+     * brk_auth
+     * @var string
+     */
+    protected $brk_auth = null;
 
     /**
      * brk_ips
      * @var mixed
      */
     protected $brk_ips = null;
+
+    /**
+     * brk_same_ip
+     * @var bool
+     */
+    protected $brk_same_ip = null;
 
     /**
      * brk_config
@@ -295,6 +307,29 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     }
 
     /**
+     * Set brk_auth
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Broker
+     */
+    public function setBrkAuth($p_value)
+    {
+        $this->brk_auth = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get brk_auth
+     *
+     * @return string
+     */
+    public function getBrkAuth()
+    {
+        return $this->brk_auth;
+    }
+
+    /**
      * Set brk_ips
      *
      * @param mixed $p_value
@@ -315,6 +350,29 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Broker
     public function getBrkIps()
     {
         return $this->brk_ips;
+    }
+
+    /**
+     * Set brk_same_ip
+     *
+     * @param bool $p_value
+     *
+     * @return \FreeSSO\Model\Broker
+     */
+    public function setBrkSameIp($p_value)
+    {
+        $this->brk_same_ip = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get brk_same_ip
+     *
+     * @return bool
+     */
+    public function getBrkSameIp()
+    {
+        return $this->brk_same_ip;
     }
 
     /**

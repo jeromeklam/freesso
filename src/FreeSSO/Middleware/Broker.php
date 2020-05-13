@@ -34,7 +34,7 @@ class Broker implements
     {
         $ssoServer = \FreeFW\DI\DI::getShared('sso');
         if ($ssoServer === null || $ssoServer === false) {
-            $ssoConfig = $this->config->get('sso');
+            $ssoConfig = $this->getAppConfig()->get('sso');
             $ssoServer = \FreeSSO\Server::getInstance($p_request, $ssoConfig);
             \FreeFW\DI\DI::setShared('sso', $ssoServer);
         }
@@ -57,7 +57,10 @@ class Broker implements
         try {
             $sso = $this->beforeProcess($p_request);
             if ($sso !== false) {
-                $request  = $p_request->withAttribute('broker', $sso->getIdentifier());
+                $p_request = $p_request->withAttribute('broker', $sso->getIdentifier());
+                $p_request = $p_request->withAttribute('broker_auth_methods', $sso->getAuthMethods());
+                $p_request = $p_request->withAttribute('broker_config', $sso->getConfiguration());
+                // Injected for DI
                 \FreeFw\DI\DI::setShared('broker', $sso->getBrokerId());
                 $response = $p_handler->handle($p_request);
                 // Add to header

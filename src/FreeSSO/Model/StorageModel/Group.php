@@ -112,6 +112,7 @@ abstract class Group extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
         FFCST::PROPERTY_COMMENT => 'L\'identifiant de la langue par défaut pour ce groupe',
         FFCST::PROPERTY_SAMPLE  => 123,
+        FFCST::PROPERTY_DEFAULT => FFCST::DEFAULT_LANG,
         FFCST::PROPERTY_FK      => ['lang' =>
             [
                 FFCST::FOREIGN_MODEL => 'FreeFW::Model::Lang',
