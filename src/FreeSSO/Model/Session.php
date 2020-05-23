@@ -13,6 +13,12 @@ class Session extends \FreeSSO\Model\Base\Session
 {
 
     /**
+     * Prevent from saving history
+     * @var bool
+     */
+    protected $no_history = true;
+
+    /**
      * Utilisateur
      * @var \FreeSSO\Model\User
      */

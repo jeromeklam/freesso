@@ -10,4 +10,10 @@ use \FreeFW\Constants as FFCST;
  */
 class ChangePassword extends \FreeSSO\Model\Base\Signin
 {
+
+    /**
+     * Prevent from saving history
+     * @var bool
+     */
+    protected $no_history = true;
 }

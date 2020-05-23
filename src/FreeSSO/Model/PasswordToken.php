@@ -10,6 +10,12 @@ class PasswordToken extends \FreeSSO\Model\Base\PasswordToken
 {
 
     /**
+     * Prevent from saving history
+     * @var bool
+     */
+    protected $no_history = true;
+
+    /**
      * User
      * @var \FreeSSO\Model\User
      */

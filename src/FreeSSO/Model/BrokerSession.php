@@ -10,6 +10,12 @@ class BrokerSession extends \FreeSSO\Model\Base\BrokerSession
 {
 
     /**
+     * Prevent from saving history
+     * @var bool
+     */
+    protected $no_history = true;
+
+    /**
      * Session
      * @var \FreeSSO\Model\Session
      */

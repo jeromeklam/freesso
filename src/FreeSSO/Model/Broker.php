@@ -18,6 +18,12 @@ class Broker extends \FreeSSO\Model\Base\Broker
     const TYPE_LINK   = 'LINK';
 
     /**
+     * Prevent from saving history
+     * @var bool
+     */
+    protected $no_history = true;
+
+    /**
      * Group
      * @var \FreeSSO\Model\Group
      */

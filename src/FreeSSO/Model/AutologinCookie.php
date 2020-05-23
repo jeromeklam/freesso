@@ -13,6 +13,12 @@ class AutologinCookie extends \FreeSSO\Model\Base\AutologinCookie implements
 {
 
     /**
+     * Prevent from saving history
+     * @var bool
+     */
+    protected $no_history = true;
+
+    /**
      * Generate autologinCookie
      *
      * @return \FreeSSO\Model\AutologinCookie
