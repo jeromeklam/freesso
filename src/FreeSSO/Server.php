@@ -608,7 +608,7 @@ class Server implements
         if ($myBrokerSession instanceof \FreeSSO\Model\BrokerSession) {
             $addNewBrokerSession = false;
             // Must be for the same IP
-            if ($myBrokerSession->getBrsClientAddress() != $p_ip) {
+            if (false) { // LB not forwarding IP... if ($myBrokerSession->getBrsClientAddress() != $p_ip) {
                 $myBrokerSession->remove();
                 $addNewBrokerSession = true;
             } else {

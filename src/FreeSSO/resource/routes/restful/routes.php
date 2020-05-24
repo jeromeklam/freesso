@@ -16,5 +16,5 @@ return array_merge(
     $routes_group,
     $routes_job_function,
     $routes_sso,
-    $routes_user,
+    $routes_user
 );
