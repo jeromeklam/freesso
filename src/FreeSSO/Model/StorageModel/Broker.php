@@ -106,6 +106,7 @@ abstract class Broker extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_PRIVATE => 'brk_same_ip',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BOOLEAN,
         FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_DEFAULT => true,
         FFCST::PROPERTY_COMMENT => 'L\'IP de la connexion est à vérifier ?',
         FFCST::PROPERTY_SAMPLE  => true,
     ];

@@ -20,7 +20,7 @@ class Remote
      * Random value for a cookie
      * @return string
      */
-    protected static function getRandomCookieValue()
+    public static function getRandomCookieValue()
     {
         $str = microtime() . '-' . uniqid(rand(1000, 9999), true);
         return md5($str);

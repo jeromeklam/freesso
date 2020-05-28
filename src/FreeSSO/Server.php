@@ -636,6 +636,11 @@ class Server implements
             }
         }
         if ($addNewBrokerSession) {
+            // First, change sso et app id
+            $this->sso_id = Remote::getRandomCookieValue();
+            $this->app_id = Remote::getRandomCookieValue();
+            $p_ssoId = $this->getSsoId();
+            $p_appId = $this->getAppId();
             // Set to true to prevent reuse of JWT... with no session...
             $this->new_session = true;
             // First, is there a session for the same SSO id ?
