@@ -8,7 +8,7 @@ use \FreeFW\Constants as FFCST;
  *
  * @author jeromeklam
  */
-abstract class Group extends \FreeFW\Core\StorageModel
+abstract class Group extends \FreeSSO\Model\StorageModel\Base
 {
 
     /**
@@ -97,6 +97,7 @@ abstract class Group extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
         FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
         FFCST::PROPERTY_COMMENT => 'L\'identifiant du pays',
+        FFCST::PROPERTY_DEFAULT => FFCST::DEFAULT_COUNTRY,
         FFCST::PROPERTY_SAMPLE  => 123,
         FFCST::PROPERTY_FK      => ['country' =>
             [

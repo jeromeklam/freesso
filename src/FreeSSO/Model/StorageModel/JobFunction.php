@@ -8,7 +8,7 @@ use \FreeFW\Constants as FFCST;
  *
  * @author jeromeklam
  */
-abstract class JobFunction extends \FreeFW\Core\StorageModel
+abstract class JobFunction extends \FreeSSO\Model\StorageModel\Base
 {
 
     /**

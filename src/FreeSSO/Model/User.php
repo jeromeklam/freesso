@@ -11,6 +11,11 @@ class User extends \FreeSSO\Model\Base\User implements
 {
 
     /**
+     * Behaviours
+     */
+    use \FreeFW\Model\Behaviour\Lang;
+
+    /**
      *
      * @var string
      */
@@ -31,12 +36,6 @@ class User extends \FreeSSO\Model\Base\User implements
      * @var [\FreeSSO\Model\Broker]
      */
     protected $brokers = null;
-
-    /**
-     * Lang
-     * @var \FreeFW\Model\Lang
-     */
-    protected $lang = null;
 
     /**
      * Config
@@ -156,32 +155,6 @@ class User extends \FreeSSO\Model\Base\User implements
             }
         }
         return $this->brokers;
-    }
-
-    /**
-     * Set lang
-     *
-     * @param \FreeFW\Model\Lang $p_lang
-     *
-     * @return \FreeSSO\Model\User
-     */
-    public function setLang($p_lang)
-    {
-        $this->lang = $p_lang;
-        return $this;
-    }
-
-    /**
-     * Get lang
-     *
-     * @return \FreeFW\Model\Lang
-     */
-    public function getLang()
-    {
-        if ($this->lang === null) {
-            $this->lang = \FreeFW\Model\Lang::findFirst(['lang_id' => $this->getLangId()]);
-        }
-        return $this->lang;
     }
 
     /**

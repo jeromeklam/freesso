@@ -10,6 +10,11 @@ class Broker extends \FreeSSO\Model\Base\Broker
 {
 
     /**
+     * Behaviours
+     */
+    use \FreeSSO\Model\Behaviour\Group;
+
+    /**
      * Type
      * @var string
      */
@@ -22,12 +27,6 @@ class Broker extends \FreeSSO\Model\Base\Broker
      * @var bool
      */
     protected $no_history = true;
-
-    /**
-     * Group
-     * @var \FreeSSO\Model\Group
-     */
-    protected $group = null;
 
     /**
      * Domain
@@ -88,36 +87,6 @@ class Broker extends \FreeSSO\Model\Base\Broker
     {
         $arr = \FreeSSO\Model\Domain::find();
         return $arr;
-    }
-
-    /**
-     * Set group
-     *
-     * @param \FreeSSO\Model\Group $p_group
-     *
-     * @return \FreeSSO\Model\Broker
-     */
-    public function setGroup($p_group)
-    {
-        $this->group = $p_group;
-        return $this;
-    }
-
-    /**
-     * Get group
-     *
-     * @return \FreeSSO\Model\Group
-     */
-    public function getGroup()
-    {
-        if ($this->group === null) {
-            $this->group = \FreeSSO\Model\Group::findFirst(
-                [
-                    'grp_id' => $this->getGrpId()
-                ]
-            );
-        }
-        return $this->group;
     }
 
     /**

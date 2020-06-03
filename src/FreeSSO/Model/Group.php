@@ -12,6 +12,12 @@ class Group extends \FreeSSO\Model\Base\Group
 {
 
     /**
+     * Behaviours
+     */
+    use \FreeFW\Model\Behaviour\Country;
+    use \FreeFW\Model\Behaviour\Lang;
+
+    /**
      * GroupType
      * @var \FreeSSO\Model\GroupType
      */
@@ -24,39 +30,10 @@ class Group extends \FreeSSO\Model\Base\Group
     protected $parent = null;
 
     /**
-     * Country
-     * @var \FreeFW\Model\Country
-     */
-    protected $country = null;
-
-    /**
-     * Lang
-     * @var \FreeFW\Model\Lang
-     */
-    protected $lang = null;
-
-    /**
-     *
-     * {@inheritDoc}
-     * @see \FreeFW\Core\Model::init()
-     */
-    public function init()
-    {
-        $this->grp_id          = 0;
-        $this->grpt_id         = null;
-        $this->grp_parent_id   = null;
-        $this->cnty_id         = null;
-        $this->lang_id         = null;
-        $this->grp_money_code  = 'EUR';
-        $this->grp_money_input = 'EUR';
-        return $this;
-    }
-
-    /**
      * Set group type
-     * 
+     *
      * @param \FreeSSO\Model\GroupType $p_group_type
-     * 
+     *
      * @return \FreeSSO\Model\Group
      */
     public function setGroupType($p_group_type)
@@ -67,7 +44,7 @@ class Group extends \FreeSSO\Model\Base\Group
 
     /**
      * Get group_type
-     * 
+     *
      * @return \FreeSSO\Model\GroupType
      */
     public function getGroupType()
@@ -77,9 +54,9 @@ class Group extends \FreeSSO\Model\Base\Group
 
     /**
      * Set parent
-     * 
+     *
      * @param \FreeSSO\Model\Group $p_group
-     * 
+     *
      * @return \FreeSSO\Model\Group
      */
     public function setParent($p_group)
@@ -90,7 +67,7 @@ class Group extends \FreeSSO\Model\Base\Group
 
     /**
      * Get group
-     * 
+     *
      * @return \FreeSSO\Model\Group
      */
     public function getParent()
@@ -99,54 +76,8 @@ class Group extends \FreeSSO\Model\Base\Group
     }
 
     /**
-     * Set country
-     * 
-     * @param \FreeFW\Model\Country $p_country
-     * 
-     * @return \FreeSSO\Model\Group
-     */
-    public function setCountry($p_country)
-    {
-        $this->country = $p_country;
-        return $this;
-    }
-
-    /**
-     * Get country
-     * 
-     * @return \FreeFW\Model\Country
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
-     * Set lang
-     * 
-     * @param \FreeFW\Model\Lang $p_lang
-     * 
-     * @return \FreeSSO\Model\Group
-     */
-    public function setLang($p_lang)
-    {
-        $this->lang = $p_lang;
-        return $this;
-    }
-
-    /**
-     * Get lang
-     * 
-     * @return \FreeFW\Model\Lang
-     */
-    public function getLang()
-    {
-        return $this->lang;
-    }
-
-    /**
      * On create
-     * 
+     *
      * @return boolean
      */
     public function afterCreate()
@@ -156,7 +87,6 @@ class Group extends \FreeSSO\Model\Base\Group
         } else {
             $this->setGrpRealmId($this->getGrpParentId());
         }
-        $this->save();
-        return true;
+        return $this->save();
     }
 }

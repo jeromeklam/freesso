@@ -8,7 +8,7 @@ use \FreeFW\Constants as FFCST;
  *
  * @author jeromeklam
  */
-abstract class GroupType extends \FreeFW\Core\StorageModel
+abstract class GroupType extends \FreeSSO\Model\StorageModel\Base
 {
 
     /**

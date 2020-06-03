@@ -8,7 +8,7 @@ use \FreeFW\Constants as FFCST;
  *
  * @author jeromeklam
  */
-abstract class Broker extends \FreeFW\Core\StorageModel
+abstract class Broker extends \FreeSSO\Model\StorageModel\Base
 {
 
     /**
