@@ -25,7 +25,7 @@ abstract class GroupType extends \FreeSSO\Model\StorageModel\Base
     protected static $PRP_GRPT_CODE = [
         FFCST::PROPERTY_PRIVATE => 'grpt_code',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
-        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_REQUIRED],
         FFCST::PROPERTY_COMMENT => 'Code court',
         FFCST::PROPERTY_SAMPLE  => 'TYPE1',
         FFCST::PROPERTY_MAX     => 20,
