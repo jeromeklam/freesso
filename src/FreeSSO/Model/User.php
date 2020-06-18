@@ -16,6 +16,15 @@ class User extends \FreeSSO\Model\Base\User implements
     use \FreeFW\Model\Behaviour\Lang;
 
     /**
+     * Titles
+     * @var string
+     */
+    const TITLE_MISTER = 'MISTER';
+    const TITLE_MADAM  = 'MADAM';
+    const TITLE_MISS   = 'MISS';
+    const TITLE_OTHER  = 'OTHER';
+
+    /**
      *
      * @var string
      */
