@@ -7,6 +7,7 @@
  */
 namespace FreeSSO\Controller;
 
+use \FreeFW\Constants as FFCST;
 use \FreeSSO\Server as SsoServer;
 use \FreeSSO\ErrorCodes as SsoErrors;
 
@@ -31,9 +32,9 @@ class Sso extends \FreeFW\Core\Controller
         $sso  = \FreeFW\DI\Di::getShared('sso');
         $user = $sso->getUser();
         if ($user) {
-            return $this->createResponse(200, $user);
+            return $this->createSuccessOkResponse($user);
         } else {
-            return $this->createResponse(401);
+            return $this->createErrorResponse(FFCST::ERROR_NOT_AUTHENTICATED);
         }
     }
 
@@ -57,7 +58,6 @@ class Sso extends \FreeFW\Core\Controller
         if ($user) {
             $apiParams = $p_request->getAttribute('api_params', false);
             $data      = null;
-            //
             if ($apiParams->hasData()) {
                 /**
                  * @var \FreeSSO\Model\User $data
@@ -70,14 +70,14 @@ class Sso extends \FreeFW\Core\Controller
                     ->setUserEmail($data->getUserEmail())
                     ->setLangId($data->getLang()->getLangId())
                 ;
-                if (!$user->save()) {
-                    return $this->createResponse(409, $user);
+                if ($user->save()) {
+                    return $this->createSuccessOkResponse($user);
                 }
-                return $this->createResponse(200, $user);
+                return $this->createErrorResponse(FFCST::ERROR_NOT_UPDATE, $user);
             }
-            return $this->createResponse(409, 'no-data');
+            return $this->createErrorResponse(FFCST::ERROR_NO_DATA);
         } else {
-            return $this->createResponse(401);
+            return $this->createErrorResponse(FFCST::ERROR_NOT_AUTHENTICATED);
         }
     }
 
@@ -101,7 +101,6 @@ class Sso extends \FreeFW\Core\Controller
         if ($user) {
             $apiParams = $p_request->getAttribute('api_params', false);
             $data      = null;
-            //
             if ($apiParams->hasData()) {
                 /**
                  * @var \FreeSSO\Model\ConfigRequest $data
@@ -116,14 +115,14 @@ class Sso extends \FreeFW\Core\Controller
                         $config->setUbrkCache($data->getConfig());
                     }
                 }
-                if (!$config->save()) {
-                    return $this->createResponse(409);
+                if ($config->save()) {
+                    return $this->createSuccessEmptyResponse();
                 }
-                return $this->createResponse(204);
+                return $this->createErrorResponse(FFCST::ERROR_NOT_UPDATE);
             }
-            return $this->createResponse(409, 'no-data');
+            return $this->createErrorResponse(FFCST::ERROR_NO_DATA);
         } else {
-            return $this->createResponse(401);
+            return $this->createErrorResponse(FFCST::ERROR_NOT_AUTHENTICATED);
         }
     }
 
@@ -153,7 +152,8 @@ class Sso extends \FreeFW\Core\Controller
                         \FreeFW\Core\Error::TYPE_PRECONDITION,
                         'password'
                     );
-                    return $this->createResponse(409, $data);
+                    $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+                    return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
                 }
                 /**
                  * @var \FreeSSO\Server $sso
@@ -161,18 +161,20 @@ class Sso extends \FreeFW\Core\Controller
                 try {
                     $sso      = \FreeFW\DI\Di::getShared('sso');
                     $user     = $sso->signinByLoginAndPassword($data->getLogin(), $data->getPassword(), $data->getRemember());
-                    $response = $this->createResponse(201, $user);
+                    $response = $this->createSuccessAddResponse($user);
                     if ($data->getRemember()) {
                         $cookie = $sso-> getAutoLogin();
                         if ($cookie instanceof \FreeSSO\Model\AutologinCookie) {
                             $response = $response->withHeader('AutoLogin', $cookie->getAutoCookie());
                         }
                     }
+                    $this->logger->debug('FreeSSO.Controller.Sso.login.end');
                     return $response;
                 } catch (\Exception $ex) {
                     // @todo
                     $error = \FreeSSO\Model\Error::getFromException(409, $ex);
-                    return $this->createResponse(409, $error);
+                    $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+                    return $this->createErrorResponse(FFCST::ERROR_NOT_INSERT, $error);
                 }
             } else {
                 $data->addError(
@@ -181,11 +183,13 @@ class Sso extends \FreeFW\Core\Controller
                     \FreeFW\Core\Error::TYPE_PRECONDITION,
                     'login'
                 );
-                return $this->createResponse(409, $data);
+                $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+                return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
             }
+        } else {
+            $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+            return $this->createErrorResponse(FFCST::ERROR_NO_DATA);
         }
-        $this->logger->debug('FreeSSO.Controller.Sso.login.end');
-        return $this->createResponse(200);
     }
 
     /**
@@ -200,7 +204,6 @@ class Sso extends \FreeFW\Core\Controller
         $this->logger->debug('FreeSSO.Controller.Sso.askPassword.start');
         $apiParams = $p_request->getAttribute('api_params', false);
         $data      = null;
-        //
         if ($apiParams->hasData()) {
             /**
              * @var \FreeSSO\Model\LoginRequest $data
@@ -255,15 +258,18 @@ class Sso extends \FreeFW\Core\Controller
                                     $message->send();
                                 }
                                 //
-                                return $this->createResponse(201);
+                                $this->logger->debug('FreeSSO.Controller.Sso.askPassword.end');
+                                return $this->createSuccessAddResponse();
                             }
                         }
                     }
-                    return $this->createResponse(409);
+                    $this->logger->debug('FreeSSO.Controller.Sso.askPassword.end');
+                    return $this->createErrorResponse(FFCST::ERROR_IN_DATA);
                 } catch (\Exception $ex) {
                     // @todo
                     $error = \FreeSSO\Model\Error::getFromException(409, $ex);
-                    return $this->createResponse(409, $error);
+                    $this->logger->debug('FreeSSO.Controller.Sso.askPassword.end');
+                    return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $error);
                 }
             } else {
                 $data->addError(
@@ -272,11 +278,13 @@ class Sso extends \FreeFW\Core\Controller
                     \FreeFW\Core\Error::TYPE_PRECONDITION,
                     'login'
                 );
-                return $this->createResponse(409, $data);
+                $this->logger->debug('FreeSSO.Controller.Sso.askPassword.end');
+                return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
             }
+        } else {
+            $this->logger->debug('FreeSSO.Controller.Sso.askPassword.end');
+            return $this->createErrorResponse(FFCST::ERROR_NO_DATA);
         }
-        $this->logger->debug('FreeSSO.Controller.Sso.askPassword.end');
-        return $this->createResponse(204);
     }
 
     /**
@@ -291,7 +299,6 @@ class Sso extends \FreeFW\Core\Controller
         $this->logger->debug('FreeSSO.Controller.Sso.changePassword.start');
         $apiParams = $p_request->getAttribute('api_params', false);
         $data      = null;
-        //
         if ($apiParams->hasData()) {
             /**
              * @var \FreeSSO\Model\ChangePassword $data
@@ -308,7 +315,8 @@ class Sso extends \FreeFW\Core\Controller
                         $user = $sso->getUserFromPasswordToken($token);
                         if ($user) {
                             $user->changeUserPasswordFromToken($token, $data->getPassword());
-                            return $this->createResponse(204);
+                            $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
+                            return $this->createSuccessEmptyResponse();
                         } else {
                             $data->addError(
                                 SsoErrors::ERROR_TOKEN_NOT_FOUND,
@@ -316,21 +324,25 @@ class Sso extends \FreeFW\Core\Controller
                                 \FreeFW\Core\Error::TYPE_PRECONDITION,
                                 'token'
                             );
-                            return $this->createResponse(409, $data);
+                            $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
+                            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
                         }
                     } else {
                         $user = $sso->getUser();
                         if ($user) {
                             if ($sso->changeUserPassword($user, $data->getPassword2(), $data->getPassword())) {
-                                return $this->createResponse(204);
+                                $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
+                                return $this->createSuccessEmptyResponse();
                             }
                         }
                     }
-                    return $this->createResponse(409);
+                    $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
+                    return $this->createErrorResponse(FFCST::ERROR_IN_DATA);
                 } catch (\Exception $ex) {
                     // @todo
                     $error = \FreeSSO\Model\Error::getFromException(409, $ex);
-                    return $this->createResponse(409, $error);
+                    $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
+                    return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $error);
                 }
             } else {
                 $data->addError(
@@ -339,11 +351,13 @@ class Sso extends \FreeFW\Core\Controller
                     \FreeFW\Core\Error::TYPE_PRECONDITION,
                     'password'
                 );
-                return $this->createResponse(409, $data);
+                $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
+                return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
             }
+        } else {
+            $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
+            return $this->createErrorResponse(FFCST::ERROR_NO_DATA);
         }
-        $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
-        return $this->createResponse(204);
     }
 
     /**
@@ -362,13 +376,13 @@ class Sso extends \FreeFW\Core\Controller
         try {
             $sso  = \FreeFW\DI\Di::getShared('sso');
             $user = $sso->logout();
-            return $this->createResponse(204);
+            $this->logger->debug('FreeSSO.Controller.Sso.logout.end');
+            return $this->createSuccessEmptyResponse();
         } catch (\Exception $ex) {
             // @todo
             $error = \FreeFW\Model\Error::getFromException(409, $ex);
-            return $this->createResponse(409, $error);
+            $this->logger->debug('FreeSSO.Controller.Sso.logout.end');
+            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $error);
         }
-        $this->logger->debug('FreeSSO.Controller.Sso.logout.end');
-        return $this->createResponse(204);
     }
 }

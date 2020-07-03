@@ -270,6 +270,16 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
     }
 
     /**
+     * Get autocomplete field
+     *
+     * @return string
+     */
+    public static function getAutocompleteField()
+    {
+        return ['grp_name', 'grp_code'];
+    }
+
+    /**
      * Get One To many relationShips
      *
      * @return array

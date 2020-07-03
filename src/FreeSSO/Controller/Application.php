@@ -26,6 +26,6 @@ class Application extends \FreeFW\Core\ApiController
             // Oups, wrong parameters...
         }
         $this->logger->debug('FreeAMM.Controller.Service.getStatus.end');
-        return $this->createResponse(200);
+        return $this->createSuccessOkResponse();
     }
 }

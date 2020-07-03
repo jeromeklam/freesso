@@ -3,6 +3,8 @@
 * Migration
 * Proxy for Http Client Addr
 * User title constants
+* Autocomplete fields on group and user
+* New createResponse from FreeFW in controllers
 
 # 1.1.0 : 24/05/2020
 

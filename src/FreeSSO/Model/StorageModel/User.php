@@ -252,7 +252,7 @@ abstract class User extends \FreeSSO\Model\StorageModel\Base
      */
     public static function getAutocompleteField()
     {
-        return ['user_first_name', 'user_first_name'];
+        return ['user_first_name', 'user_last_name'];
     }
 
     /**
