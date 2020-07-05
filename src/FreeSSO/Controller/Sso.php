@@ -118,7 +118,7 @@ class Sso extends \FreeFW\Core\Controller
                 if ($config->save()) {
                     return $this->createSuccessEmptyResponse();
                 }
-                return $this->createErrorResponse(FFCST::ERROR_NOT_UPDATE);
+                return $this->createErrorResponse(FFCST::ERROR_NOT_UPDATE, $config);
             }
             return $this->createErrorResponse(FFCST::ERROR_NO_DATA);
         } else {

@@ -5,6 +5,7 @@
 * User title constants
 * Autocomplete fields on group and user
 * New createResponse from FreeFW in controllers
+* PartnerType & Id with default values in sso_user_broker
 
 # 1.1.0 : 24/05/2020
 
