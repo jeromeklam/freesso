@@ -1,5 +1,7 @@
-# 1.2.0 : --/--/2020
+# 1.2.0 : 09/07/2020
 
+* rajout d'une unicité sur la table group_type : le code est unique
+* rajout d'une unicité sur la table job_function : le code est unique
 * Migration
 * Proxy for Http Client Addr
 * User title constants

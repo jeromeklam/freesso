@@ -2,6 +2,7 @@
 namespace FreeSSO\Model\StorageModel;
 
 use \FreeFW\Constants as FFCST;
+use \FreeSSO\ErrorCodes as SsoErrors;
 
 /**
  * GroupType
@@ -85,5 +86,20 @@ abstract class GroupType extends \FreeSSO\Model\StorageModel\Base
     public static function getSourceComments()
     {
         return 'Gestion des types de groupes';
+    }
+
+    /**
+     * Get uniq indexes
+     *
+     * @return array[]
+     */
+    public static function getUniqIndexes()
+    {
+        return [
+            'code' => [
+                FFCST::INDEX_FIELDS => 'grpt_code',
+                FFCST::INDEX_EXISTS => SsoErrors::ERROR_GROUPTYPE_CODE_EXISTS
+            ]
+        ];
     }
 }
