@@ -2,6 +2,7 @@
 namespace FreeSSO\Model\StorageModel;
 
 use \FreeFW\Constants as FFCST;
+use \FreeSSO\ErrorCodes as SsoErrors;
 
 /**
  * JobFunction
@@ -85,5 +86,20 @@ abstract class JobFunction extends \FreeSSO\Model\StorageModel\Base
     public static function getSourceComments()
     {
         return 'Gestion des fonctions';
+    }
+
+    /**
+     * Get uniq indexes
+     *
+     * @return array[]
+     */
+    public static function getUniqIndexes()
+    {
+        return [
+            'code' => [
+                FFCST::INDEX_FIELDS => 'fct_code',
+                FFCST::INDEX_EXISTS => SsoErrors::ERROR_JOBFUNCTION_CODE_EXISTS
+            ]
+        ];
     }
 }
