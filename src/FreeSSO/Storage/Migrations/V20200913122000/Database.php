@@ -1,5 +1,5 @@
 <?php
-namespace FreeSSO\Storage\Migrations\V20201309122000;
+namespace FreeSSO\Storage\Migrations\V20200913122000;
 
 /**
  *
