@@ -30,6 +30,12 @@ class Group extends \FreeSSO\Model\Base\Group
     protected $parent = null;
 
     /**
+     * Parent realm
+     * @var \FreeSSO\Model\Group
+     */
+    protected $realm = null;
+
+    /**
      * Set group type
      *
      * @param \FreeSSO\Model\GroupType $p_group_type
@@ -73,6 +79,29 @@ class Group extends \FreeSSO\Model\Base\Group
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Set realm
+     *
+     * @param \FreeSSO\Model\Group $p_realm
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function setRealm($p_realm)
+    {
+        $this->realm = $p_realm;
+        return $this;
+    }
+
+    /**
+     * Get group
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function getRealm()
+    {
+        return $this->realm;
     }
 
     /**

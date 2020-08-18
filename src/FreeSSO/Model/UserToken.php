@@ -10,4 +10,10 @@ use \FreeFW\Constants as FFCST;
  */
 class UserToken extends \FreeSSO\Model\Base\UserToken
 {
+
+    /**
+     * Behaviour
+     */
+    use \FreeSSO\Model\Behaviour\Broker;
+    use \FreeSSO\Model\Behaviour\User;
 }
