@@ -8,6 +8,28 @@ use \FreeFW\Router\Route as FFCSTRT;
  * @author jeromeklam
  */
 $routes_sso = [
+    'free_s_s_o.user.colleagues' => [
+        FFCSTRT::ROUTE_COLLECTION => 'FreeSSO/Sso/User',
+        FFCSTRT::ROUTE_COMMENT    => 'Retourne les collègues de l\'utilisateur',
+        FFCSTRT::ROUTE_METHOD     => \FreeFW\Router\Route::METHOD_GET,
+        FFCSTRT::ROUTE_MODEL      => 'FreeSSO::Model::User',
+        FFCSTRT::ROUTE_URL        => '/v1/sso/colleagues',
+        FFCSTRT::ROUTE_CONTROLLER => 'FreeSSO::Controller::Sso',
+        FFCSTRT::ROUTE_FUNCTION   => 'colleagues',
+        FFCSTRT::ROUTE_AUTH       => \FreeFW\Router\Route::AUTH_BOTH,
+        FFCSTRT::ROUTE_MIDDLEWARE => [],
+        FFCSTRT::ROUTE_INCLUDE    => [
+            FFCSTRT::ROUTE_INCLUDE_DEFAULT => []
+        ],
+        FFCSTRT::ROUTE_SCOPE      => [],
+        FFCSTRT::ROUTE_RESULTS    => [
+            '201' => [
+                FFCSTRT::ROUTE_RESULTS_TYPE    => FFCSTRT::RESULT_LIST,
+                FFCSTRT::ROUTE_RESULTS_MODEL   => 'FreeSSO::Model::User',
+                FFCSTRT::ROUTE_RESULTS_COMMENT => 'Liste des collègues',
+            ]
+        ]
+    ],
     'free_s_s_o.user.signin' => [
         FFCSTRT::ROUTE_COLLECTION => 'FreeSSO/Sso/User',
         FFCSTRT::ROUTE_COMMENT    => 'Demande de connexion de l\'utilisateur',

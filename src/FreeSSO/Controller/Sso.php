@@ -385,4 +385,30 @@ class Sso extends \FreeFW\Core\Controller
             return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $error);
         }
     }
+
+    /**
+     * Retourne les collègues de l'utilisateur
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function colleagues(\Psr\Http\Message\ServerRequestInterface $p_request)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.colleagues.start');
+        /**
+         * @var \FreeSSO\Server $sso
+         */
+        try {
+            $sso   = \FreeFW\DI\Di::getShared('sso');
+            $users = \FreeSSO\Model\User::find();
+            $this->logger->debug('FreeSSO.Controller.Sso.colleagues.end');
+            return $this->createSuccessOkResponse($users);
+        } catch (\Exception $ex) {
+            // @todo
+            $error = \FreeFW\Model\Error::getFromException(409, $ex);
+            $this->logger->debug('FreeSSO.Controller.Sso.colleagues.end');
+            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $error);
+        }
+    }
 }
