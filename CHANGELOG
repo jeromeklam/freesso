@@ -1,3 +1,9 @@
+# 1.3.0 : 25/10/2020
+
+* Updates password
+* Session content
+* User avatar
+
 # 1.2.0 : 09/07/2020
 
 * rajout d'une unicité sur la table group_type : le code est unique
