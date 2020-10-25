@@ -10,7 +10,7 @@ use \FreeSSO\ErrorCodes as SsoErrors;
  */
 class Error extends \FreeFW\Core\Model
 {
-    
+
     /**
      * Get new error from exception
      *
@@ -32,6 +32,9 @@ class Error extends \FreeFW\Core\Model
             case SsoErrors::ERROR_PASSWORD_WRONG;
             case SsoErrors::ERROR_PASSWORD_EMPTY;
                 $me->addError($p_ex->getCode(), $p_ex->getMessage(), $p_status, 'password');
+                break;
+            case SsoErrors::ERROR_OLD_PASSWORD_WRONG;
+                $me->addError($p_ex->getCode(), $p_ex->getMessage(), $p_status, 'old_password');
                 break;
             default:
                 $me->addError($p_ex->getCode(), $p_ex->getMessage(), $p_status);

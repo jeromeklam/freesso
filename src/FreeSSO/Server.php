@@ -233,7 +233,7 @@ class Server implements
     public function signinByUserToken($p_token)
     {
         try {
-            $this->fireEvent('sso:beforeSigninByAutoLogin');
+            $this->fireEvent('sso:beforeSigninByUserToken');
         } catch (\Exception $ex) {
         }
         $this->user = false;
@@ -277,7 +277,7 @@ class Server implements
             throw new SsoException(sprintf('Le token %s n\'existe pas !', $p_token), ErrorCodes::ERROR_LOGIN_NOTFOUND);
         }
         try {
-            $this->fireEvent('sso:afterSigninByAutoLogin', $user);
+            $this->fireEvent('sso:afterSigninByUserToken', $user);
         } catch (\Exception $ex) {
         }
         return $this->user;
@@ -452,7 +452,7 @@ class Server implements
                 $this->session->save();
                 if ($p_remember) {
                     // @todo : set autologin cookie
-                    $this->autologin = \FreeFW\DI\DI::get('FreeSSO::Model::AutologinCookie');
+                    $this->autologin = new \FreeSSO\Model\AutologinCookie();
                     $this->autologin
                         ->setUserId($user->getUserId())
                         ->setAutoTs(\FreeFW\Tools\Date::getCurrentTimestamp())
@@ -976,7 +976,7 @@ class Server implements
             $p_user->save();
             return true;
         } else {
-            throw new SsoException('Mot de passe incorrect !', ErrorCodes::ERROR_PASSWORD_WRONG);
+            throw new SsoException('Mot de passe incorrect !', ErrorCodes::ERROR_OLD_PASSWORD_WRONG);
         }
         throw new SsoException('Mot de passe incorrect !', ErrorCodes::ERROR_PASSWORD_WRONG);
     }

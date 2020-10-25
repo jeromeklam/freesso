@@ -1,6 +1,9 @@
 <?php
 namespace FreeSSO\Model\StorageModel;
 
+use FreeFW\Core\Model;
+use FreeFW\Core\StorageModel;
+
 /**
  * Cause
  *

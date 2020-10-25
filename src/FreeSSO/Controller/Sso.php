@@ -60,16 +60,10 @@ class Sso extends \FreeFW\Core\Controller
             $data      = null;
             if ($apiParams->hasData()) {
                 /**
-                 * @var \FreeSSO\Model\User $data
+                 * @var \POSSO\Model\User $data
                  */
                 $data = $apiParams->getData();
-                // I only update some fields...
-                $user
-                    ->setUserFirstName($data->getUserFirstName())
-                    ->setUserLastName($data->getUserLastName())
-                    ->setUserEmail($data->getUserEmail())
-                    ->setLangId($data->getLang()->getLangId())
-                ;
+                $user->merge($data);
                 if ($user->save()) {
                     return $this->createSuccessOkResponse($user);
                 }
@@ -116,7 +110,7 @@ class Sso extends \FreeFW\Core\Controller
                     }
                 }
                 if ($config->save()) {
-                    return $this->createSuccessEmptyResponse();
+                    return $this->createSuccessOkResponse($user);
                 }
                 return $this->createErrorResponse(FFCST::ERROR_NOT_UPDATE, $config);
             }
@@ -218,7 +212,10 @@ class Sso extends \FreeFW\Core\Controller
                     $user  = $sso->getUserByLogin($data->getLogin());
                     if ($user) {
                         $emailService = \FreeFW\DI\DI::get('FreeFW::Service::Email');
-                        $langId       = strtolower($user->getLangId());
+                        $langId       = intval($user->getLangId());
+                        if ($langId <= 0) {
+                            $langId = $this->getAppConfig()->get('default:lang_id');
+                        }
                         /**
                          *
                          * @var \FreeFW\Model\Email $email
@@ -259,7 +256,7 @@ class Sso extends \FreeFW\Core\Controller
                                 }
                                 //
                                 $this->logger->debug('FreeSSO.Controller.Sso.askPassword.end');
-                                return $this->createSuccessAddResponse();
+                                return $this->createSuccessAddResponse('');
                             }
                         }
                     }

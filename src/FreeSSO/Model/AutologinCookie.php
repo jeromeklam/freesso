@@ -8,8 +8,7 @@ use \FreeFW\Constants as FFCST;
  *
  * @author jeromeklam
  */
-class AutologinCookie extends \FreeSSO\Model\Base\AutologinCookie implements
-    \FreeFW\Interfaces\ApiResponseInterface
+class AutologinCookie extends \FreeSSO\Model\Base\AutologinCookie
 {
 
     /**
