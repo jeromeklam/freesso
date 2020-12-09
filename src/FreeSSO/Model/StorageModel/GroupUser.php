@@ -143,8 +143,15 @@ abstract class GroupUser extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_PRIVATE => 'gru_rgpd',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_JSON,
         FFCST::PROPERTY_OPTIONS => [],
-        FFCST::PROPERTY_COMMENT => 'Informarions liées au RGPD',
+        FFCST::PROPERTY_COMMENT => 'Informations liées au RGPD',
         FFCST::PROPERTY_SAMPLE  => '{"last_validation":"2020-04-01"}',
+    ];
+    protected static $PRP_GRU_PERMISIONS = [
+        FFCST::PROPERTY_PRIVATE => 'gru_permissions',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_JSON,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Droits d\'accès',
+        FFCST::PROPERTY_SAMPLE  => '{"donation":"rwx"}',
     ];
 
     /**
@@ -169,7 +176,8 @@ abstract class GroupUser extends \FreeFW\Core\StorageModel
             'gru_ts'           => self::$PRP_GRU_TS,
             'gru_extern_id'    => self::$PRP_GRU_EXTERN_ID,
             'gru_informations' => self::$PRP_GRU_INFORMATIONS,
-            'gru_rgpd'         => self::$PRP_GRU_RGPD
+            'gru_rgpd'         => self::$PRP_GRU_RGPD,
+            'gru_permissions'  => self::$PRP_GRU_PERMISIONS
         ];
     }
 

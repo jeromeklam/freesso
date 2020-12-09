@@ -100,6 +100,12 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     protected $gru_rgpd = null;
 
     /**
+     * gru_permissions
+     * @var string
+     */
+    protected $gru_permissions = null;
+
+    /**
      * Set gru_id
      *
      * @param int $p_value
@@ -442,5 +448,28 @@ abstract class GroupUser extends \FreeSSO\Model\StorageModel\GroupUser
     public function getGruRgpd()
     {
         return $this->gru_rgpd;
+    }
+
+    /**
+     * Set gru_permissions
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Base\GroupUser
+     */
+    public function setGruPermissions($p_value)
+    {
+        $this->gru_permissions = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get gru_permissions
+     *
+     * @return string
+     */
+    public function getGruPermissions()
+    {
+        return $this->gru_permissions;
     }
 }

@@ -41,7 +41,7 @@ $routes_sso = [
         FFCSTRT::ROUTE_AUTH       => \FreeFW\Router\Route::AUTH_OUT,
         FFCSTRT::ROUTE_MIDDLEWARE => [],
         FFCSTRT::ROUTE_INCLUDE    => [
-            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['lang', 'config', 'realms']
+            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['lang', 'config', 'realms', 'default_group']
         ],
         FFCSTRT::ROUTE_SCOPE      => [],
         FFCSTRT::ROUTE_RESULTS    => [
@@ -80,7 +80,7 @@ $routes_sso = [
         FFCSTRT::ROUTE_AUTH       => \FreeFW\Router\Route::AUTH_BOTH,
         FFCSTRT::ROUTE_MIDDLEWARE => [],
         FFCSTRT::ROUTE_INCLUDE    => [
-            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['lang', 'config', 'realms']
+            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['lang', 'config', 'realms', 'default_group']
         ],
         FFCSTRT::ROUTE_SCOPE      => [],
         FFCSTRT::ROUTE_RESULTS    => [
@@ -88,6 +88,35 @@ $routes_sso = [
                 FFCSTRT::ROUTE_RESULTS_TYPE    => FFCSTRT::RESULT_OBJECT,
                 FFCSTRT::ROUTE_RESULTS_MODEL   => 'FreeSSO::Model::User',
                 FFCSTRT::ROUTE_RESULTS_COMMENT => 'Utilisateur modifié',
+            ]
+        ]
+    ],
+    'free_s_s_o.user.switch' => [
+        FFCSTRT::ROUTE_COLLECTION => 'FreeSSO/Sso/User',
+        FFCSTRT::ROUTE_COMMENT    => 'Demande de changement de group courant',
+        FFCSTRT::ROUTE_METHOD     => \FreeFW\Router\Route::METHOD_PUT,
+        FFCSTRT::ROUTE_URL        => '/v1/sso/switch_group/:grp_id',
+        FFCSTRT::ROUTE_CONTROLLER => 'FreeSSO::Controller::Sso',
+        FFCSTRT::ROUTE_FUNCTION   => 'switchGroup',
+        FFCSTRT::ROUTE_AUTH       => \FreeFW\Router\Route::AUTH_BOTH,
+        FFCSTRT::ROUTE_MIDDLEWARE => [],
+        FFCSTRT::ROUTE_INCLUDE    => [
+            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['lang', 'config', 'realms', 'default_group']
+        ],
+        FFCSTRT::ROUTE_SCOPE      => [],
+        FFCSTRT::ROUTE_PARAMETERS => [
+            'grp_id' => [
+                FFCSTRT::ROUTE_PARAMETER_ORIGIN   => FFCSTRT::ROUTE_PARAMETER_ORIGIN_PATH,
+                FFCSTRT::ROUTE_PARAMETER_TYPE     => FFCST::TYPE_STRING,
+                FFCSTRT::ROUTE_PARAMETER_REQUIRED => true,
+                FFCSTRT::ROUTE_PARAMETER_COMMENT  => 'Identifiant du groupe'
+            ],
+        ],
+        FFCSTRT::ROUTE_RESULTS    => [
+            '200' => [
+                FFCSTRT::ROUTE_RESULTS_TYPE    => FFCSTRT::RESULT_OBJECT,
+                FFCSTRT::ROUTE_RESULTS_MODEL   => 'FreeSSO::Model::User',
+                FFCSTRT::ROUTE_RESULTS_COMMENT => 'Utilisateur en cours',
             ]
         ]
     ],
@@ -101,7 +130,7 @@ $routes_sso = [
         FFCSTRT::ROUTE_AUTH       => \FreeFW\Router\Route::AUTH_BOTH,
         FFCSTRT::ROUTE_MIDDLEWARE => [],
         FFCSTRT::ROUTE_INCLUDE    => [
-            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['lang', 'config', 'realms']
+            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['lang', 'config', 'realms', 'default_group']
         ],
         FFCSTRT::ROUTE_SCOPE      => [],
         FFCSTRT::ROUTE_RESULTS    => [

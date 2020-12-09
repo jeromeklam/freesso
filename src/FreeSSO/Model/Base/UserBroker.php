@@ -76,6 +76,12 @@ abstract class UserBroker extends \FreeSSO\Model\StorageModel\UserBroker
     protected $ubrk_cache = null;
 
     /**
+     * grp_id
+     * @var int
+     */
+    protected $grp_id = null;
+
+    /**
      * Set ubrk_id
      *
      * @param int $p_value
@@ -284,9 +290,9 @@ abstract class UserBroker extends \FreeSSO\Model\StorageModel\UserBroker
 
     /**
      * Set config
-     * 
+     *
      * @param string $p_value
-     * 
+     *
      * @return \FreeSSO\Model\Base\UserBroker
      */
     public function setUbrkConfig($p_value)
@@ -297,7 +303,7 @@ abstract class UserBroker extends \FreeSSO\Model\StorageModel\UserBroker
 
     /**
      * Get config
-     * 
+     *
      * @return string
      */
     public function getUrbkConfig()
@@ -326,5 +332,28 @@ abstract class UserBroker extends \FreeSSO\Model\StorageModel\UserBroker
     public function getUrbkCache()
     {
         return $this->ubrk_cache;
+    }
+
+    /**
+     * Set grp_id
+     *
+     * @param int $p_value
+     *
+     * @return \FreeSSO\Model\Base\UserBroker
+     */
+    public function setGrpId($p_value)
+    {
+        $this->grp_id = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_id
+     *
+     * @return int
+     */
+    public function getGrpId()
+    {
+        return $this->grp_id;
     }
 }

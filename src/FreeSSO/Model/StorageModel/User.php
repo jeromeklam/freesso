@@ -193,6 +193,14 @@ abstract class User extends \FreeSSO\Model\StorageModel\Base
             ]
         ]
     ];
+    protected static $PRP_PERMISSIONS = [
+        FFCST::PROPERTY_PRIVATE => 'permissions',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_JSON,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_LOCAL],
+        FFCST::PROPERTY_COMMENT => 'Permissions de l\'utilisateur',
+        FFCST::PROPERTY_SAMPLE  => '{}',
+        FFCST::PROPERTY_DEFAULT => '{}',
+    ];
 
     /**
      * get properties
@@ -223,7 +231,8 @@ abstract class User extends \FreeSSO\Model\StorageModel\Base
             'user_val_login'          => self::$PRP_USER_VAL_LOGIN,
             'user_cnx'                => self::$PRP_USER_CNX,
             'user_extern_code'        => self::$PRP_USER_EXTERN_CODE,
-            'lang_id'                 => self::$PRP_LANG_ID
+            'lang_id'                 => self::$PRP_LANG_ID,
+            'permissions'             => self::$PRP_PERMISSIONS
         ];
     }
 

@@ -217,6 +217,27 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
         FFCST::PROPERTY_COMMENT => 'La configuration au format json',
         FFCST::PROPERTY_SAMPLE  => '{"site-public","https://mairie-joliville.fr"}',
     ];
+    protected static $PRP_GRP_PHONE = [
+        FFCST::PROPERTY_PRIVATE => 'grp_phone',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Le numéro de téléphone',
+        FFCST::PROPERTY_SAMPLE  => '01 01 01 01 01',
+    ];
+    protected static $PRP_GRP_EMAIL = [
+        FFCST::PROPERTY_PRIVATE => 'grp_email',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'L\'email',
+        FFCST::PROPERTY_SAMPLE  => 'support@jolieville.fr',
+    ];
+    protected static $PRP_GRP_SITE_URL = [
+        FFCST::PROPERTY_PRIVATE => 'grp_site_url',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'L\'url du site public',
+        FFCST::PROPERTY_SAMPLE  => 'https://jolieville.fr',
+    ];
 
     /**
      * get properties
@@ -248,6 +269,9 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
             'grp_sign'         => self::$PRP_GRP_SIGN,
             'grp_realm_id'     => self::$PRP_GRP_REALM_ID,
             'grp_config'       => self::$PRP_GRP_CONFIG,
+            'grp_phone'        => self::$PRP_GRP_PHONE,
+            'grp_email'        => self::$PRP_GRP_EMAIL,
+            'grp_site_url'     => self::$PRP_GRP_SITE_URL,
         ];
     }
 

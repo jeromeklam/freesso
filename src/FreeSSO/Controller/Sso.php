@@ -19,6 +19,49 @@ class Sso extends \FreeFW\Core\Controller
 {
 
     /**
+     * Change current group
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     * @param int                                      $p_grp_id
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function switchGroup(\Psr\Http\Message\ServerRequestInterface $p_request, $p_grp_id)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.login.start');
+        /**
+         * @var \FreeSSO\Server $sso
+         */
+        $sso  = \FreeFW\DI\Di::getShared('sso');
+        $user = $sso->getUser();
+        if ($user) {
+            $userBroker = \FreeSSO\Model\UserBroker::findFirst(
+                [
+                    'user_id' => $user->getUserId(),
+                    'brk_id'  => $sso->getBrokerId()
+                ]
+            );
+            if ($userBroker) {
+                $userGroup = \FreeSSO\Model\GroupUser::findFirst(
+                    [
+                        'user_id' => $user->getUserId(),
+                        'grp_id'  => $p_grp_id
+                    ]
+                );
+                if ($userGroup) {
+                    $userBroker->setGrpId($p_grp_id);
+                    if ($userBroker->save()) {
+                        $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+                        return $this->createSuccessOkResponse($user);
+                    }
+                }
+            }
+        }
+        $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+        return $this->createErrorResponse(FFCST::ERROR_GROUP_SWITCH);
+    }
+
+    /**
      * Check and touch session
      *
      * @param \Psr\Http\Message\ServerRequestInterface $p_request
@@ -28,12 +71,13 @@ class Sso extends \FreeFW\Core\Controller
     public function check(\Psr\Http\Message\ServerRequestInterface $p_request)
     {
         $this->logger->debug('FreeSSO.Controller.Sso.login.start');
-        $this->logger->debug('FreeSSO.Controller.Sso.login.end');
         $sso  = \FreeFW\DI\Di::getShared('sso');
         $user = $sso->getUser();
         if ($user) {
+            $this->logger->debug('FreeSSO.Controller.Sso.login.end');
             return $this->createSuccessOkResponse($user);
         } else {
+            $this->logger->debug('FreeSSO.Controller.Sso.login.end');
             return $this->createErrorResponse(FFCST::ERROR_NOT_AUTHENTICATED);
         }
     }

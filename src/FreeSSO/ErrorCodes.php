@@ -35,5 +35,6 @@ class ErrorCodes
     const ERROR_JOBFUNCTION_CODE_EXISTS = 10300018;
     const ERROR_GROUPTYPE_CODE_EXISTS   = 10300019;
     const ERROR_OLD_PASSWORD_WRONG      = 10300020;
+    const ERROR_USER_GROUP              = 10300021;
 
 }

@@ -142,6 +142,24 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     protected $grp_config = null;
 
     /**
+     * grp_phone
+     * @var string
+     */
+    protected $grp_phone = null;
+
+    /**
+     * grp_email
+     * @var string
+     */
+    protected $grp_email = null;
+
+    /**
+     * grp_site_url
+     * @var string
+     */
+    protected $grp_site_url = null;
+
+    /**
      * Set grp_id
      *
      * @param int $p_value
@@ -645,5 +663,74 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     public function getGrpConfig()
     {
         return $this->grp_config;
+    }
+
+    /**
+     * Set grp_phone
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Base\Group
+     */
+    public function setPhone($p_value)
+    {
+        $this->grp_phone = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->grp_phone;
+    }
+
+    /**
+     * Set grp_email
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Base\Group
+     */
+    public function setGrpEmail($p_value)
+    {
+        $this->grp_email = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_email
+     *
+     * @return string
+     */
+    public function getGrpEmail()
+    {
+        return $this->grp_email;
+    }
+
+    /**
+     * Set grp_site_url
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Base\Group
+     */
+    public function setGrpSiteUrl($p_value)
+    {
+        $this->grp_site_url = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_site_url
+     *
+     * @return string
+     */
+    public function getGrpSiteUrl()
+    {
+        return $this->grp_site_url;
     }
 }

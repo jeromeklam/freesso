@@ -109,6 +109,20 @@ abstract class UserBroker extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_COMMENT => 'Cache de données',
         FFCST::PROPERTY_SAMPLE  => '{}',
     ];
+    protected static $PRP_GRP_ID = [
+        FFCST::PROPERTY_PRIVATE => 'grp_id',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BIGINT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_FK],
+        FFCST::PROPERTY_COMMENT => 'Identifiant du groupe par défaut',
+        FFCST::PROPERTY_SAMPLE  => 123,
+        FFCST::PROPERTY_FK      => ['group' =>
+            [
+                FFCST::FOREIGN_MODEL => 'FreeSSO::Model::Group',
+                FFCST::FOREIGN_FIELD => 'grp_id',
+                FFCST::FOREIGN_TYPE  => \FreeFW\Model\Query::JOIN_LEFT
+            ]
+        ]
+    ];
 
     /**
      * get properties
@@ -128,7 +142,8 @@ abstract class UserBroker extends \FreeFW\Core\StorageModel
             'ubrk_auth_datas'   => self::$PRP_UBRK_AUTH_DATAS,
             'ubrk_end'          => self::$PRP_UBRK_END,
             'ubrk_config'       => self::$PRP_UBRK_CONFIG,
-            'ubrk_cache'        => self::$PRP_UBRK_CACHE
+            'ubrk_cache'        => self::$PRP_UBRK_CACHE,
+            'grp_id'            => self::$PRP_GRP_ID,
         ];
     }
 

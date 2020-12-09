@@ -87,6 +87,24 @@ class Server implements
     protected $new_session = false;
 
     /**
+     * User group
+     * @var \FreeSSO\Model\Group
+     */
+    protected $user_group = null;
+
+    /**
+     * User scope
+     * @var string
+     */
+    protected $scope = null;
+
+    /**
+     * Permissions (json)
+     * @var string
+     */
+    protected $permissions = null;
+
+    /**
      * Constructor
      *
      * @param array   $p_options
@@ -252,7 +270,13 @@ class Server implements
                     throw new SsoException(
                         sprintf('L\'utilisateur n\'est plus actif !'),
                         ErrorCodes::ERROR_USER_DEACTIVATED
-                        );
+                    );
+                }
+                if (!$this->verifyUserGroup($user->getUserId())) {
+                    throw new SsoException(
+                        sprintf('L\'utilisateur n\'a pas de groupe courant !'),
+                        ErrorCodes::ERROR_USER_GROUP
+                    );
                 }
                 // Ok, save to session...
                 if ($this->session instanceof SSOSession) {
@@ -314,6 +338,12 @@ class Server implements
                     throw new SsoException(
                         sprintf('L\'utilisateur n\'est plus actif !'),
                         ErrorCodes::ERROR_USER_DEACTIVATED
+                    );
+                }
+                if (!$this->verifyUserGroup($user->getUserId())) {
+                    throw new SsoException(
+                        sprintf('L\'utilisateur n\'a pas de groupe courant !'),
+                        ErrorCodes::ERROR_USER_GROUP
                     );
                 }
                 // Ok, save to session...
@@ -382,6 +412,12 @@ class Server implements
                     ErrorCodes::ERROR_USER_DEACTIVATED
                 );
             }
+            if (!$this->verifyUserGroup($user->getUserId())) {
+                throw new SsoException(
+                    sprintf('L\'utilisateur n\'a pas de groupe courant !'),
+                    ErrorCodes::ERROR_USER_GROUP
+                );
+            }
             // Ok, save to session...
             if ($this->session instanceof SSOSession) {
                 $this->session->setUserId($user->getUserId());
@@ -444,6 +480,12 @@ class Server implements
                 } else {
                     throw new SsoException(sprintf('Le compte n\'est plus actif !'), ErrorCodes::ERROR_USER_DEACTIVATED);
                 }
+            }
+            if (!$this->verifyUserGroup($user->getUserId())) {
+                throw new SsoException(
+                    sprintf('L\'utilisateur n\'a pas de groupe courant !'),
+                    ErrorCodes::ERROR_USER_GROUP
+                );
             }
             // Ok, save to session...
             if ($this->session instanceof SSOSession) {
@@ -1269,5 +1311,75 @@ class Server implements
     public function getAutoLogin()
     {
         return $this->autologin;
+    }
+
+    /**
+     * Verify user has current correct group
+     *
+     * @param int $p_user_id
+     *
+     * @return boolean
+     */
+    protected function verifyUserGroup($p_user_id)
+    {
+        $this->user_group  = null;
+        $this->scope       = null;
+        $this->permissions = null;
+        $userBroker = \FreeSSO\Model\UserBroker::findFirst(
+            [
+                'user_id' => $p_user_id,
+                'brk_id'  => $this->getBrokerId()
+            ]
+        );
+        if ($userBroker) {
+            $grp_id = $userBroker->getGrpId();
+            if ($grp_id) {
+                $conditions = new \FreeFW\Model\Conditions();
+                $conditions->initFromArray(
+                    [
+                        'group.grp_realm_id' => $this->getBrokerId(),
+                        'user_id'            => $p_user_id,
+                        'grp_id'             => $grp_id
+                    ]
+                );
+                $model  = \FreeFW\DI\DI::get('FreeSSO::Model::GroupUser');
+                $query  = $model->getQuery();
+                $rels   = [];
+                $rels[] = 'group';
+                $query
+                    ->addConditions($conditions)
+                    ->addRelations($rels)
+                ;
+                if ($query->execute()) {
+                    foreach ($query->getResult() as $line) {
+                        $this->scope       = $line->getGruScope();
+                        $this->permissions = json_decode($line->getGruPermissions());
+                        $this->user_group  = \FreeSSO\Model\Group::findFirst(['grp_id' => $grp_id]);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get user group
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function getUserGroup()
+    {
+        return $this->user_group;
+    }
+
+    /**
+     * Get permissions
+     *
+     * @return string
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
     }
 }

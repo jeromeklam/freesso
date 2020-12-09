@@ -59,6 +59,12 @@ class User extends \FreeSSO\Model\Base\User implements
     protected $realms = null;
 
     /**
+     * User permissions, from sso
+     * @var string / json
+     */
+    protected $permissions = null;
+
+    /**
      *
      * {@inheritDoc}
      * @see \FreeFW\Core\Model::init()
@@ -234,5 +240,59 @@ class User extends \FreeSSO\Model\Base\User implements
             }
         }
         return $this->realms;
+    }
+
+    /**
+     * Geu user default group for current broker
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function getDefaultGroup()
+    {
+        $defaultGroup = null;
+        /**
+         * @var \FreeSSO\Server $sso
+         */
+        $sso   = \FreeFW\DI\DI::getShared('sso');
+        if ($this->brokers === null && $this->getUserId() > 0) {
+            $this->brokers = new \FreeFW\Model\ResultSet();
+            $conditions    = new \FreeFW\Model\Conditions();
+            $conditions->initFromArray(
+                [
+                    'user_id' => $this->getUserId(),
+                    'brk_id' => $sso->getBrokerId()
+                ]
+            );
+            $model  = \FreeFW\DI\DI::get('FreeSSO::Model::UserBroker');
+            $query  = $model->getQuery();
+            $rels   = [];
+            $rels[] = 'group';
+            $query
+                ->addConditions($conditions)
+                ->addRelations($rels)
+            ;
+            if ($query->execute()) {
+                foreach ($query->getResult() as $line) {
+                    $defaultGroup = $line->getGroup();
+                    break;
+                }
+            }
+        }
+        return $defaultGroup;
+    }
+
+    /**
+     * Return permissions
+     *
+     * @return string
+     */
+    public function getPermissions()
+    {
+        $sso = \FreeFW\DI\DI::getShared('sso');
+        $permissions = $sso->getPermissions();
+        if ($permissions) {
+            return json_encode($permissions);
+        }
+        return '';
     }
 }
