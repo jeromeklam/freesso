@@ -1337,7 +1337,7 @@ class Server implements
                 $conditions = new \FreeFW\Model\Conditions();
                 $conditions->initFromArray(
                     [
-                        'group.grp_realm_id' => $this->getBrokerId(),
+                        //'group.grp_realm_id' => $this->getBrokerId(),
                         'user_id'            => $p_user_id,
                         'grp_id'             => $grp_id
                     ]
