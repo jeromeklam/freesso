@@ -6,7 +6,8 @@ namespace FreeSSO\Storage\Migrations\V20201206091000;
  * @author jeromeklam
  *
  */
-class Database extends \FreeFW\Storage\Migrations\AbstractMigration {
+class Database extends \FreeFW\Storage\Migrations\AbstractMigration
+{
 
     /**
      * Update default group for all users

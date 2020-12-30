@@ -85,7 +85,9 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Base
         FFCST::PROPERTY_PRIVATE => 'brk_users_scope',
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
         FFCST::PROPERTY_OPTIONS => [],
-        FFCST::PROPERTY_COMMENT => 'Les restrictions des types d\'utilisateurs, séparées par, vide pour tout authoriser',
+        FFCST::PROPERTY_COMMENT =>
+            'Les restrictions des types d\'utilisateurs, ' .
+            'séparées par, vide pour tout authoriser',
         FFCST::PROPERTY_SAMPLE  => '',
     ];
     protected static $PRP_BRK_AUTH = [
@@ -115,7 +117,9 @@ abstract class Broker extends \FreeSSO\Model\StorageModel\Base
         FFCST::PROPERTY_TYPE    => FFCST::TYPE_JSON,
         FFCST::PROPERTY_OPTIONS => [],
         FFCST::PROPERTY_COMMENT => 'La configuration spécifique du broker',
-        FFCST::PROPERTY_SAMPLE  => '{"site" : {"url": "http://localhost:6075"}, "email": {"from-email" : "support@test.fr"}}',
+        FFCST::PROPERTY_SAMPLE  =>
+            '{"site" : {"url": "http://localhost:6075"}, ' .
+            '"email": {"from-email" : "support@test.fr"}}',
     ];
     protected static $PRP_GRP_ID = [
         FFCST::PROPERTY_PRIVATE => 'grp_id',

@@ -6,7 +6,8 @@ namespace FreeSSO\Storage\Migrations\V20201202142000;
  * @author jeromeklam
  *
  */
-class Database extends \FreeFW\Storage\Migrations\AbstractMigration {
+class Database extends \FreeFW\Storage\Migrations\AbstractMigration
+{
 
     /**
      *
