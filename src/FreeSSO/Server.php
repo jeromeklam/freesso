@@ -295,7 +295,10 @@ class Server implements
                     }
                 }
             } else {
-                throw new SsoException(sprintf('Le token %s n\'existe pas !', $p_token), ErrorCodes::ERROR_LOGIN_NOTFOUND);
+                throw new SsoException(
+                    sprintf('Le token %s n\'existe pas !', $p_token),
+                    ErrorCodes::ERROR_LOGIN_NOTFOUND
+                );
             }
         } else {
             throw new SsoException(sprintf('Le token %s n\'existe pas !', $p_token), ErrorCodes::ERROR_LOGIN_NOTFOUND);
@@ -363,10 +366,16 @@ class Server implements
                     }
                 }
             } else {
-                throw new SsoException(sprintf('Le login %s n\'existe pas !', $p_cookie), ErrorCodes::ERROR_LOGIN_NOTFOUND);
+                throw new SsoException(
+                    sprintf('Le login %s n\'existe pas !', $p_cookie),
+                    ErrorCodes::ERROR_LOGIN_NOTFOUND
+                );
             }
         } else {
-            throw new SsoException(sprintf('Le cookie %s n\'existe pas !', $p_cookie), ErrorCodes::ERROR_LOGIN_NOTFOUND);
+            throw new SsoException(
+                sprintf('Le cookie %s n\'existe pas !', $p_cookie),
+                ErrorCodes::ERROR_LOGIN_NOTFOUND
+            );
         }
         try {
             $this->fireEvent('sso:afterSigninByAutoLogin', $user);
@@ -476,9 +485,15 @@ class Server implements
             }
             if (!$user->isActive()) {
                 if ($user->getUserValLogin() != '') {
-                    throw new SsoException(sprintf('Le compte n\'a pas été activé !'), ErrorCodes::ERROR_USER_NOTACTIVATED);
+                    throw new SsoException(
+                        sprintf('Le compte n\'a pas été activé !'),
+                        ErrorCodes::ERROR_USER_NOTACTIVATED
+                    );
                 } else {
-                    throw new SsoException(sprintf('Le compte n\'est plus actif !'), ErrorCodes::ERROR_USER_DEACTIVATED);
+                    throw new SsoException(
+                        sprintf('Le compte n\'est plus actif !'),
+                        ErrorCodes::ERROR_USER_DEACTIVATED
+                    );
                 }
             }
             if (!$this->verifyUserGroup($user->getUserId())) {
@@ -1169,7 +1184,10 @@ class Server implements
                 throw new SsoException('Impossible de valider le compte !', ErrorCodes::ERROR_MODIFICATION);
             }
         } else {
-            throw new SsoException(sprintf('Token de validation %s non trouvé !', $p_token), ErrorCodes::ERROR_TOKEN_NOT_FOUND);
+            throw new SsoException(
+                sprintf('Token de validation %s non trouvé !', $p_token),
+                ErrorCodes::ERROR_TOKEN_NOT_FOUND
+            );
         }
         return $user;
     }

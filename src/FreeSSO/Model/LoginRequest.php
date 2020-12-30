@@ -122,7 +122,8 @@ class LoginRequest extends \FreeFW\Core\Model
      *
      * @return string
      */
-    public function getOauth2(){
+    public function getOauth2()
+    {
         return $this->oauth2;
     }
 

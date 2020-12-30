@@ -45,9 +45,9 @@ class GroupUser extends \FreeSSO\Model\Base\GroupUser
 
     /**
      * Set group
-     * 
+     *
      * @param \FreeSSO\Model\Group $p_group
-     * 
+     *
      * @return \FreeSSO\Model\GroupUser
      */
     public function setGroup($p_group)
@@ -58,19 +58,19 @@ class GroupUser extends \FreeSSO\Model\Base\GroupUser
 
     /**
      * Get group
-     * 
+     *
      * @return \FreeSSO\Model\Group
      */
     public function getGroup()
     {
-       return $this->group;
+        return $this->group;
     }
 
     /**
      * Set user
-     * 
+     *
      * @param \FreeSSO\Model\User $p_user
-     * 
+     *
      * @return \FreeSSO\Model\GroupUser
      */
     public function setUser($p_user)
@@ -81,7 +81,7 @@ class GroupUser extends \FreeSSO\Model\Base\GroupUser
 
     /**
      * Get user
-     * 
+     *
      * @return \FreeSSO\Model\User
      */
     public function getUser()
@@ -91,9 +91,9 @@ class GroupUser extends \FreeSSO\Model\Base\GroupUser
 
     /**
      * Set job function
-     * 
+     *
      * @param \FreeSSO\Model\JobFunction $p_job_function
-     * 
+     *
      * @return \FreeSSO\Model\GroupUser
      */
     public function setJobFunction($p_job_function)
@@ -104,7 +104,7 @@ class GroupUser extends \FreeSSO\Model\Base\GroupUser
 
     /**
      * Get Job function
-     * 
+     *
      * @return \FreeSSO\Model\JobFunction
      */
     public function getJobFunction()

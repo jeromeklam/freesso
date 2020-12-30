@@ -22,11 +22,11 @@ class FreeFW
         foreach ($paths as $idx => $onePath) {
             if (is_file($onePath)) {
                 $myCommands = @include($onePath);
-                if (is_array($myCommands)) {
+                /*if (is_array($myCommands)) {
                     foreach ($myCommands as $idx => $oneCommand) {
-                       
+
                     }
-                }
+                }*/
             }
         }
         return $commands;

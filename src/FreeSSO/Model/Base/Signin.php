@@ -133,9 +133,9 @@ abstract class Signin extends \FreeSSO\Model\StorageModel\Signin
 
     /**
      * Set token
-     * 
+     *
      * @param string $p_token
-     * 
+     *
      * @return \FreeSSO\Model\Base\Signin
      */
     public function setToken($p_token)
@@ -146,7 +146,7 @@ abstract class Signin extends \FreeSSO\Model\StorageModel\Signin
 
     /**
      * Get token
-     * 
+     *
      * @return string
      */
     public function getToken()
