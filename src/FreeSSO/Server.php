@@ -395,10 +395,10 @@ class Server implements
      *
      * @return boolean
      */
-    public function signinByIdAndLogin($p_id, $p_login)
+    public function signinByIdAndLogin($p_id, $p_login, $p_check_session = true)
     {
         // First, if new session, it is not possible... Server has revoked token...
-        if ($this->new_session) {
+        if ($p_check_session && $this->new_session) {
             $this->user = false;
             return $this->user;
         }
