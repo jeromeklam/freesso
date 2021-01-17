@@ -20,8 +20,8 @@ class FreeFW
          * @var \Psr\Cache\CacheItemPoolInterface $cache
          */
         $cache   = \FreeFW\DI\DI::getShared('cache');
-        if ($cache && $cache->hasItem('FreeFW.routes')) {
-            $item = $cache->getItem('FreeFW.routes');
+        if ($cache && $cache->hasItem('FreeSSO.routes')) {
+            $item = $cache->getItem('FreeSSO.routes');
             if ($item && $item->isHit()) {
                 return $item->get();
             }
@@ -76,7 +76,7 @@ class FreeFW
             }
         }
         if ($cache) {
-            $item = new \FreeFW\Cache\Item('FreeFW.routes');
+            $item = new \FreeFW\Cache\Item('FreeSSO.routes');
             $item->set($routes);
             $cache->save($item);
         }
