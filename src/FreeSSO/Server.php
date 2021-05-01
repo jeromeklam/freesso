@@ -748,15 +748,17 @@ class Server implements
             }
         }
         $query = BrokerSession::getQuery(\FreeFW\Model\Query::QUERY_DELETE);
-        $query->conditionLower(
-            'FreeSSO::Model::BrokerSession.brs_end',
-            \FreeFW\Tools\Date::getCurrentTimestamp()
+        $query->addFromFilters(
+            [
+                'brs_end' => [\FreeFW\Storage\Storage::COND_LOWER => \FreeFW\Tools\Date::getCurrentTimestamp()]
+            ]
         );
         $query->execute();
         $query = SSOSession::getQuery(\FreeFW\Model\Query::QUERY_DELETE);
-        $query->conditionLower(
-            'FreeSSO::Model::Session.sess_end',
-            \FreeFW\Tools\Date::getCurrentTimestamp()
+        $query->addFromFilters(
+            [
+                'sess_end' => [\FreeFW\Storage\Storage::COND_LOWER => \FreeFW\Tools\Date::getCurrentTimestamp()]
+            ]
         );
         $query->execute();
     }

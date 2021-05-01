@@ -266,7 +266,7 @@ class Sso extends \FreeFW\Core\Controller
                         }
                         /**
                          *
-                         * @var \FreeFW\Model\Email $email
+                         * @var \FreeFW\Mail\Email $email
                          */
                         $email = $emailService->getEmail('ASK_PASSWORD', $langId);
                         if ($email) {
@@ -293,11 +293,11 @@ class Sso extends \FreeFW\Core\Controller
                                     ->setLangId($langId)
                                     ->setMsgObjectName('FreeSSO_User')
                                     ->setMsgObjectId($user->getUserId())
-                                    ->setMsgSubject($email->getEmailSubject())
-                                    ->setMsgBody($email->getEmailBody())
+                                    ->setMsgSubject($email->getSubject())
+                                    ->setMsgBody($email->getHtmlBody())
                                     ->addDest($user->getUserLogin())
-                                    ->setFrom($email->getEmailFrom(), $email->getEmailFromName())
-                                    ->setReplyTo($email->getEmailReplyTo(), $email->getEmailFromName())
+                                    ->setFrom($email->getFromEmail(), $email->getFromName())
+                                    ->setReplyTo($email->getReplyToEmail(), $email->getReplyToName())
                                 ;
                                 if ($message->create()) {
                                     $message->send();
