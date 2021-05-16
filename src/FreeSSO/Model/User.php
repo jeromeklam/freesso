@@ -243,7 +243,7 @@ class User extends \FreeSSO\Model\Base\User implements
     }
 
     /**
-     * Geu user default group for current broker
+     * Get user default group for current broker
      *
      * @return \FreeSSO\Model\Group
      */
