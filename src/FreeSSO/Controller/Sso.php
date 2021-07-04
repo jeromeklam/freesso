@@ -359,7 +359,7 @@ class Sso extends \FreeFW\Core\Controller
                     if ($token != '') {
                         $user = $sso->getUserFromPasswordToken($token);
                         if ($user) {
-                            $user->changeUserPasswordFromToken($token, $data->getPassword());
+                            $sso->changeUserPasswordFromToken($token, $data->getPassword());
                             $this->logger->debug('FreeSSO.Controller.Sso.changePassword.end');
                             return $this->createSuccessEmptyResponse();
                         } else {
