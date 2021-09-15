@@ -1398,8 +1398,11 @@ class Server implements
      *
      * @return string
      */
-    public function getPermissions()
+    public function getPermissions() : string
     {
+        if (!$this->permissions) {
+            return '';
+        }
         return $this->permissions;
     }
 }
