@@ -263,7 +263,7 @@ class Server implements
         ]);
         if ($userToken) {
             $user = User::findFirst([
-                'user_id'    => $userToken->getUserId()
+                'user_id' => $userToken->getUserId()
             ]);
             if ($user instanceof User) {
                 if (!$user->isActive()) {
