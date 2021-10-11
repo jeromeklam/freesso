@@ -238,6 +238,13 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
         FFCST::PROPERTY_COMMENT => 'L\'url du site public',
         FFCST::PROPERTY_SAMPLE  => 'https://jolieville.fr',
     ];
+    protected static $PRP_GRP_EMAIL_PAYMENT = [
+        FFCST::PROPERTY_PRIVATE => 'grp_email_payment',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Conditions de paiement',
+        FFCST::PROPERTY_SAMPLE  => '<p>...</p>',
+    ];
 
     /**
      * get properties
@@ -247,31 +254,32 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
     public static function getProperties()
     {
         return [
-            'grp_id'           => self::$PRP_GRP_ID,
-            'grpt_id'          => self::$PRP_GRPT_ID,
-            'grp_code'         => self::$PRP_GRP_CODE,
-            'grp_name'         => self::$PRP_GRP_NAME,
-            'grp_address1'     => self::$PRP_GRP_ADDRESS1,
-            'grp_address2'     => self::$PRP_GRP_ADDRESS2,
-            'grp_address3'     => self::$PRP_GRP_ADDRESS3,
-            'grp_cp'           => self::$PRP_GRP_CP,
-            'grp_town'         => self::$PRP_GRP_TOWN,
-            'cnty_id'          => self::$PRP_CNTY_ID,
-            'lang_id'          => self::$PRP_LANG_ID,
-            'grp_from'         => self::$PRP_GRP_FROM,
-            'grp_to'           => self::$PRP_GRP_TO,
-            'grp_parent_id'    => self::$PRP_GRP_PARENT_ID,
-            'grp_money_code'   => self::$PRP_GRP_MONEY_CODE,
-            'grp_money_input'  => self::$PRP_GRP_MONEY_INPUT,
-            'grp_logo'         => self::$PRP_GRP_LOGO,
-            'grp_email_header' => self::$PRP_GRP_EMAIL_HEADER,
-            'grp_email_footer' => self::$PRP_GRP_EMAIL_FOOTER,
-            'grp_sign'         => self::$PRP_GRP_SIGN,
-            'grp_realm_id'     => self::$PRP_GRP_REALM_ID,
-            'grp_config'       => self::$PRP_GRP_CONFIG,
-            'grp_phone'        => self::$PRP_GRP_PHONE,
-            'grp_email'        => self::$PRP_GRP_EMAIL,
-            'grp_site_url'     => self::$PRP_GRP_SITE_URL,
+            'grp_id'            => self::$PRP_GRP_ID,
+            'grpt_id'           => self::$PRP_GRPT_ID,
+            'grp_code'          => self::$PRP_GRP_CODE,
+            'grp_name'          => self::$PRP_GRP_NAME,
+            'grp_address1'      => self::$PRP_GRP_ADDRESS1,
+            'grp_address2'      => self::$PRP_GRP_ADDRESS2,
+            'grp_address3'      => self::$PRP_GRP_ADDRESS3,
+            'grp_cp'            => self::$PRP_GRP_CP,
+            'grp_town'          => self::$PRP_GRP_TOWN,
+            'cnty_id'           => self::$PRP_CNTY_ID,
+            'lang_id'           => self::$PRP_LANG_ID,
+            'grp_from'          => self::$PRP_GRP_FROM,
+            'grp_to'            => self::$PRP_GRP_TO,
+            'grp_parent_id'     => self::$PRP_GRP_PARENT_ID,
+            'grp_money_code'    => self::$PRP_GRP_MONEY_CODE,
+            'grp_money_input'   => self::$PRP_GRP_MONEY_INPUT,
+            'grp_logo'          => self::$PRP_GRP_LOGO,
+            'grp_email_header'  => self::$PRP_GRP_EMAIL_HEADER,
+            'grp_email_footer'  => self::$PRP_GRP_EMAIL_FOOTER,
+            'grp_sign'          => self::$PRP_GRP_SIGN,
+            'grp_realm_id'      => self::$PRP_GRP_REALM_ID,
+            'grp_config'        => self::$PRP_GRP_CONFIG,
+            'grp_phone'         => self::$PRP_GRP_PHONE,
+            'grp_email'         => self::$PRP_GRP_EMAIL,
+            'grp_site_url'      => self::$PRP_GRP_SITE_URL,
+            'grp_email_payment' => self::$PRP_GRP_EMAIL_PAYMENT,
         ];
     }
 

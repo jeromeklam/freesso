@@ -160,6 +160,12 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     protected $grp_site_url = null;
 
     /**
+     * grp_email_payment
+     * @var mixed
+     */
+    protected $grp_email_payment = null;
+
+    /**
      * Set grp_id
      *
      * @param int $p_value
@@ -732,5 +738,28 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     public function getGrpSiteUrl()
     {
         return $this->grp_site_url;
+    }
+
+    /**
+     * Set grp_email_payment
+     *
+     * @param mixed $p_value
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpEmailPayment($p_value)
+    {
+        $this->grp_email_payment = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_email_header
+     *
+     * @return mixed
+     */
+    public function getGrpEmailPayment()
+    {
+        return $this->grp_email_payment;
     }
 }
