@@ -1362,8 +1362,7 @@ class Server implements
                         'grp_id'             => $grp_id
                     ]
                 );
-                $model  = \FreeFW\DI\DI::get('FreeSSO::Model::GroupUser');
-                $query  = $model->getQuery();
+                $query  = \FreeSSO\Model\GroupUser::getQuery();
                 $rels   = [];
                 $rels[] = 'group';
                 $query

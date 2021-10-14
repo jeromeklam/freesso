@@ -245,6 +245,14 @@ abstract class User extends \FreeSSO\Model\StorageModel\Base
     {
         return 'sso_user';
     }
+   
+    /**
+     * Retourne le nom court
+     */
+    public static function getSourceTitle()
+    {
+        return 'Utilisateur';
+    }
 
     /**
      * Retourne une explication de la table
