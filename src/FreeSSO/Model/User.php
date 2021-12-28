@@ -14,6 +14,8 @@ class User extends \FreeSSO\Model\Base\User implements
      * Behaviours
      */
     use \FreeFW\Model\Behaviour\Lang;
+    use \FreeFW\Behaviour\AutomateAwareTrait;
+    use \FreeFW\Behaviour\EventManagerAwareTrait;
 
     /**
      * Titles

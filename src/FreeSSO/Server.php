@@ -950,9 +950,9 @@ class Server implements
      */
     public function getUserById($p_id)
     {
-        $user = User::getFirst(array(
+        $user = User::findFirst([
             'user_id' => $p_id
-        ));
+        ]);
         if ($user instanceof User) {
             if ($user->getUserLastUpdate() === null) {
                 try {
@@ -1058,7 +1058,9 @@ class Server implements
         $p_email,
         $p_password,
         array $p_datas = [],
-        $p_withValidation = false
+        $p_withValidation = false,
+        $p_type = \FreeSSO\Model\User::TYPE_USER,
+        $p_lang = null
     ) {
         try {
             $this->fireEvent('sso:beforeRegisterNewUser');
@@ -1075,13 +1077,22 @@ class Server implements
             }
         }
         $user = new User();
-        $user->getFromRecord($p_datas);
         $user
             ->setUserLogin($p_login)
             ->setUserEmail($p_email)
             ->createNewPassword($p_password)
             ->setUserActive(1)
         ;
+        if (!in_array($p_type, [\FreeSSO\Model\User::TYPE_USER, \FreeSSO\Model\User::TYPE_REST])) {
+            $p_type = \FreeSSO\Model\User::TYPE_USER;
+        }
+        if ($p_lang != '') {
+            $lang = \FreeFW\Model\Lang::findFirst(['lang_code' => strtolower($p_lang)]);
+            if ($lang) {
+                $user->setlangId($lang->getlangId());
+            }
+        }
+        $user->getUserType($p_type);
         if ($p_withValidation) {
             $user
                 ->setUserActive(0)

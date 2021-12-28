@@ -40,6 +40,24 @@ abstract class Signin extends \FreeSSO\Model\StorageModel\Signin
     protected $remember = null;
 
     /**
+     * email
+     * @var string
+     */
+    protected $email = null;
+
+    /**
+     * type de compte
+     * @var string
+     */
+    protected $type = null;
+
+    /**
+     * lang
+     * @var string
+     */
+    protected $lang = null;
+
+    /**
      * Set login
      *
      * @param string $p_value
@@ -152,5 +170,74 @@ abstract class Signin extends \FreeSSO\Model\StorageModel\Signin
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Base\Signin
+     */
+    public function setEmail($p_value)
+    {
+        $this->email = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Base\Signin
+     */
+    public function setType($p_value)
+    {
+        $this->type = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set lang
+     *
+     * @param string $p_value
+     *
+     * @return \FreeSSO\Model\Base\Signin
+     */
+    public function setLang($p_value)
+    {
+        $this->lang = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get lang
+     *
+     * @return string
+     */
+    public function getLang()
+    {
+        return $this->lang;
     }
 }

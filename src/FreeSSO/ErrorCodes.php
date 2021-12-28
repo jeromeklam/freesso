@@ -36,4 +36,6 @@ class ErrorCodes
     const ERROR_GROUPTYPE_CODE_EXISTS   = 10300019;
     const ERROR_OLD_PASSWORD_WRONG      = 10300020;
     const ERROR_USER_GROUP              = 10300021;
+    const ERROR_BAD_LOGIN               = 10300022;
+    const ERROR_EMAIL_NOT_SENT          = 10300023;
 }

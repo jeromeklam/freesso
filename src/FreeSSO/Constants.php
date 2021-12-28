@@ -37,4 +37,10 @@ class Constants
      * @var mixed
      */
     const SESSION_LIFETIME = 50; // Seconds
+
+    /**
+     * Events
+     * @var string
+     */
+    const EVENT_USER_VALIDATION = 'new_user_validation';
 }

@@ -54,6 +54,31 @@ abstract class Signin extends \FreeFW\Core\StorageModel
         FFCST::PROPERTY_COMMENT => 'Le token en cas de changement de mot de passe',
         FFCST::PROPERTY_SAMPLE  => 'jlkjljl76dsq85f6h09',
     ];
+    protected static $PRP_EMAIL = [
+        FFCST::PROPERTY_PRIVATE => 'email',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'L\'email si différent du login',
+        FFCST::PROPERTY_SAMPLE  => 'test@free.fr',
+        FFCST::PROPERTY_MAX     => 255,
+    ];
+    protected static $PRP_TYPE = [
+        FFCST::PROPERTY_PRIVATE => 'type',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_SELECT,
+        FFCST::PROPERTY_ENUM    => ['USER','REST','IP','UUID'],
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Le type de compte',
+        FFCST::PROPERTY_SAMPLE  => 'REST',
+        FFCST::PROPERTY_DEFAULT => 'USER',
+    ];
+    protected static $PRP_LANG = [
+        FFCST::PROPERTY_PRIVATE => 'lang',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'La langue par défaut',
+        FFCST::PROPERTY_SAMPLE  => 'FRs',
+        FFCST::PROPERTY_DEFAULT => 'FR',
+    ];
 
     /**
      * get properties
@@ -68,6 +93,9 @@ abstract class Signin extends \FreeFW\Core\StorageModel
             'password2' => self::$PRP_PASSWORD2,
             'remember'  => self::$PRP_REMEMBER,
             'token'     => self::$PRP_TOKEN,
+            'email'     => self::$PRP_EMAIL,
+            'type'      => self::$PRP_TYPE,
+            'lang'      => self::$PRP_LANG,
         ];
     }
 

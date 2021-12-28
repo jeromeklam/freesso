@@ -296,6 +296,14 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
     /**
      * Retourne une explication de la table
      */
+    public static function getSourceTitle()
+    {
+        return 'Groupe';
+    }
+
+    /**
+     * Retourne une explication de la table
+     */
     public static function getSourceComments()
     {
         return 'Gestion des groupes';

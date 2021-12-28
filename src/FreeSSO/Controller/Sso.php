@@ -456,4 +456,202 @@ class Sso extends \FreeFW\Core\Controller
             return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $error);
         }
     }
+
+    /**
+     * Création d'un compte utilisateur avec demande de validation
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function register(\Psr\Http\Message\ServerRequestInterface $p_request)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.start');
+        $apiParams = $p_request->getAttribute('api_params', false);
+        $data = null;
+        if (!$apiParams->hasData()) {
+            $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.error');
+            return $this->createErrorResponse(FFCST::ERROR_NO_DATA);
+        }
+        /**
+         * @var \POSSO\Model\UserCreateAccount $data
+         */
+        $data = $apiParams->getData();
+        if (empty($data->getLogin())) {
+            $data->addError(
+                SsoErrors::ERROR_LOGIN_EMPTY,
+                sprintf('Login required !'),
+                \FreeFW\Core\Error::TYPE_PRECONDITION,
+                'user_login'
+            );
+            $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.error');
+            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
+        }
+        if (empty($data->getPassword())) {
+            $data->addError(
+                SsoErrors::ERROR_PASSWORD_EMPTY,
+                sprintf('Password required !'),
+                \FreeFW\Core\Error::TYPE_PRECONDITION,
+                'user_password'
+            );
+            $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.error');
+            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
+        }
+        if ($data->getType() === \FreeSSO\Model\User::TYPE_USER && !\FreeFW\Tools\Email::verifyFormatting($data->getLogin())) {
+            $data->addError(
+                SsoErrors::ERROR_BAD_LOGIN,
+                sprintf('Bad login !'),
+                \FreeFW\Core\Error::TYPE_PRECONDITION,
+                'user_login'
+            );
+            $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.error');
+            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
+        }
+        $user = \FreeSSO\Model\User::findFirst(
+            [
+                'user_login' => $data->getLogin()
+            ]
+        );
+        if ($user instanceof \FreeSSO\Model\User) {
+            if (!empty($user->getUserValString())) {
+                $data->addError(
+                    SsoErrors::ERROR_USER_NOTACTIVATED,
+                    sprintf('Le compte n\'a pas été activé !'),
+                    \FreeFW\Core\Error::TYPE_PRECONDITION
+                );
+            } else {
+                $data->addError(
+                    SsoErrors::ERROR_LOGIN_EXISTS,
+                    sprintf('L\'utilisateur avec le login %s existe !', $data->getLogin()),
+                    \FreeFW\Core\Error::TYPE_PRECONDITION,
+                    'user_login'
+                );
+            }
+            $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.error');
+            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
+        }
+        /**
+         * @var \POSSO\Server $sso
+         * @var \POSSO\Model\User $user
+         */
+        try {
+            /**
+             * @var \FreeSSO\Server $sso
+             */
+            $sso = \FreeFW\DI\DI::getShared('sso');
+            $user = $sso->registerNewUser(
+                $data->getLogin(),
+                $data->getEmail(),
+                $data->getPassword(),
+                [],
+                true,
+                $data->getType(),
+                $data->getLang()
+            );
+            if ($user === false || $user->hasErrors()) {
+                if ($user->hasErrors()) {
+                    $data->addErrors($user->getErrors());
+                }
+                $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.error');
+                return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
+            } else {
+                $user->forwardRawEvent(\FreeSSO\Constants::EVENT_USER_VALIDATION, $user);
+                $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.end');
+                return $this->createSuccessAddResponse($sso->getUserById($user->getUserId()));
+            }
+        } catch (\FreeSSO\SsoException $ex) {
+            $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.error');
+            return $this->createErrorResponse(409, \FreeSSO\Model\Error::getFromException(409, $ex)); // 409. Le second 409 correspond à errors.status
+        } catch (\Exception $ex) {
+            $this->logger->debug('FreeSSO.Controller.Sso.createUserAccount.error');
+            throw new \Exception($ex->getMessage(), $ex->getCode()); // 500
+        }
+    }
+
+    /**
+     * Envoyer un mail de validation de création d'un compte utilisateur
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $p_request
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function sendUserValidationEmail(\Psr\Http\Message\ServerRequestInterface $p_request)
+    {
+        $this->logger->debug('FreeSSO.Controller.Sso.sendUserValidationEmail.start');
+        $apiParams = $p_request->getAttribute('api_params', false);
+        $data = null;
+        if (!$apiParams->hasData()) {
+            $this->logger->debug('FreeSSO.Controller.Sso.sendUserValidationEmail.error');
+            return $this->createErrorResponse(FFCST::ERROR_NO_DATA);
+        }
+        /**
+         * @var \POSSO\Model\UserValidationEmail $data
+         */
+        $data = $apiParams->getData();
+        if (empty($data->getLogin())) {
+            $data->addError(
+                SsoErrors::ERROR_LOGIN_EMPTY,
+                sprintf('Login required !'),
+                \FreeFW\Core\Error::TYPE_PRECONDITION,
+                'user_login'
+            );
+            $this->logger->debug('FreeSSO.Controller.Sso.sendUserValidationEmail.error');
+            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
+        }
+        if (!\FreeFW\Tools\Email::verifyFormatting($data->getLogin())) {
+            $data->addError(
+                SsoErrors::ERROR_BAD_LOGIN,
+                sprintf('Bad login !'),
+                \FreeFW\Core\Error::TYPE_PRECONDITION,
+                'user_login'
+            );
+            $this->logger->debug('FreeSSO.Controller.Sso.sendUserValidationEmail.error');
+            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
+        }
+        $user = \FreeSSO\Model\User::findFirst(
+            [
+                'user_login' => $data->getLogin()
+            ]
+        );
+        /**
+         * @var \POSSO\Server $sso
+         * @var \POSSO\Model\User $user
+         */
+        if ($user instanceof \FreeSSO\Model\User) {
+            if (empty($user->getUserValString())) {
+                $data->addError(
+                    SsoErrors::ERROR_BAD_LOGIN, // oui oui, on renvoie un bad login !
+                    sprintf('Bad login !'),
+                    \FreeFW\Core\Error::TYPE_PRECONDITION
+                );
+                $this->logger->debug('FreeSSO.Controller.Sso.sendUserValidationEmail.error');
+                return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
+            }
+        } else {
+            $data->addError(
+                SsoErrors::ERROR_BAD_LOGIN,
+                sprintf('Bad login !'),
+                \FreeFW\Core\Error::TYPE_PRECONDITION
+            );
+            $this->logger->debug('FreeSSO.Controller.Sso.sendUserValidationEmail.error');
+            return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
+        }
+
+        try {
+            /**
+             * @var \FreeSSO\Server $sso
+             */
+            $sso = \FreeFW\DI\DI::getShared('sso');
+            if ($sso->sendValidationEmail($user)) {
+                $user->forwardRawEvent(\FreeSSO\Constants::EVENT_USER_VALIDATION, $user);
+                $this->logger->debug('FreeSSO.Controller.Sso.sendUserValidationEmail.end');
+                return $this->createSuccessAddResponse($user);
+            }
+        } catch (\FreeSSO\SsoException $ex) {
+            $this->logger->debug('FreeSSO.Controller.Sso.sendUserValidationEmail.error');
+            return $this->createErrorResponse(409, \FreeSSO\Model\Error::getFromException(409, $ex)); // 409. Le second 409 correspond à errors.status
+        } catch (\Exception $ex) {
+            $this->logger->debug('FreeSSO.Controller.Sso.sendUserValidationEmail.error');
+            throw new \Exception($ex->getMessage(), $ex->getCode()); // 500
+        }
+    }
+
 }

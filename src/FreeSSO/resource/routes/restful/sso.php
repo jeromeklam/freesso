@@ -30,6 +30,28 @@ $routes_sso = [
             ]
         ]
     ],
+    'free_s_s_o.user.register' => [
+        FFCSTRT::ROUTE_COLLECTION => 'FreeSSO/Sso/User',
+        FFCSTRT::ROUTE_COMMENT    => 'Demande de connexion de l\'utilisateur',
+        FFCSTRT::ROUTE_METHOD     => \FreeFW\Router\Route::METHOD_POST,
+        FFCSTRT::ROUTE_MODEL      => 'FreeSSO::Model::Signin',
+        FFCSTRT::ROUTE_URL        => '/v1/sso/register',
+        FFCSTRT::ROUTE_CONTROLLER => 'FreeSSO::Controller::Sso',
+        FFCSTRT::ROUTE_FUNCTION   => 'register',
+        FFCSTRT::ROUTE_AUTH       => \FreeFW\Router\Route::AUTH_OUT,
+        FFCSTRT::ROUTE_MIDDLEWARE => [],
+        FFCSTRT::ROUTE_INCLUDE    => [
+            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['lang', 'config', 'realms', 'default_group']
+        ],
+        FFCSTRT::ROUTE_SCOPE      => [],
+        FFCSTRT::ROUTE_RESULTS    => [
+            '201' => [
+                FFCSTRT::ROUTE_RESULTS_TYPE    => FFCSTRT::RESULT_OBJECT,
+                FFCSTRT::ROUTE_RESULTS_MODEL   => 'FreeSSO::Model::User',
+                FFCSTRT::ROUTE_RESULTS_COMMENT => 'Connexion créée',
+            ]
+        ]
+    ],
     'free_s_s_o.user.signin' => [
         FFCSTRT::ROUTE_COLLECTION => 'FreeSSO/Sso/User',
         FFCSTRT::ROUTE_COMMENT    => 'Demande de connexion de l\'utilisateur',
