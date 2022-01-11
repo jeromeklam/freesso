@@ -166,6 +166,24 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     protected $grp_email_payment = null;
 
     /**
+     * grp_dig_sign
+     * @var string
+     */
+    protected $grp_dig_sign = null;
+
+    /**
+     * grp_siret
+     * @var string
+     */
+    protected $grp_siret = null;
+
+    /**
+     * grp_siret_cpl
+     * @var string
+     */
+    protected $grp_siret_cpl = null;
+
+    /**
      * Set grp_id
      *
      * @param int $p_value
@@ -761,5 +779,74 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     public function getGrpEmailPayment()
     {
         return $this->grp_email_payment;
+    }
+
+    /**
+     * Set grp_dig_sign
+     *
+     * @param string $p_value
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpDigSign($p_value)
+    {
+        $this->grp_dig_sign = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_dig_sign
+     *
+     * @return string
+     */
+    public function getGrpDigSign()
+    {
+        return $this->grp_dig_sign;
+    }
+
+    /**
+     * Set grp_siret
+     *
+     * @param string $p_value
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpSiret($p_value)
+    {
+        $this->grp_siret = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_siret
+     *
+     * @return string
+     */
+    public function getGrpSiret()
+    {
+        return $this->grp_siret;
+    }
+
+    /**
+     * Set grp_siret_cpl
+     *
+     * @param string $p_value
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpSiretCpl($p_value)
+    {
+        $this->grp_siret_cpl = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_siret_cpl
+     *
+     * @return string
+     */
+    public function getGrpSiretCpl()
+    {
+        return $this->grp_siret_cpl;
     }
 }

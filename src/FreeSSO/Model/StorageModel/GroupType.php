@@ -83,6 +83,14 @@ abstract class GroupType extends \FreeSSO\Model\StorageModel\Base
     /**
      * Retourne une explication de la table
      */
+    public static function getSourceTitle()
+    {
+        return 'Type de groupe';
+    }
+
+    /**
+     * Retourne une explication de la table
+     */
     public static function getSourceComments()
     {
         return 'Gestion des types de groupes';

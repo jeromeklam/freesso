@@ -72,7 +72,7 @@ $routes_group = [
         FFCSTRT::ROUTE_AUTH       => FFCSTRT::AUTH_IN,
         FFCSTRT::ROUTE_MIDDLEWARE => [],
         FFCSTRT::ROUTE_INCLUDE    => [
-            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['group_type', 'country', 'lang', 'parent']
+            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['group_type', 'country', 'lang', 'parent', 'realm']
         ],
         FFCSTRT::ROUTE_SCOPE      => ['ROOT'],
         FFCSTRT::ROUTE_PARAMETERS => [
@@ -103,7 +103,7 @@ $routes_group = [
         FFCSTRT::ROUTE_AUTH       => FFCSTRT::AUTH_IN,
         FFCSTRT::ROUTE_MIDDLEWARE => [],
         FFCSTRT::ROUTE_INCLUDE    => [
-            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['group_type', 'country', 'lang', 'parent']
+            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['group_type', 'country', 'lang', 'parent', 'realm']
         ],
         FFCSTRT::ROUTE_SCOPE      => ['ROOT'],
         FFCSTRT::ROUTE_RESULTS    => [
@@ -126,7 +126,7 @@ $routes_group = [
         FFCSTRT::ROUTE_AUTH       => FFCSTRT::AUTH_IN,
         FFCSTRT::ROUTE_MIDDLEWARE => [],
         FFCSTRT::ROUTE_INCLUDE    => [
-            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['group_type', 'country', 'lang', 'parent']
+            FFCSTRT::ROUTE_INCLUDE_DEFAULT => ['group_type', 'country', 'lang', 'parent', 'realm']
         ],
         FFCSTRT::ROUTE_SCOPE      => ['ROOT'],
         FFCSTRT::ROUTE_PARAMETERS => [

@@ -191,10 +191,10 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
     ];
     protected static $PRP_GRP_SIGN = [
         FFCST::PROPERTY_PRIVATE => 'grp_sign',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_HTML,
         FFCST::PROPERTY_OPTIONS => [],
         FFCST::PROPERTY_COMMENT => 'La signature',
-        FFCST::PROPERTY_SAMPLE  => 'hkHKUY3d§2dGUGJGu...',
+        FFCST::PROPERTY_SAMPLE  => '<p>Signature</p>',
     ];
     protected static $PRP_GRP_REALM_ID = [
         FFCST::PROPERTY_PRIVATE => 'grp_realm_id',
@@ -245,6 +245,34 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
         FFCST::PROPERTY_COMMENT => 'Conditions de paiement',
         FFCST::PROPERTY_SAMPLE  => '<p>...</p>',
     ];
+    protected static $PRP_GRP_LINE_ADDRESS = [
+        FFCST::PROPERTY_PRIVATE => 'grp_line_address',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_OPTIONS => [FFCST::OPTION_LOCAL],
+        FFCST::PROPERTY_COMMENT => 'Adresse sur une ligne',
+        FFCST::PROPERTY_SAMPLE  => '56, ....',
+    ];
+    protected static $PRP_GRP_DIG_SIGN = [
+        FFCST::PROPERTY_PRIVATE => 'grp_dig_sign',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Signature digitale',
+        FFCST::PROPERTY_SAMPLE  => '1HKJUYSQDGSQJ1dqdsqjhSDKq...',
+    ];
+    protected static $PRP_GRP_SIRET = [
+        FFCST::PROPERTY_PRIVATE => 'grp_siret',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Siret',
+        FFCST::PROPERTY_SAMPLE  => '....',
+    ];
+    protected static $PRP_GRP_SIRET_CPL = [
+        FFCST::PROPERTY_PRIVATE => 'grp_siret_cpl',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Complément du Siret',
+        FFCST::PROPERTY_SAMPLE  => '....',
+    ];
 
     /**
      * get properties
@@ -280,6 +308,10 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
             'grp_email'         => self::$PRP_GRP_EMAIL,
             'grp_site_url'      => self::$PRP_GRP_SITE_URL,
             'grp_email_payment' => self::$PRP_GRP_EMAIL_PAYMENT,
+            'grp_line_address'  => self::$PRP_GRP_LINE_ADDRESS,
+            'grp_dig_sign'      => self::$PRP_GRP_DIG_SIGN,
+            'grp_siret'         => self::$PRP_GRP_SIRET,
+            'grp_siret_cpl'     => self::$PRP_GRP_SIRET_CPL,
         ];
     }
 
