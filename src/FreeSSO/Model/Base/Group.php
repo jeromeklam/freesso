@@ -184,6 +184,12 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     protected $grp_siret_cpl = null;
 
     /**
+     * grp_receipt
+     * @var string
+     */
+    protected $grp_receipt = null;
+
+    /**
      * Set grp_id
      *
      * @param int $p_value
@@ -848,5 +854,28 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     public function getGrpSiretCpl()
     {
         return $this->grp_siret_cpl;
+    }
+
+    /**
+     * Set grp_receipt
+     *
+     * @param string $p_value
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpReceipt($p_value)
+    {
+        $this->grp_receipt = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_receipt
+     *
+     * @return string
+     */
+    public function getGrpReceipt()
+    {
+        return $this->grp_receipt;
     }
 }

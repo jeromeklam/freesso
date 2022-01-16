@@ -273,6 +273,13 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
         FFCST::PROPERTY_COMMENT => 'Complément du Siret',
         FFCST::PROPERTY_SAMPLE  => '....',
     ];
+    protected static $PRP_GRP_RECEIPT = [
+        FFCST::PROPERTY_PRIVATE => 'grp_receipt',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_HTML,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Texte reçus',
+        FFCST::PROPERTY_SAMPLE  => '....',
+    ];
 
     /**
      * get properties
@@ -312,6 +319,7 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
             'grp_dig_sign'      => self::$PRP_GRP_DIG_SIGN,
             'grp_siret'         => self::$PRP_GRP_SIRET,
             'grp_siret_cpl'     => self::$PRP_GRP_SIRET_CPL,
+            'grp_receipt'       => self::$PRP_GRP_RECEIPT,
         ];
     }
 
