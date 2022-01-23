@@ -173,7 +173,7 @@ class Sso extends \FreeFW\Core\Controller
      */
     public function signIn(\Psr\Http\Message\ServerRequestInterface $p_request)
     {
-        $this->logger->debug('FreeSSO.Controller.Sso.login.start');
+        $this->logger->debug('FreeSSO.Controller.Sso.signIn.start');
         $apiParams = $p_request->getAttribute('api_params', false);
         $data      = null;
         //
@@ -210,12 +210,12 @@ class Sso extends \FreeFW\Core\Controller
                             $response = $response->withHeader('AutoLogin', $cookie->getAutoCookie());
                         }
                     }
-                    $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+                    $this->logger->debug('FreeSSO.Controller.Sso.signIn.end');
                     return $response;
                 } catch (\Exception $ex) {
                     // @todo
                     $error = \FreeSSO\Model\Error::getFromException(409, $ex);
-                    $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+                    $this->logger->debug('FreeSSO.Controller.Sso.signIn.end');
                     return $this->createErrorResponse(FFCST::ERROR_NOT_INSERT, $error);
                 }
             } else {
@@ -225,11 +225,11 @@ class Sso extends \FreeFW\Core\Controller
                     \FreeFW\Core\Error::TYPE_PRECONDITION,
                     'login'
                 );
-                $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+                $this->logger->debug('FreeSSO.Controller.Sso.signIn.end');
                 return $this->createErrorResponse(FFCST::ERROR_IN_DATA, $data);
             }
         } else {
-            $this->logger->debug('FreeSSO.Controller.Sso.login.end');
+            $this->logger->debug('FreeSSO.Controller.Sso.signIn.end');
             return $this->createErrorResponse(FFCST::ERROR_NO_DATA);
         }
     }
