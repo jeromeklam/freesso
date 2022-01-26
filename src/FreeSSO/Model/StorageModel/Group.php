@@ -184,7 +184,7 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
     ];
     protected static $PRP_GRP_EMAIL_FOOTER = [
         FFCST::PROPERTY_PRIVATE => 'grp_email_footer',
-        FFCST::PROPERTY_TYPE    => FFCST::TYPE_TEXT,
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_HTML,
         FFCST::PROPERTY_OPTIONS => [],
         FFCST::PROPERTY_COMMENT => 'Le pied de page de correspondance',
         FFCST::PROPERTY_SAMPLE  => '<p>Le maire</p>',

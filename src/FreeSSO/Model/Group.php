@@ -163,6 +163,15 @@ class Group extends \FreeSSO\Model\Base\Group
             'type'    => \FreeFW\Constants::TYPE_IMAGE,
             'content' => $file
         ];
-        return $fields;
+        $langCode = 'fr';
+        if ($p_lang_code) {
+            $langCode = $p_lang_code;
+        }
+        $taxos = \FreeFW\Model\Taxonomy::getAsFieldsByObjectAndLang(
+            'FreeFW_Group',
+            $this->getGrpId(),
+            $langCode
+        );
+        return array_merge($fields, $taxos);
     }
 }
