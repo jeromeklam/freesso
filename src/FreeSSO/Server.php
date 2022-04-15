@@ -623,14 +623,15 @@ class Server implements
      */
     protected function touchSession($p_sess_id)
     {
-        $mySession = SSOSession::findFirst(array('sess_id' => $p_sess_id));
-        if ($mySession instanceof SSOSession) {
-            $mySession
-                ->setSessTouch(\FreeFW\Tools\Date::getCurrentTimestamp())
-                ->setSessEnd(\FreeFW\Tools\Date::getCurrentTimestamp(60*24))
-            ;
-            $mySession->save();
-        }
+        SSOSession::update(
+            [
+                'sess_touch' => \FreeFW\Tools\Date::getCurrentTimestamp(),
+                'sess_end'   => \FreeFW\Tools\Date::getCurrentTimestamp(60*24)
+            ],
+            [
+                'sess_id' => $p_sess_id
+            ]
+        );
         SSOSession::delete(
             array(
                 'sess_end' => [
