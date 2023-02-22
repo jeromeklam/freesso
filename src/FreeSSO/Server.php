@@ -429,9 +429,11 @@ class Server implements
             }
             // Ok, save to session...
             if ($this->session instanceof SSOSession) {
-                $this->session->setUserId($user->getUserId());
-                $this->session->setSessContent($user->serialize());
-                $this->session->save();
+                if ($this->session->getUserId() != $user->getUserId()) {
+                    $this->session->setUserId($user->getUserId());
+                    $this->session->setSessContent($user->serialize());
+                    $this->session->save();
+                }
                 $this->user = $user;
             } else {
                 throw new SsoException('Erreur : impossible de trouver la session !', ErrorCodes::ERROR_GENERAL);
