@@ -280,6 +280,20 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
         FFCST::PROPERTY_COMMENT => 'Texte reçus',
         FFCST::PROPERTY_SAMPLE  => '....',
     ];
+    protected static $PRP_GRP_DIG_SIGN2 = [
+        FFCST::PROPERTY_PRIVATE => 'grp_dig_sign2',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_BLOB,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Signature digitale 2',
+        FFCST::PROPERTY_SAMPLE  => '1HKJUYSQDGSQJ1dqdsqjhSDKq...',
+    ];
+    protected static $PRP_GRP_SIGN2 = [
+        FFCST::PROPERTY_PRIVATE => 'grp_sign2',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_HTML,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'La signature 2',
+        FFCST::PROPERTY_SAMPLE  => '<p>Signature</p>',
+    ];
 
     /**
      * get properties
@@ -320,6 +334,8 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
             'grp_siret'         => self::$PRP_GRP_SIRET,
             'grp_siret_cpl'     => self::$PRP_GRP_SIRET_CPL,
             'grp_receipt'       => self::$PRP_GRP_RECEIPT,
+            'grp_sign2'         => self::$PRP_GRP_SIGN2,
+            'grp_dig_sign2'     => self::$PRP_GRP_DIG_SIGN2,
         ];
     }
 

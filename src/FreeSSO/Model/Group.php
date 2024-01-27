@@ -163,6 +163,14 @@ class Group extends \FreeSSO\Model\Base\Group
             'type'    => \FreeFW\Constants::TYPE_IMAGE,
             'content' => $file
         ];
+        $file = $p_tmp_dir . 'edi_' . uniqid(true) . '_sign2' . '.png';
+        file_put_contents($file, $this->getGrpDigSign2());
+        $fields['grp_sign_file2'] = [
+            'name'    => 'grp_sign_file2',
+            'title'   => 'sign2',
+            'type'    => \FreeFW\Constants::TYPE_IMAGE,
+            'content' => $file
+        ];
         $langCode = 'fr';
         if ($p_lang_code) {
             $langCode = $p_lang_code;

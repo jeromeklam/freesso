@@ -190,6 +190,18 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     protected $grp_receipt = null;
 
     /**
+     * grp_sign2
+     * @var mixed
+     */
+    protected $grp_sign2 = null;
+
+    /**
+     * grp_dig_sign2
+     * @var string
+     */
+    protected $grp_dig_sign2 = null;
+
+    /**
      * Set grp_id
      *
      * @param int $p_value
@@ -877,5 +889,51 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     public function getGrpReceipt()
     {
         return $this->grp_receipt;
+    }
+
+    /**
+     * Set grp_sign2
+     *
+     * @param mixed $p_value
+     *
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpSign2($p_value)
+    {
+        $this->grp_sign2 = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_sign2
+     *
+     * @return mixed
+     */
+    public function getGrpSign2()
+    {
+        return $this->grp_sign2;
+    }
+
+    /**
+     * Set grp_dig_sign2
+     *
+     * @param string $p_value
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpDigSign2($p_value)
+    {
+        $this->grp_dig_sign2 = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_dig_sign2
+     *
+     * @return string
+     */
+    public function getGrpDigSign2()
+    {
+        return $this->grp_dig_sign2;
     }
 }
