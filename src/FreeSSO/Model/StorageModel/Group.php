@@ -294,6 +294,13 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
         FFCST::PROPERTY_COMMENT => 'La signature 2',
         FFCST::PROPERTY_SAMPLE  => '<p>Signature</p>',
     ];
+    protected static $PRP_GRP_COG = [
+        FFCST::PROPERTY_PRIVATE => 'grp_cog',
+        FFCST::PROPERTY_TYPE    => FFCST::TYPE_STRING,
+        FFCST::PROPERTY_OPTIONS => [],
+        FFCST::PROPERTY_COMMENT => 'Code COG',
+        FFCST::PROPERTY_SAMPLE  => '99100',
+    ];
 
     /**
      * get properties
@@ -336,6 +343,7 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Base
             'grp_receipt'       => self::$PRP_GRP_RECEIPT,
             'grp_sign2'         => self::$PRP_GRP_SIGN2,
             'grp_dig_sign2'     => self::$PRP_GRP_DIG_SIGN2,
+            'grp_cog'           => self::$PRP_GRP_COG,
         ];
     }
 

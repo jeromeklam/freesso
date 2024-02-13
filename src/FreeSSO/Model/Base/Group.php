@@ -202,6 +202,12 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     protected $grp_dig_sign2 = null;
 
     /**
+     * grp_cog
+     * @var string
+     */
+    protected $grp_cog = null;
+
+    /**
      * Set grp_id
      *
      * @param int $p_value
@@ -935,5 +941,28 @@ abstract class Group extends \FreeSSO\Model\StorageModel\Group
     public function getGrpDigSign2()
     {
         return $this->grp_dig_sign2;
+    }
+
+    /**
+     * Set grp_cog
+     *
+     * @param string $p_value
+     * 
+     * @return \FreeSSO\Model\Group
+     */
+    public function setGrpCog($p_value)
+    {
+        $this->grp_cog = $p_value;
+        return $this;
+    }
+
+    /**
+     * Get grp_cog
+     *
+     * @return string
+     */
+    public function getGrpCog()
+    {
+        return $this->grp_cog;
     }
 }
